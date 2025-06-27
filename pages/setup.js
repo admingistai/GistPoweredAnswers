@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp, trackWordPressSignUp, trackDrupalSignUp, trackWixSignUp, trackEvent } from '../utils/analytics';
 import { useRouter } from 'next/router';
+import URLInputForm from '../components/URLInputForm';
 
 export default function Setup() {
   const [modalOpen, setModalOpen] = useState(false);
+  const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewError, setPreviewError] = useState(null);
   const router = useRouter();
   // Helper to push amplitude event and open modal
   const handleButtonClick = (eventName) => (e) => {
@@ -11,36 +14,57 @@ export default function Setup() {
     trackEvent(eventName);
     setModalOpen(true);
   };
+  // Handler for URL preview submit
+  const handlePreviewSubmit = async (url) => {
+    setPreviewLoading(true);
+    setPreviewError(null);
+    try {
+      trackEvent('Setup Page Preview Site Clicked', { url });
+      // Test if the URL is accessible (optional, can just open)
+      window.open(`/api/proxy?url=${encodeURIComponent(url)}`, '_blank');
+    } catch (err) {
+      setPreviewError('Unable to preview site.');
+    } finally {
+      setPreviewLoading(false);
+    }
+  };
   return (
     <div className="setup-root centered">
-      <div className="signup-form-container centered">
-        <div className="signup-logo-container">
-          <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
-        </div>
-        <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
-        <form className="signup-form" onSubmit={handleButtonClick('Sign Up Button Clicked')}>
-          <label htmlFor="email" className="signup-label">Email</label>
-          <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
-          <button type="submit" className="signup-btn" onClick={handleButtonClick('Sign Up Button Clicked')}>Sign Up</button>
-        </form>
-        <div className="social-signup-divider">or sign up with</div>
-        <div className="social-signup-btns">
-          <button className="social-btn google" onClick={handleButtonClick('Google Sign Up Clicked')} type="button">Google</button>
-          <button className="social-btn apple" onClick={handleButtonClick('Apple Sign Up Clicked')} type="button">Apple</button>
-          <button className="social-btn github" onClick={handleButtonClick('GitHub Sign Up Clicked')} type="button">GitHub</button>
-          <button className="social-btn wordpress" onClick={handleButtonClick('WordPress Sign Up Clicked')} type="button">WordPress</button>
-          <button className="social-btn drupal" onClick={handleButtonClick('Drupal Sign Up Clicked')} type="button">Drupal</button>
-          <button className="social-btn wix" onClick={handleButtonClick('Wix Sign Up Clicked')} type="button">Wix</button>
-        </div>
-      </div>
-      {modalOpen && (
-        <div className="coming-soon-modal-overlay">
-          <div className="coming-soon-modal">
-            <button className="modal-close-btn" onClick={() => setModalOpen(false)} aria-label="Close">×</button>
-            <div className="coming-soon-text">Coming Soon...</div>
+      <div className="setup-shadow-container">
+        <div className="signup-form-container centered">
+          <div className="signup-logo-container">
+            <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
+          </div>
+          <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
+          {/* URL Input Pill Box */}
+          <div className="setup-url-preview-box">
+            <URLInputForm onSubmit={handlePreviewSubmit} loading={previewLoading} error={previewError} />
+            <div className="setup-url-preview-help">Preview your site with Ask Anything™</div>
+          </div>
+          <form className="signup-form" onSubmit={handleButtonClick('Sign Up Button Clicked')}>
+            <label htmlFor="email" className="signup-label">Email</label>
+            <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
+            <button type="submit" className="signup-btn" onClick={handleButtonClick('Sign Up Button Clicked')}>Sign Up</button>
+          </form>
+          <div className="social-signup-divider">or sign up with</div>
+          <div className="social-signup-btns">
+            <button className="social-btn google" onClick={handleButtonClick('Google Sign Up Clicked')} type="button">Google</button>
+            <button className="social-btn apple" onClick={handleButtonClick('Apple Sign Up Clicked')} type="button">Apple</button>
+            <button className="social-btn github" onClick={handleButtonClick('GitHub Sign Up Clicked')} type="button">GitHub</button>
+            <button className="social-btn wordpress" onClick={handleButtonClick('WordPress Sign Up Clicked')} type="button">WordPress</button>
+            <button className="social-btn drupal" onClick={handleButtonClick('Drupal Sign Up Clicked')} type="button">Drupal</button>
+            <button className="social-btn wix" onClick={handleButtonClick('Wix Sign Up Clicked')} type="button">Wix</button>
           </div>
         </div>
-      )}
+        {modalOpen && (
+          <div className="coming-soon-modal-overlay">
+            <div className="coming-soon-modal">
+              <button className="modal-close-btn" onClick={() => setModalOpen(false)} aria-label="Close">×</button>
+              <div className="coming-soon-text">Coming Soon...</div>
+            </div>
+          </div>
+        )}
+      </div>
       <style jsx>{`
         .setup-root.centered {
           display: flex;
@@ -49,17 +73,40 @@ export default function Setup() {
           min-height: 100vh;
           background: linear-gradient(120deg, #f7f8fa 0%, #fafdff 100%);
         }
+        .setup-shadow-container {
+          box-shadow: 0 8px 32px rgba(80,120,200,0.13), 0 2px 16px rgba(80,120,200,0.07);
+          border-radius: 22px;
+          background: rgba(255,255,255,0.99);
+          padding: 32px 0 24px 0;
+          max-width: 440px;
+          width: 100%;
+          margin: 0 auto;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
         .signup-form-container.centered {
           max-width: 400px;
           width: 100%;
           margin: 0 auto;
-          padding: 36px 18px 32px 18px;
-          background: rgba(255,255,255,0.98);
+          padding: 0 18px 0 18px;
+          background: transparent;
           border-radius: 18px;
-          box-shadow: 0 2px 16px rgba(80,120,200,0.07);
           display: flex;
           flex-direction: column;
           align-items: center;
+        }
+        .setup-url-preview-box {
+          width: 100%;
+          margin-bottom: 18px;
+        }
+        .setup-url-preview-help {
+          text-align: center;
+          color: #4B9FE1;
+          font-size: 0.98rem;
+          margin-top: -10px;
+          margin-bottom: 10px;
+          font-weight: 500;
         }
         .signup-logo-container {
           width: 100%;
@@ -146,10 +193,54 @@ export default function Setup() {
           cursor: pointer;
           transition: background 0.2s, color 0.2s, border 0.2s;
         }
-        .social-btn:hover {
-          background: #f1f1f9;
+        .social-btn.google {
+          background: #fff;
+          color: #4285F4;
+          border: 1px solid #4285F4;
+        }
+        .social-btn.google:hover {
+          background: #4285F4;
+          color: #fff;
+        }
+        .social-btn.apple {
+          background: #000;
+          color: #fff;
+          border: 1px solid #000;
+        }
+        .social-btn.apple:hover {
+          background: #222;
+        }
+        .social-btn.github {
+          background: #24292e;
+          color: #fff;
+          border: 1px solid #24292e;
+        }
+        .social-btn.github:hover {
+          background: #444d56;
+        }
+        .social-btn.wordpress {
+          background: #21759b;
+          color: #fff;
+          border: 1px solid #21759b;
+        }
+        .social-btn.wordpress:hover {
+          background: #145785;
+        }
+        .social-btn.drupal {
+          background: #0678be;
+          color: #fff;
+          border: 1px solid #0678be;
+        }
+        .social-btn.drupal:hover {
+          background: #055a8c;
+        }
+        .social-btn.wix {
+          background: #fff200;
           color: #222;
-          border-color: #bdbdbd;
+          border: 1px solid #fff200;
+        }
+        .social-btn.wix:hover {
+          background: #ffe600;
         }
         .coming-soon-modal-overlay {
           position: fixed;

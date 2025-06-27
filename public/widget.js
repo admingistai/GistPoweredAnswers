@@ -405,6 +405,12 @@
                 width: 600px !important;
                 bottom: 110px !important;
             }
+
+            .panel-open {
+                transform: translateY(-120px) !important;
+                transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+                z-index: 99999;
+            }
         `;
 
         // Create style element and append to head (with safety check)
@@ -512,18 +518,15 @@
                     }
                     if (event.data && event.data.type === 'GPA_PANEL_STATE') {
                         panelOpen = !!event.data.open;
+                        const widgetContainer = document.querySelector('.gist-widget-container');
+                        const answerContainer = document.querySelector('.gist-answer-container');
                         if (panelOpen) {
-                            searchInput.disabled = true;
-                            // Remove any existing placeholder span
-                            const existingSpan = searchInput.parentElement.querySelector('.placeholder-span');
-                            if (existingSpan) existingSpan.remove();
-                            // Close the answer box if open
-                            const answerContainer = document.querySelector('.gist-answer-container');
-                            if (answerContainer) answerContainer.remove();
+                            // Instead of disabling, raise the widget and answer box
+                            if (widgetContainer) widgetContainer.classList.add('panel-open');
+                            if (answerContainer) answerContainer.classList.add('panel-open');
                         } else {
-                            searchInput.disabled = false;
-                            searchInput.setAttribute('placeholder', '');
-                            updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
+                            if (widgetContainer) widgetContainer.classList.remove('panel-open');
+                            if (answerContainer) answerContainer.classList.remove('panel-open');
                         }
                     }
                 });
