@@ -349,7 +349,6 @@ const adminSidebar = `
       <div style="margin-bottom: 18px;">
         <div class="section-label" style="margin-bottom: 8px;">My Content:</div>
         <div class="my-content-upload-box" style="border: 1.5px dashed #bdbdbd; border-radius: 10px; padding: 18px 14px; background: #fafbfc; display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 100%; box-sizing: border-box;">
-          <div style="font-size: 15px; color: #444; margin-bottom: 6px;">Upload files or paste URLs to your content</div>
           <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
         </div>
       </div>
