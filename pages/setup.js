@@ -19,8 +19,6 @@ export default function Setup() {
         </div>
         <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
         <form className="signup-form" onSubmit={handleButtonClick('Sign Up Button Clicked')}>
-          <label htmlFor="fullname" className="signup-label">Full Name</label>
-          <input type="text" id="fullname" className="signup-input reduced-gap" placeholder="Your Full Name" required />
           <label htmlFor="email" className="signup-label">Email</label>
           <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
           <button type="submit" className="signup-btn" onClick={handleButtonClick('Sign Up Button Clicked')}>Sign Up</button>
