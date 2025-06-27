@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp, trackWordPressSignUp, trackDrupalSignUp, trackWixSignUp } from '../utils/analytics';
 import { useRouter } from 'next/router';
 
 export default function Setup() {
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
+  const openModal = (e) => {
+    e.preventDefault();
+    setModalOpen(true);
+  };
   return (
     <div className="setup-root centered">
       <div className="signup-form-container centered">
@@ -11,29 +16,31 @@ export default function Setup() {
           <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
         </div>
         <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
-        <form className="signup-form" onSubmit={e => { 
-          e.preventDefault(); 
-          const email = e.target.email.value;
-          const name = e.target.fullname.value;
-          trackSignUpCompleted(email); 
-          router.push('/dashboard'); 
-        }}>
+        <form className="signup-form" onSubmit={openModal}>
           <label htmlFor="fullname" className="signup-label">Full Name</label>
           <input type="text" id="fullname" className="signup-input reduced-gap" placeholder="Your Full Name" required />
           <label htmlFor="email" className="signup-label">Email</label>
           <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
-          <button type="submit" className="signup-btn">Sign Up</button>
+          <button type="submit" className="signup-btn" onClick={openModal}>Sign Up</button>
         </form>
         <div className="social-signup-divider">or sign up with</div>
         <div className="social-signup-btns">
-          <button className="social-btn google" onClick={trackGoogleSignUp} type="button">Google</button>
-          <button className="social-btn apple" onClick={trackAppleSignUp} type="button">Apple</button>
-          <button className="social-btn github" onClick={trackGithubSignUp} type="button">GitHub</button>
-          <button className="social-btn wordpress" onClick={trackWordPressSignUp} type="button">WordPress</button>
-          <button className="social-btn drupal" onClick={trackDrupalSignUp} type="button">Drupal</button>
-          <button className="social-btn wix" onClick={trackWixSignUp} type="button">Wix</button>
+          <button className="social-btn google" onClick={openModal} type="button">Google</button>
+          <button className="social-btn apple" onClick={openModal} type="button">Apple</button>
+          <button className="social-btn github" onClick={openModal} type="button">GitHub</button>
+          <button className="social-btn wordpress" onClick={openModal} type="button">WordPress</button>
+          <button className="social-btn drupal" onClick={openModal} type="button">Drupal</button>
+          <button className="social-btn wix" onClick={openModal} type="button">Wix</button>
         </div>
       </div>
+      {modalOpen && (
+        <div className="coming-soon-modal-overlay">
+          <div className="coming-soon-modal">
+            <button className="modal-close-btn" onClick={() => setModalOpen(false)} aria-label="Close">×</button>
+            <div className="coming-soon-text">Coming Soon...</div>
+          </div>
+        </div>
+      )}
       <style jsx>{`
         .setup-root.centered {
           display: flex;
@@ -143,6 +150,50 @@ export default function Setup() {
           background: #f1f1f9;
           color: #222;
           border-color: #bdbdbd;
+        }
+        .coming-soon-modal-overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: rgba(0,0,0,0.25);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 10000;
+        }
+        .coming-soon-modal {
+          background: #fff;
+          border-radius: 14px;
+          box-shadow: 0 4px 32px rgba(80,120,200,0.13);
+          padding: 36px 32px 28px 32px;
+          min-width: 280px;
+          min-height: 120px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+        }
+        .coming-soon-text {
+          font-size: 1.3rem;
+          font-weight: 600;
+          color: #222;
+          margin-top: 10px;
+        }
+        .modal-close-btn {
+          position: absolute;
+          top: 12px;
+          right: 12px;
+          background: none;
+          border: none;
+          font-size: 1.5rem;
+          color: #888;
+          cursor: pointer;
+          transition: color 0.2s;
+        }
+        .modal-close-btn:hover {
+          color: #222;
         }
       `}</style>
     </div>
