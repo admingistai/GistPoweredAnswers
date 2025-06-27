@@ -513,16 +513,11 @@
                     if (event.data && event.data.type === 'GPA_PANEL_STATE') {
                         panelOpen = !!event.data.open;
                         if (panelOpen) {
-                            searchInput.disabled = true;
-                            // Remove any existing placeholder span
-                            const existingSpan = searchInput.parentElement.querySelector('.placeholder-span');
-                            if (existingSpan) existingSpan.remove();
-                            // Close the answer box if open
+                            // Do NOT disable the search input or remove the placeholder span
+                            // Only close the answer box if open
                             const answerContainer = document.querySelector('.gist-answer-container');
                             if (answerContainer) answerContainer.remove();
-                            // Do NOT move or resize the widget when the panel is open
                         } else {
-                            searchInput.disabled = false;
                             searchInput.setAttribute('placeholder', '');
                             updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                         }
