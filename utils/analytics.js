@@ -11,7 +11,7 @@ if (apiKey) {
   amplitude.init(apiKey, undefined, {
     defaultTracking: true,
   });
-  console.log('[Amplitude] Initialized with API key:', apiKey.slice(0, 6) + '...' + apiKey.slice(-4));
+  console.log('[Amplitude] Initialized');
 } else {
   console.warn('[Amplitude] API key is missing! Amplitude will not be initialized.');
 }
