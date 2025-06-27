@@ -5,103 +5,54 @@ import { useRouter } from 'next/router';
 export default function Setup() {
   const router = useRouter();
   return (
-    <div className="setup-root">
-      <div className="setup-left">
-        <div className="signup-form-container">
-          <div className="signup-logo-container">
-            <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
-          </div>
-          <h2 className="signup-title">Sign Up</h2>
-          <form className="signup-form" onSubmit={e => { 
-            e.preventDefault(); 
-            const email = e.target.email.value;
-            trackSignUpCompleted(email); 
-            router.push('/dashboard'); 
-          }}>
-            <label htmlFor="email" className="signup-label">Email</label>
-            <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
-            <label htmlFor="password" className="signup-label">Password</label>
-            <input type="password" id="password" className="signup-input reduced-gap" placeholder="Password" required />
-            <button type="submit" className="signup-btn">Sign Up</button>
-          </form>
-          <div className="social-signup-divider">or sign up with</div>
-          <div className="social-signup-btns">
-            <button className="social-btn google" onClick={trackGoogleSignUp} type="button">Google</button>
-            <button className="social-btn apple" onClick={trackAppleSignUp} type="button">Apple</button>
-            <button className="social-btn github" onClick={trackGithubSignUp} type="button">GitHub</button>
-          </div>
+    <div className="setup-root centered">
+      <div className="signup-form-container centered">
+        <div className="signup-logo-container">
+          <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
         </div>
-      </div>
-      <div className="setup-right">
-        <div className="signup-preview-bg">
-          <div className="signup-preview-card">
-            <div className="signup-widget-mockup-large">
-              <div className="widget-pill-large">
-                <img src="/gist-logo.png" alt="Gist Logo" className="widget-logo-large" />
-                <span className="widget-text-large">Ask Anything<sup style={{fontSize: '0.7em'}}>™</sup></span>
-                <span className="widget-mic-large" role="img" aria-label="mic">🎤</span>
-              </div>
-              <div className="widget-glow-anim"></div>
-            </div>
-            <div className="signup-preview-desc-large">Upgrade your site today.</div>
-            <div className="floating-blob blob1"></div>
-            <div className="floating-blob blob2"></div>
-          </div>
+        <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
+        <form className="signup-form" onSubmit={e => { 
+          e.preventDefault(); 
+          const email = e.target.email.value;
+          const name = e.target.fullname.value;
+          trackSignUpCompleted(email); 
+          router.push('/dashboard'); 
+        }}>
+          <label htmlFor="fullname" className="signup-label">Full Name</label>
+          <input type="text" id="fullname" className="signup-input reduced-gap" placeholder="Your Full Name" required />
+          <label htmlFor="email" className="signup-label">Email</label>
+          <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
+          <button type="submit" className="signup-btn">Sign Up</button>
+        </form>
+        <div className="social-signup-divider">or sign up with</div>
+        <div className="social-signup-btns">
+          <button className="social-btn google" onClick={trackGoogleSignUp} type="button">Google</button>
+          <button className="social-btn apple" onClick={trackAppleSignUp} type="button">Apple</button>
+          <button className="social-btn github" onClick={trackGithubSignUp} type="button">GitHub</button>
+          <button className="social-btn wordpress" type="button">WordPress</button>
+          <button className="social-btn drupal" type="button">Drupal</button>
+          <button className="social-btn wix" type="button">Wix</button>
         </div>
       </div>
       <style jsx>{`
-        .setup-root {
-          display: flex;
-          min-height: 100vh;
-          background: linear-gradient(120deg, #f7f8fa 0%, #fafdff 100%);
-          position: relative;
-        }
-        .background-art {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          z-index: 0;
-          pointer-events: none;
-        }
-        .bg-blob {
-          position: absolute;
-          border-radius: 50%;
-          filter: blur(60px);
-          opacity: 0.18;
-          pointer-events: none;
-        }
-        .bg-blob1 {
-          width: 420px;
-          height: 420px;
-          background: linear-gradient(120deg, #FF8C42 0%, #4B9FE1 100%);
-          left: -120px;
-          top: -120px;
-        }
-        .bg-blob2 {
-          width: 320px;
-          height: 320px;
-          background: linear-gradient(120deg, #8860D0 0%, #4B9FE1 100%);
-          right: -100px;
-          bottom: -80px;
-        }
-        .bg-blob3 {
-          width: 180px;
-          height: 180px;
-          background: linear-gradient(120deg, #4B9FE1 0%, #FF8C42 100%);
-          left: 60vw;
-          top: 60vh;
-        }
-        .setup-left {
-          width: 33.33%;
-          min-width: 320px;
-          background: #fff;
+        .setup-root.centered {
           display: flex;
           align-items: center;
           justify-content: center;
-          box-shadow: 2px 0 16px rgba(80,120,200,0.04);
-          z-index: 2;
+          min-height: 100vh;
+          background: linear-gradient(120deg, #f7f8fa 0%, #fafdff 100%);
+        }
+        .signup-form-container.centered {
+          max-width: 400px;
+          width: 100%;
+          margin: 0 auto;
+          padding: 36px 18px 32px 18px;
+          background: rgba(255,255,255,0.98);
+          border-radius: 18px;
+          box-shadow: 0 2px 16px rgba(80,120,200,0.07);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
         }
         .signup-logo-container {
           width: 100%;
@@ -117,19 +68,8 @@ export default function Setup() {
           object-fit: contain;
           filter: drop-shadow(0 4px 24px #4B9FE133);
         }
-        .signup-form-container {
-          width: 100%;
-          max-width: 340px;
-          padding: 36px 18px 32px 18px;
-          background: rgba(255,255,255,0.98);
-          border-radius: 18px;
-          box-shadow: 0 2px 16px rgba(80,120,200,0.07);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-        }
         .signup-title {
-          font-size: 2rem;
+          font-size: 1.5rem;
           font-weight: 700;
           margin-bottom: 18px;
           color: #222;
@@ -181,12 +121,14 @@ export default function Setup() {
         }
         .social-signup-btns {
           display: flex;
+          flex-wrap: wrap;
           gap: 10px;
           width: 100%;
           justify-content: center;
         }
         .social-btn {
-          flex: 1;
+          flex: 1 1 40%;
+          min-width: 120px;
           padding: 9px 0;
           border-radius: 7px;
           border: 1px solid #e0e0e0;
@@ -202,145 +144,7 @@ export default function Setup() {
           color: #222;
           border-color: #bdbdbd;
         }
-        .setup-right {
-          width: 66.67%;
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: linear-gradient(120deg, #fafdff 0%, #f7f8fa 100%);
-          position: relative;
-          overflow: hidden;
-        }
-        .signup-preview-bg {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .signup-preview-card {
-          position: relative;
-          width: 520px;
-          min-height: 340px;
-          background: rgba(255,255,255,0.85);
-          border-radius: 38px;
-          box-shadow: 0 8px 48px 0 rgba(80,120,200,0.13), 0 1.5px 8px 0 rgba(80,120,200,0.07);
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          padding: 60px 36px 44px 36px;
-          overflow: visible;
-        }
-        .signup-widget-mockup-large {
-          position: relative;
-          width: 370px;
-          height: 74px;
-          margin-bottom: 32px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-        .widget-pill-large {
-          width: 100%;
-          height: 74px;
-          background: linear-gradient(90deg, #FF8C42, #4B9FE1, #8860D0);
-          border-radius: 37px;
-          box-shadow: 0 4px 32px 0 rgba(75,159,225,0.18);
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 38px 0 22px;
-          font-size: 2rem;
-          font-weight: 700;
-          color: #fff;
-          position: relative;
-          z-index: 2;
-        }
-        .widget-logo-large {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background: #fff;
-          margin-right: 18px;
-        }
-        .widget-text-large {
-          font-size: 1.45rem;
-          font-weight: 700;
-          color: #fff;
-          margin-right: 18px;
-        }
-        .widget-mic-large {
-          font-size: 1.5rem;
-          margin-left: 8px;
-        }
-        .widget-glow-anim {
-          position: absolute;
-          left: 50%;
-          top: 50%;
-          width: 340px;
-          height: 60px;
-          background: radial-gradient(circle, #4B9FE1 0%, #fff 80%);
-          opacity: 0.18;
-          filter: blur(18px);
-          transform: translate(-50%, -50%);
-          z-index: 1;
-          pointer-events: none;
-        }
-        .signup-preview-desc-large {
-          font-size: 1.25rem;
-          color: #7a869a;
-          font-style: italic;
-          margin-top: 18px;
-          text-align: center;
-        }
-        .floating-blob {
-          position: absolute;
-          border-radius: 50%;
-          opacity: 0.18;
-          filter: blur(18px);
-          z-index: 0;
-          pointer-events: none;
-          animation: floatBlob 7s ease-in-out infinite alternate;
-        }
-        .blob1 {
-          width: 120px;
-          height: 120px;
-          background: linear-gradient(120deg, #FF8C42 0%, #4B9FE1 100%);
-          left: -60px;
-          top: 40px;
-          animation-delay: 0s;
-        }
-        .blob2 {
-          width: 90px;
-          height: 90px;
-          background: linear-gradient(120deg, #8860D0 0%, #4B9FE1 100%);
-          right: -40px;
-          bottom: 30px;
-          animation-delay: 2.5s;
-        }
-        @keyframes floatBlob {
-          0% { transform: translateY(0) scale(1); }
-          100% { transform: translateY(-18px) scale(1.08); }
-        }
-        @media (max-width: 900px) {
-          .setup-root { flex-direction: column; }
-          .setup-left, .setup-right { width: 100%; min-width: 0; }
-          .signup-preview-card { width: 98vw; min-height: 220px; padding: 32px 8px 24px 8px; }
-          .signup-widget-mockup-large { width: 90vw; height: 54px; }
-          .widget-pill-large { height: 54px; font-size: 1.1rem; padding: 0 18px 0 10px; }
-          .widget-logo-large { width: 32px; height: 32px; margin-right: 8px; }
-          .widget-text-large { font-size: 1rem; margin-right: 8px; }
-          .widget-mic-large { font-size: 1rem; margin-left: 4px; }
-          .widget-glow-anim { width: 90vw; height: 30px; }
-        }
       `}</style>
-      <div className="background-art">
-        <div className="bg-blob bg-blob1"></div>
-        <div className="bg-blob bg-blob2"></div>
-        <div className="bg-blob bg-blob3"></div>
-      </div>
     </div>
   );
 }
