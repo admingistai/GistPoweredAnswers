@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import URLInputForm from '../components/URLInputForm';
 import WebsiteDisplay from '../components/WebsiteDisplay';
 import ErrorDisplay from '../components/ErrorDisplay';
+import { trackTryItClicked, trackGetStartedClicked, trackSignInClicked } from '../utils/analytics';
 
 export default function Home() {
   const router = useRouter();
@@ -175,20 +176,30 @@ export default function Home() {
   };
 
   const handleGetStartedClick = () => {
-    // Get Started clicked from hero section
+    // Track Get Started clicked from hero section
+    trackGetStartedClicked('hero');
     router.push('/setup');
   };
 
   const handleFinalGetStartedClick = () => {
-    // Get Started clicked from final CTA section
+    // Track Get Started clicked from final CTA section
+    trackGetStartedClicked('final-cta');
     router.push('/setup');
   };
 
   const handleTryItClick = (location) => {
     if (!targetUrl.trim()) return;
 
-    // Try It button clicked
+    // Track Try It button clicked
+    trackTryItClicked(location, targetUrl);
     handleUrlSubmit(targetUrl);
+  };
+
+  const handleSignInClick = () => {
+    // Track Sign In button clicked
+    trackSignInClicked();
+    // Here you would implement the sign in logic or modal
+    console.log('Sign In clicked');
   };
 
   return (
@@ -322,7 +333,7 @@ export default function Home() {
             <div className="header-right">
               <span className="tagline">100% ethical, uses fully licensed sources</span>
               <div className="auth-buttons">
-                <button className="waitlist-header-btn" onClick={() => setShowLoginPage(true)}>Sign In</button>
+                <button className="waitlist-header-btn" onClick={() => { handleSignInClick(); setShowLoginPage(true); }}>Sign In</button>
               </div>
               </div>
           </header>

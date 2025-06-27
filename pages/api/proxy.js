@@ -277,6 +277,39 @@ const adminSidebar = `
       cursor: pointer;
     }
   </style>
+  
+  <script>
+    // Analytics tracking for cloned webpage
+    function trackNextClicked() {
+      try {
+        // Try to use parent window's amplitude if available
+        if (window.parent && window.parent.amplitude) {
+          window.parent.amplitude.track('Next Clicked', {
+            button_type: 'next',
+            context: 'cloned_webpage_panel',
+            timestamp: new Date().toISOString(),
+            url: window.location.href
+          });
+        }
+        // Also try to post message to parent window
+        if (window.parent !== window) {
+          window.parent.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Next Clicked',
+            properties: {
+              button_type: 'next',
+              context: 'cloned_webpage_panel',
+              timestamp: new Date().toISOString(),
+              url: window.location.href
+            }
+          }, '*');
+        }
+        console.log('📊 Analytics Event: Next Clicked');
+      } catch (error) {
+        console.error('Analytics tracking error:', error);
+      }
+    }
+  </script>
 
   <div id="admin-sidebar">
     <div class="admin-header">Configure your Ask Anything button.</div>
@@ -335,7 +368,7 @@ const adminSidebar = `
         </label>
       `).join('')}
     </div>
-    <a href="https://getaskanything.com/setup" target="_blank" class="next-btn">Next -&gt;</a>
+    <a href="https://getaskanything.com/setup" target="_blank" class="next-btn" onclick="trackNextClicked()">Next -&gt;</a>
   </div>
   <button id="sidebar-toggle-btn-fixed" class="sidebar-toggle-btn-fixed" title="Show/Hide Admin Panel">
     <svg id="sidebar-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>

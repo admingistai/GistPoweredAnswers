@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Head from 'next/head';
+import { trackGenerateClicked, trackCMSClicked } from '../utils/analytics';
 
 export default function Setup() {
   const router = useRouter();
@@ -24,7 +25,8 @@ export default function Setup() {
     e.preventDefault();
     setError(null);
     
-    // Generate Widget button clicked
+    // Track Generate Widget button clicked
+    trackGenerateClicked(formData);
     
     // Start loading
     setIsGenerating(true);
@@ -113,7 +115,8 @@ export default function Setup() {
   };
 
   const handlePlatformIntegration = (platform) => {
-    // Platform integration button clicked
+    // Track CMS platform integration button clicked
+    trackCMSClicked(platform);
 
     // Show platform-specific instructions
     // In the future, this could redirect to platform-specific installation pages
