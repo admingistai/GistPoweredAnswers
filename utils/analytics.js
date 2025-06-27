@@ -5,9 +5,15 @@
 
 import * as amplitude from '@amplitude/analytics-browser';
 
-amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, {
-  defaultTracking: true,
-});
+const apiKey = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
+if (apiKey) {
+  amplitude.init(apiKey, {
+    defaultTracking: true,
+  });
+  console.log('[Amplitude] Initialized with API key:', apiKey.slice(0, 6) + '...' + apiKey.slice(-4));
+} else {
+  console.warn('[Amplitude] API key is missing! Amplitude will not be initialized.');
+}
 
 /**
  * Track an event with Amplitude
