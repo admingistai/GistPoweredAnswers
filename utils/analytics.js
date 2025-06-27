@@ -103,6 +103,7 @@ export const trackCMSClicked = (cmsName) => {
  * Track "Sign Up Clicked" event on setup page
  */
 export const trackSignUpClicked = () => {
+  console.debug('[Amplitude] Event: Sign Up Clicked', { button_type: 'sign_up', context: 'setup_page' });
   trackEvent('Sign Up Clicked', {
     button_type: 'sign_up',
     context: 'setup_page'
@@ -113,6 +114,7 @@ export const trackSignUpClicked = () => {
  * Track "Google Sign Up Clicked" event on setup page
  */
 export const trackGoogleSignUpClicked = () => {
+  console.debug('[Amplitude] Event: Google Sign Up Clicked', { button_type: 'google_sign_up', context: 'setup_page' });
   trackEvent('Google Sign Up Clicked', {
     button_type: 'google_sign_up',
     context: 'setup_page'
@@ -123,6 +125,7 @@ export const trackGoogleSignUpClicked = () => {
  * Track "Apple Sign Up Clicked" event on setup page
  */
 export const trackAppleSignUpClicked = () => {
+  console.debug('[Amplitude] Event: Apple Sign Up Clicked', { button_type: 'apple_sign_up', context: 'setup_page' });
   trackEvent('Apple Sign Up Clicked', {
     button_type: 'apple_sign_up',
     context: 'setup_page'
@@ -133,6 +136,7 @@ export const trackAppleSignUpClicked = () => {
  * Track "GitHub Sign Up Clicked" event on setup page
  */
 export const trackGithubSignUpClicked = () => {
+  console.debug('[Amplitude] Event: GitHub Sign Up Clicked', { button_type: 'github_sign_up', context: 'setup_page' });
   trackEvent('GitHub Sign Up Clicked', {
     button_type: 'github_sign_up',
     context: 'setup_page'
