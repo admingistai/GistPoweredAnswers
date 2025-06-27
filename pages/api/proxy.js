@@ -9,63 +9,6 @@ const RATE_WINDOW = 60 * 1000; // 1 minute
 
 // Restore admin sidebar definition (no demo banner)
 const adminSidebar = `
-  <script src="https://cdn.amplitude.com/libs/analytics-browser-2.0.0.min.js"></script>
-  <script>
-    // Wait for Amplitude SDK to load, then initialize
-    (function initAmplitude() {
-      function tryInit() {
-        const amplitudeApiKey = '${process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || ''}';
-        if (window.amplitude && amplitudeApiKey) {
-          window.amplitude.init(amplitudeApiKey, undefined, { defaultTracking: true });
-          console.log('[Amplitude] Initialized in iframe context with API key:', amplitudeApiKey.substring(0, 8) + '...');
-        } else if (!amplitudeApiKey) {
-          console.warn('[Amplitude] API key is missing! Amplitude will not be initialized in iframe.');
-        } else {
-          setTimeout(tryInit, 100); // Wait and try again
-        }
-      }
-      tryInit();
-    })();
-
-    // Analytics tracking function for iframe context
-    function trackAmplitudeEvent(eventName, properties = {}) {
-      try {
-        if (window.amplitude && window.amplitude.track) {
-          const eventProperties = {
-            timestamp: new Date().toISOString(),
-            url: window.location.href,
-            user_agent: navigator.userAgent,
-            context: 'iframe',
-            ...properties
-          };
-          window.amplitude.track(eventName, eventProperties);
-          console.log('📊 [Iframe] Analytics Event:', eventName, eventProperties);
-        } else {
-          console.warn('[Iframe] Amplitude not available, falling back to parent postMessage');
-          if (window.parent && window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: eventName,
-              properties: properties
-            }, '*');
-          }
-        }
-      } catch (error) {
-        console.error('[Iframe] Analytics tracking error:', error);
-        try {
-          if (window.parent && window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: eventName,
-              properties: properties
-            }, '*');
-          }
-        } catch (e) {
-          console.error('[Iframe] Fallback analytics error:', e);
-        }
-      }
-    }
-  </script>
   <style>
     #admin-sidebar {
       position: fixed !important;
@@ -384,8 +327,8 @@ const adminSidebar = `
         <span class="slider-label">Widget Size</span>
         <div class="size-btn-group">
           <button class="size-btn" data-size="small">Small</button>
-          <button class="size-btn selected" data-size="medium">Medium</button>
-          <button class="size-btn" data-size="large">Large</button>
+          <button class="size-btn" data-size="medium">Medium</button>
+          <button class="size-btn selected" data-size="large">Large</button>
         </div>
       </div>
       <div style="height: 12px;"></div>
@@ -771,34 +714,31 @@ const adminSidebar = `
       }
 
       // Earn Even More toggles analytics
-      function attachEarnTogglesListeners() {
-        const earnToggles = [
-          { id: 'toggle-network-answers', name: 'Opt-In Network Answers', eventName: 'Network Answers Opt-In Toggled' },
-          { id: 'toggle-distribution-fee', name: 'Distribution Fee', eventName: 'Distribution Fee Toggled' },
-          { id: 'toggle-earnings-booster', name: 'Earnings Booster', eventName: 'Earnings Booster Toggled' }
-        ];
-        earnToggles.forEach(({ id, name, eventName }) => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.addEventListener('change', function() {
-              trackAmplitudeEvent(eventName, {
-                enabled: this.checked,
-                feature: 'earn_even_more',
-                panel: 'side_panel'
-              });
-            });
-          }
-        });
-        console.log('[Iframe] Earn Even More toggle listeners attached. Amplitude available:', !!window.amplitude);
-      }
-      // Wait for Amplitude SDK before attaching listeners
-      (function waitForAmplitudeAndAttach() {
-        if (window.amplitude && window.amplitude.track) {
-          attachEarnTogglesListeners();
-        } else {
-          setTimeout(waitForAmplitudeAndAttach, 100);
+      const earnToggles = [
+        { id: 'toggle-network-answers', name: 'Opt-In Network Answers' },
+        { id: 'toggle-distribution-fee', name: 'Distribution Fee' },
+        { id: 'toggle-earnings-booster', name: 'Earnings Booster' }
+      ];
+      earnToggles.forEach(({ id, name }) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('change', function() {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Earn Even More Toggle',
+                properties: {
+                  toggle: name,
+                  enabled: this.checked
+                }
+              }, '*');
+            }
+          });
         }
-      })();
+      });
+
+      // Set widget to large by default on load
+      window.postMessage({ type: 'GIST_WIDGET_SIZE', size: 'large' }, '*');
     });
   </script>
 `;
