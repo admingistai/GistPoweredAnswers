@@ -9,6 +9,63 @@ const RATE_WINDOW = 60 * 1000; // 1 minute
 
 // Restore admin sidebar definition (no demo banner)
 const adminSidebar = `
+  <script src="https://cdn.amplitude.com/libs/analytics-browser-2.0.0.min.js"></script>
+  <script>
+    // Wait for Amplitude SDK to load, then initialize
+    (function initAmplitude() {
+      function tryInit() {
+        const amplitudeApiKey = '${process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || ''}';
+        if (window.amplitude && amplitudeApiKey) {
+          window.amplitude.init(amplitudeApiKey, undefined, { defaultTracking: true });
+          console.log('[Amplitude] Initialized in iframe context with API key:', amplitudeApiKey.substring(0, 8) + '...');
+        } else if (!amplitudeApiKey) {
+          console.warn('[Amplitude] API key is missing! Amplitude will not be initialized in iframe.');
+        } else {
+          setTimeout(tryInit, 100); // Wait and try again
+        }
+      }
+      tryInit();
+    })();
+
+    // Analytics tracking function for iframe context
+    function trackAmplitudeEvent(eventName, properties = {}) {
+      try {
+        if (window.amplitude && window.amplitude.track) {
+          const eventProperties = {
+            timestamp: new Date().toISOString(),
+            url: window.location.href,
+            user_agent: navigator.userAgent,
+            context: 'iframe',
+            ...properties
+          };
+          window.amplitude.track(eventName, eventProperties);
+          console.log('📊 [Iframe] Analytics Event:', eventName, eventProperties);
+        } else {
+          console.warn('[Iframe] Amplitude not available, falling back to parent postMessage');
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: eventName,
+              properties: properties
+            }, '*');
+          }
+        }
+      } catch (error) {
+        console.error('[Iframe] Analytics tracking error:', error);
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: eventName,
+              properties: properties
+            }, '*');
+          }
+        } catch (e) {
+          console.error('[Iframe] Fallback analytics error:', e);
+        }
+      }
+    }
+  </script>
   <style>
     #admin-sidebar {
       position: fixed !important;
@@ -477,68 +534,6 @@ const adminSidebar = `
     }
   </style>
   <div id="gpa-overlay"></div>
-  <script src="https://cdn.amplitude.com/libs/analytics-browser-2.0.0-min.js.gz"></script>
-  <script>
-    // Initialize Amplitude directly in iframe context
-    (function() {
-      try {
-        const amplitudeApiKey = '${process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || ''}';
-        if (amplitudeApiKey && window.amplitude) {
-          window.amplitude.init(amplitudeApiKey, undefined, {
-            defaultTracking: true,
-          });
-          console.log('[Amplitude] Initialized in iframe context with API key:', amplitudeApiKey.substring(0, 8) + '...');
-        } else if (!amplitudeApiKey) {
-          console.warn('[Amplitude] API key is missing! Amplitude will not be initialized in iframe.');
-        } else if (!window.amplitude) {
-          console.warn('[Amplitude] SDK not loaded! Amplitude will not be initialized in iframe.');
-        }
-      } catch (error) {
-        console.error('[Amplitude] Initialization error in iframe:', error);
-      }
-    })();
-
-    // Analytics tracking function for iframe context
-    function trackAmplitudeEvent(eventName, properties = {}) {
-      try {
-        if (window.amplitude && window.amplitude.track) {
-          const eventProperties = {
-            timestamp: new Date().toISOString(),
-            url: window.location.href,
-            user_agent: navigator.userAgent,
-            context: 'iframe',
-            ...properties
-          };
-          window.amplitude.track(eventName, eventProperties);
-          console.log('📊 [Iframe] Analytics Event:', eventName, eventProperties);
-        } else {
-          console.warn('[Iframe] Amplitude not available, falling back to parent postMessage');
-          // Fallback to parent window messaging
-          if (window.parent && window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: eventName,
-              properties: properties
-            }, '*');
-          }
-        }
-      } catch (error) {
-        console.error('[Iframe] Analytics tracking error:', error);
-        // Fallback to parent window messaging
-        try {
-          if (window.parent && window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: eventName,
-              properties: properties
-            }, '*');
-          }
-        } catch (e) {
-          console.error('[Iframe] Fallback analytics error:', e);
-        }
-      }
-    }
-  </script>
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const sidebar = document.getElementById('admin-sidebar');
