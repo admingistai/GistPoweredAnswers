@@ -72,57 +72,61 @@ const adminSidebar = `
       display: block !important;
     }
     .admin-header {
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 600;
-      margin: 0 0 18px 0;
-      padding: 32px 16px 0 16px;
+      margin: 0 0 14px 0;
+      padding: 24px 12px 0 12px;
       color: #222;
       letter-spacing: 0.01em;
+      line-height: 1.1;
     }
     .divider {
       border-bottom: 1px solid #e0e0e0;
-      margin: 24px 0 18px 0;
+      margin: 16px 0 10px 0;
       width: 100%;
     }
     .section-label {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 500;
       color: #333;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       margin-top: 0;
       display: block;
+      line-height: 1.1;
     }
     .slider-section {
-      padding: 0 16px 0 16px;
+      padding: 0 10px 0 10px;
       margin-bottom: 0;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
     .slider-label {
-      font-size: 15px;
+      font-size: 13px;
       color: #333;
-      margin-bottom: 6px;
+      margin-bottom: 4px;
+      line-height: 1.1;
     }
     .size-btn-group {
       display: flex;
       flex-direction: row;
-      gap: 12px;
+      gap: 8px;
       width: 100%;
     }
     .size-btn {
       flex: 1;
       min-width: 60px;
-      padding: 10px 0;
+      padding: 7px 0;
       border: 1px solid #d1d5db;
       border-radius: 6px;
       background: #fff;
       color: #333;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 500;
       transition: background 0.2s, color 0.2s, border 0.2s;
       text-align: center;
+      line-height: 1.1;
     }
     .size-btn.selected, .size-btn:active {
       background: #6366f1;
@@ -134,28 +138,29 @@ const adminSidebar = `
       color: #333;
     }
     .style-section {
-      padding: 0 16px 0 16px;
+      padding: 0 10px 0 10px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 8px;
     }
     .style-toggle-group {
       display: flex;
-      gap: 12px;
+      gap: 8px;
     }
     .style-toggle {
       flex: 1;
-      min-width: 110px;
-      padding: 10px 0;
+      min-width: 100px;
+      padding: 7px 0;
       border: 1px solid #d1d5db;
       border-radius: 6px;
       background: #fff;
       color: #333;
       cursor: pointer;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 500;
       transition: background 0.2s, color 0.2s, border 0.2s;
       text-align: center;
+      line-height: 1.1;
     }
     .style-toggle.selected, .style-toggle:active {
       background: #6366f1;
@@ -171,16 +176,17 @@ const adminSidebar = `
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      padding: 0 16px 0 16px;
-      font-size: 18px;
+      padding: 0 10px 0 10px;
+      font-size: 15px;
       font-weight: 500;
       color: #333;
-      margin-bottom: 8px !important;
-      margin-top: 8px;
+      margin-bottom: 4px !important;
+      margin-top: 4px;
       user-select: none;
-      min-height: 48px;
-      height: 48px;
+      min-height: 36px;
+      height: 36px;
       box-sizing: border-box;
+      line-height: 1.1;
     }
     .collapsible-header svg {
       width: 22px;
@@ -191,9 +197,8 @@ const adminSidebar = `
       transform: rotate(90deg);
     }
     .collapsible-content, .collapsible-content.open {
-      padding: 0 16px 16px 16px;
-      display: none;
-      margin-top: 8px !important;
+      padding: 0 10px 10px 10px;
+      margin-top: 4px !important;
     }
     .collapsible-content.open {
       display: block;
@@ -201,27 +206,28 @@ const adminSidebar = `
     .source-toggle {
       display: flex;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
       cursor: pointer;
       user-select: none;
-      font-size: 16px;
+      font-size: 13px;
       color: #333;
+      line-height: 1.1;
     }
     .toggle-switch {
       position: relative;
-      width: 36px;
-      height: 22px;
+      width: 30px;
+      height: 18px;
       background: #e4e4e4;
       border-radius: 8px;
-      margin-right: 10px;
+      margin-right: 8px;
       transition: background 0.2s;
       flex-shrink: 0;
     }
     .toggle-switch::before {
       content: "";
       position: absolute;
-      width: 18px;
-      height: 18px;
+      width: 14px;
+      height: 14px;
       border-radius: 50%;
       background: #fff;
       top: 2px;
@@ -233,7 +239,7 @@ const adminSidebar = `
       background: #6366f1;
     }
     .source-toggle input:checked + .toggle-switch::before {
-      transform: translateX(12px);
+      transform: translateX(8px);
     }
     .source-toggle input {
       position: absolute;
@@ -244,9 +250,10 @@ const adminSidebar = `
     }
     .source-toggle span {
       margin-left: 0;
-      font-size: 13px;
+      font-size: 12px;
       color: #333;
       font-weight: 400;
+      line-height: 1.1;
     }
     @media (max-width: 768px) {
       #admin-sidebar {
@@ -255,25 +262,25 @@ const adminSidebar = `
     }
     .next-btn {
       display: block;
-      width: calc(100% - 32px);
-      margin: 24px 16px 0 16px;
-      padding: 12px 0;
+      width: calc(100% - 20px);
+      margin: 16px 10px 0 10px;
+      padding: 8px 0;
       background: linear-gradient(90deg, #FF8C42, #4B9FE1, #8860D0);
       color: #fff;
-      font-size: 17px;
+      font-size: 14px;
       font-weight: 600;
       text-align: center;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       text-decoration: none;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.03);
       cursor: pointer;
       transition: background 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .next-btn:hover {
       background: linear-gradient(90deg, #FF8C42, #4B9FE1, #8860D0);
       color: #fff;
-      box-shadow: 0 6px 18px rgba(75,159,225,0.13);
+      box-shadow: 0 4px 12px rgba(75,159,225,0.13);
     }
     .aa-title-link {
       text-decoration: none;
@@ -378,18 +385,19 @@ const adminSidebar = `
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="collapsible-content open" id="goals-content">
-      <div class="slider-section" style="margin-bottom: 12px; padding: 0 4px;">
-        <span class="slider-label" style="font-size: 15px;">Set Goal</span>
-        <div style="display: flex; align-items: center; gap: 6px;">
-          <input type="range" min="0" max="100" value="50" class="goal-slider" style="flex: 1; height: 2px; margin-bottom: 0;" />
+      <div class="slider-section" style="margin-bottom: 8px; padding: 0 2px;">
+        <span class="slider-label" style="font-size: 13px;">Set Goal</span>
+        <div style="display: flex; align-items: center; gap: 4px;">
+          <input type="range" min="0" max="100" value="50" class="goal-slider" style="flex: 1; height: 1px; margin-bottom: 0;" />
         </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 2px; width: 100%;">
-          <span style="font-size: 12px; color: #666; text-align: left; flex: 1;">Engagement</span>
-          <span style="font-size: 12px; color: #666; text-align: center; flex: 1;">Growth</span>
-          <span style="font-size: 12px; color: #666; text-align: right; flex: 1;">Monetization</span>
+        <div style="display: flex; justify-content: space-between; margin-top: 0; width: 100%;">
+          <span style="font-size: 10px; color: #666; text-align: left; flex: 1;">Engagement</span>
+          <span style="font-size: 10px; color: #666; text-align: center; flex: 1;">Growth</span>
+          <span style="font-size: 10px; color: #666; text-align: right; flex: 1;">Monetization</span>
         </div>
       </div>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 6px; margin-top: 10px; padding: 0 2px;">
+      <div style="margin: 4px 0 4px 0; font-size: 13px; font-weight: 500; color: #222; letter-spacing: 0.01em; line-height: 1.1;">Additional Features</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 2px; margin-top: 4px; padding: 0 1px;">
         <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
           <input type="checkbox" style="margin: 0;" />
           <span>Summarize</span>
