@@ -627,6 +627,26 @@ const adminSidebar = `
         } catch (e) {}
       });
 
+      // Collapsible Monetization section
+      const monetizationHeader = document.getElementById('monetization-header');
+      const monetizationContent = document.getElementById('monetization-content');
+      let monetizationOpen = true;
+      monetizationHeader.addEventListener('click', function() {
+        monetizationOpen = !monetizationOpen;
+        monetizationHeader.classList.toggle('open', monetizationOpen);
+        monetizationContent.classList.toggle('open', monetizationOpen);
+      });
+
+      // Collapsible Features section
+      const featuresHeader = document.getElementById('features-header');
+      const featuresContent = document.getElementById('features-content');
+      let featuresOpen = true;
+      featuresHeader.addEventListener('click', function() {
+        featuresOpen = !featuresOpen;
+        featuresHeader.classList.toggle('open', featuresOpen);
+        featuresContent.classList.toggle('open', featuresOpen);
+      });
+
       // Collapsible Goals section
       const goalsHeader = document.getElementById('goals-header');
       const goalsContent = document.getElementById('goals-content');
@@ -635,16 +655,6 @@ const adminSidebar = `
         goalsOpen = !goalsOpen;
         goalsHeader.classList.toggle('open', goalsOpen);
         goalsContent.classList.toggle('open', goalsOpen);
-        // Track panel section toggle
-        try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Panel Section Toggled',
-              properties: { section: 'goals', expanded: goalsOpen }
-            }, '*');
-          }
-        } catch (e) {}
       });
 
       // Initialize state
