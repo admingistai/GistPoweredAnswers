@@ -145,6 +145,7 @@ const adminSidebar = `
     }
     .style-toggle {
       flex: 1;
+      min-width: 110px;
       padding: 10px 0;
       border: 1px solid #d1d5db;
       border-radius: 6px;
