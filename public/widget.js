@@ -505,30 +505,18 @@
                     updateWebsiteNameVisibility();
                     updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                 }
-                let panelOpen = false;
-                let panelOffset = 60; // px to move up when panel is open (adjust as needed)
+                let panelOpen = true; // Always open
                 window.addEventListener('message', function(event) {
                     if (event.data && event.data.type === 'GIST_WIDGET_SIZE') {
                         applyWidgetSizeMode(event.data.size);
                     }
                     if (event.data && event.data.type === 'GPA_PANEL_STATE') {
-                        panelOpen = !!event.data.open;
-                        // Move answer box up if panel is open, reset if closed
-                        const answerContainer = document.querySelector('.gist-answer-container');
-                        if (answerContainer) {
-                            if (panelOpen) {
-                                answerContainer.style.bottom = (parseInt(answerContainer.style.bottom || 90) + panelOffset) + 'px';
-                            } else {
-                                answerContainer.style.bottom = '';
-                            }
-                        }
-                        if (panelOpen) {
-                            // Only close the answer box if open
-                            if (answerContainer) answerContainer.remove();
-                        } else {
-                            searchInput.setAttribute('placeholder', '');
-                            updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
-                        }
+                        // Force panel to always be open
+                        panelOpen = true;
+                        // Do not move widget or answer box, do not blur/gray out page
+                        // Do not close the answer box
+                        searchInput.setAttribute('placeholder', '');
+                        updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                     }
                 });
                 // --- End Widget Size Control ---

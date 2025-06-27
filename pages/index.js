@@ -406,24 +406,24 @@ export default function Home() {
                   <div className="benefit-icon">
                         ✓
                   </div>
-                  <h3>Combines licensed content and your own</h3>
-                  <p>Ask Anything™ brings together trusted, licensed sources and your own site's content for the most accurate answers.</p>
+                  <h3>Accurate, trusted answers</h3>
+                  <p>Built on licensed publishers & your own content- always cited, never scraped.</p>
                 </div>
                   
                 <div className="benefit-card">
                   <div className="benefit-icon">
                         🔒
                   </div>
-                  <h3>No coding required</h3>
-                  <p>Copy-paste one line. No integrations, no setup, just instant AI for your site.</p>
+                  <h3>Privacy-first by design</h3>
+                  <p>Zero cookies, zero fingerprinting; GDPR & CCPA-ready out of the box.</p>
                 </div>
               
                 <div className="benefit-card">
                   <div className="benefit-icon">
                         ⚡
                   </div>
-                  <h3>Pick pages on your site - and enhance answers with verified content partners of your choosing</h3>
-                  <p>Choose exactly which pages to include, and add answers from 600+ licensed publishers with a click.</p>
+                  <h3>45-second install</h3>
+                      <p>Copy-paste one line of code. No complex integrations or setup required.</p>
                   </div>
               </div>
             </div>
@@ -438,16 +438,16 @@ export default function Home() {
                   <div className="customization-icon">
                         📦
                   </div>
-                  <h3>Automatically match your site design with one click</h3>
-                  <p>Ask Anything™ adapts to your brand's colors, fonts, and style instantly.</p>
+                  <h3>Choose sources to include</h3>
+                  <p>Pick pages on your site- or add any whitelisted publisher with one click.</p>
                 </div>
 
                 <div className="customization-item">
                   <div className="customization-icon">
                         🎨
                   </div>
-                  <h3>Increase engagement, grow traffic, unlock new revenue, or whatever matters to you.</h3>
-                  <p>Set your own goals and optimize for what matters most to your business.</p>
+                  <h3>Match the design of your brand</h3>
+                  <p>Customize colors, fonts, avatars, even the answer voice.</p>
                 </div>
 
                 <div className="customization-item">
