@@ -622,7 +622,7 @@ const adminSidebar = `
             window.parent.postMessage({
               type: 'ANALYTICS_EVENT',
               eventName: 'Panel Section Toggled',
-              properties: { section: 'content', expanded: contentOpen }
+              properties: { section: 'add_content', expanded: contentOpen }
             }, '*');
           }
         } catch (e) {}
@@ -636,6 +636,16 @@ const adminSidebar = `
         monetizationOpen = !monetizationOpen;
         monetizationHeader.classList.toggle('open', monetizationOpen);
         monetizationContent.classList.toggle('open', monetizationOpen);
+        // Track panel section toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Panel Section Toggled',
+              properties: { section: 'monetization_settings', expanded: monetizationOpen }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Collapsible Features section
@@ -646,6 +656,16 @@ const adminSidebar = `
         featuresOpen = !featuresOpen;
         featuresHeader.classList.toggle('open', featuresOpen);
         featuresContent.classList.toggle('open', featuresOpen);
+        // Track panel section toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Panel Section Toggled',
+              properties: { section: 'additional_features', expanded: featuresOpen }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Collapsible Goals section
@@ -656,6 +676,16 @@ const adminSidebar = `
         goalsOpen = !goalsOpen;
         goalsHeader.classList.toggle('open', goalsOpen);
         goalsContent.classList.toggle('open', goalsOpen);
+        // Track panel section toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Panel Section Toggled',
+              properties: { section: 'set_goals', expanded: goalsOpen }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Initialize state
@@ -703,70 +733,63 @@ const adminSidebar = `
         });
       }
 
-      // Track goal feature toggles
-      const goalToggles = sidebar.querySelectorAll('.goal-toggle input[type="checkbox"]');
-      goalToggles.forEach(toggle => {
-        toggle.addEventListener('change', function() {
-          const featureName = this.parentElement.querySelector('span').textContent;
-          try {
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Goal Feature Toggled',
-                properties: { feature: featureName, enabled: this.checked }
-              }, '*');
-            }
-          } catch (e) {}
-        });
-      });
-
-      // Track Next button click
-      const nextBtn = sidebar.querySelector('.next-btn');
-      if (nextBtn) {
-        nextBtn.addEventListener('click', function(e) {
-          e.preventDefault();
-          try {
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Next Clicked',
-                properties: {}
-              }, '*');
-            }
-          } catch (e) {}
-          // Navigate after tracking
-          setTimeout(() => {
-            window.location.href = window.location.origin + '/setup';
-          }, 100);
+      // Additional Features checkboxes
+      if (featuresContent) {
+        const checkboxes = featuresContent.querySelectorAll('input[type="checkbox"]');
+        const featureNames = ['Summarize', 'Listen', 'Remix', 'Avatar', 'Related', 'Share'];
+        checkboxes.forEach((checkbox, index) => {
+          if (featureNames[index]) {
+            checkbox.addEventListener('change', function() {
+              try {
+                if (window.parent !== window) {
+                  window.parent.postMessage({
+                    type: 'ANALYTICS_EVENT',
+                    eventName: featureNames[index] + ' Feature Toggled',
+                    properties: { enabled: this.checked, feature: featureNames[index] }
+                  }, '*');
+                }
+              } catch (e) {}
+            });
+          }
         });
       }
 
-      // Earn Even More toggles analytics
-      const earnToggles = [
-        { id: 'toggle-network-answers', name: 'Opt-In Network Answers' },
-        { id: 'toggle-distribution-fee', name: 'Distribution Fee' },
-        { id: 'toggle-earnings-booster', name: 'Earnings Booster' }
-      ];
-      earnToggles.forEach(({ id, name }) => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.addEventListener('change', function() {
-            if (window.parent && window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Earn Even More Toggle',
-                properties: {
-                  toggle: name,
-                  enabled: this.checked
-                }
-              }, '*');
-            }
-          });
-        }
+      // Goal radio buttons
+      const goalRadios = document.querySelectorAll('input[name="goal-radio"]');
+      goalRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+          if (this.checked) {
+            try {
+              if (window.parent !== window) {
+                window.parent.postMessage({
+                  type: 'ANALYTICS_EVENT',
+                  eventName: 'Goal Selected',
+                  properties: { goal: this.value }
+                }, '*');
+              }
+            } catch (e) {}
+          }
+        });
       });
 
       // Set widget to large by default on load
       window.postMessage({ type: 'GIST_WIDGET_SIZE', size: 'large' }, '*');
+
+      // Enhanced Answers toggle
+      const enhancedAnswersToggle = document.getElementById('toggle-enhanced-answers');
+      if (enhancedAnswersToggle) {
+        enhancedAnswersToggle.addEventListener('change', function() {
+          try {
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Enhanced Answers Toggled',
+                properties: { enabled: this.checked }
+              }, '*');
+            }
+          } catch (e) {}
+        });
+      }
     });
   </script>
 `;
