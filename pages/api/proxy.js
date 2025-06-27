@@ -538,13 +538,12 @@ const adminSidebar = `
         setPanelState(!isMinimized);
         // Track side panel toggle
         try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Side Panel Toggled',
-              properties: { open: !isMinimized }
-            }, '*');
-          }
+          console.log('[SidePanel] Sending analytics event: Side Panel Toggled');
+          window.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Side Panel Toggled',
+            properties: { open: !isMinimized }
+          }, '*');
         } catch (e) {}
       });
 
@@ -558,13 +557,12 @@ const adminSidebar = `
           window.postMessage({ type: 'GIST_WIDGET_SIZE', size: this.dataset.size }, '*');
           // Track widget size change
           try {
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Widget Size Changed',
-                properties: { size: this.dataset.size }
-              }, '*');
-            }
+            console.log('[SidePanel] Sending analytics event: Widget Size Changed');
+            window.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Widget Size Changed',
+              properties: { size: this.dataset.size }
+            }, '*');
           } catch (e) {}
         });
       });
@@ -577,13 +575,12 @@ const adminSidebar = `
           this.classList.add('selected');
           // Track widget style change
           try {
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Widget Style Changed',
-                properties: { style: this.dataset.style }
-              }, '*');
-            }
+            console.log('[SidePanel] Sending analytics event: Widget Style Changed');
+            window.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Widget Style Changed',
+              properties: { style: this.dataset.style }
+            }, '*');
           } catch (e) {}
         });
       });
@@ -598,13 +595,12 @@ const adminSidebar = `
         appearanceContent.classList.toggle('open', appearanceOpen);
         // Track panel section toggle
         try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Panel Section Toggled',
-              properties: { section: 'appearance', expanded: appearanceOpen }
-            }, '*');
-          }
+          console.log('[SidePanel] Sending analytics event: Panel Section Toggled');
+          window.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Panel Section Toggled',
+            properties: { section: 'appearance', expanded: appearanceOpen }
+          }, '*');
         } catch (e) {}
       });
 
@@ -618,13 +614,12 @@ const adminSidebar = `
         contentContent.classList.toggle('open', contentOpen);
         // Track panel section toggle
         try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Panel Section Toggled',
-              properties: { section: 'add_content', expanded: contentOpen }
-            }, '*');
-          }
+          console.log('[SidePanel] Sending analytics event: Panel Section Toggled');
+          window.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Panel Section Toggled',
+            properties: { section: 'add_content', expanded: contentOpen }
+          }, '*');
         } catch (e) {}
       });
 
@@ -638,13 +633,12 @@ const adminSidebar = `
         monetizationContent.classList.toggle('open', monetizationOpen);
         // Track panel section toggle
         try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Panel Section Toggled',
-              properties: { section: 'monetization_settings', expanded: monetizationOpen }
-            }, '*');
-          }
+          console.log('[SidePanel] Sending analytics event: Panel Section Toggled');
+          window.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Panel Section Toggled',
+            properties: { section: 'monetization_settings', expanded: monetizationOpen }
+          }, '*');
         } catch (e) {}
       });
 
@@ -658,13 +652,12 @@ const adminSidebar = `
         featuresContent.classList.toggle('open', featuresOpen);
         // Track panel section toggle
         try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Panel Section Toggled',
-              properties: { section: 'additional_features', expanded: featuresOpen }
-            }, '*');
-          }
+          console.log('[SidePanel] Sending analytics event: Panel Section Toggled');
+          window.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Panel Section Toggled',
+            properties: { section: 'additional_features', expanded: featuresOpen }
+          }, '*');
         } catch (e) {}
       });
 
@@ -678,13 +671,12 @@ const adminSidebar = `
         goalsContent.classList.toggle('open', goalsOpen);
         // Track panel section toggle
         try {
-          if (window.parent !== window) {
-            window.parent.postMessage({
-              type: 'ANALYTICS_EVENT',
-              eventName: 'Panel Section Toggled',
-              properties: { section: 'set_goals', expanded: goalsOpen }
-            }, '*');
-          }
+          console.log('[SidePanel] Sending analytics event: Panel Section Toggled');
+          window.postMessage({
+            type: 'ANALYTICS_EVENT',
+            eventName: 'Panel Section Toggled',
+            properties: { section: 'set_goals', expanded: goalsOpen }
+          }, '*');
         } catch (e) {}
       });
 
@@ -697,13 +689,12 @@ const adminSidebar = `
         toggle.addEventListener('change', function() {
           const sourceName = this.parentElement.querySelector('span').textContent;
           try {
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Content Source Toggled',
-                properties: { source: sourceName, enabled: this.checked }
-              }, '*');
-            }
+            console.log('[SidePanel] Sending analytics event: Content Source Toggled');
+            window.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Content Source Toggled',
+              properties: { source: sourceName, enabled: this.checked }
+            }, '*');
           } catch (e) {}
         });
       });
@@ -721,13 +712,12 @@ const adminSidebar = `
             else if (value > 33) goal = 'growth';
             
             try {
-              if (window.parent !== window) {
-                window.parent.postMessage({
-                  type: 'ANALYTICS_EVENT',
-                  eventName: 'Goal Slider Changed',
-                  properties: { value: value, goal: goal }
-                }, '*');
-              }
+              console.log('[SidePanel] Sending analytics event: Goal Slider Changed');
+              window.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Goal Slider Changed',
+                properties: { value: value, goal: goal }
+              }, '*');
             } catch (e) {}
           }, 500);
         });
@@ -741,13 +731,12 @@ const adminSidebar = `
           if (featureNames[index]) {
             checkbox.addEventListener('change', function() {
               try {
-                if (window.parent !== window) {
-                  window.parent.postMessage({
-                    type: 'ANALYTICS_EVENT',
-                    eventName: featureNames[index] + ' Feature Toggled',
-                    properties: { enabled: this.checked, feature: featureNames[index] }
-                  }, '*');
-                }
+                console.log('[SidePanel] Sending analytics event: Feature Toggled');
+                window.postMessage({
+                  type: 'ANALYTICS_EVENT',
+                  eventName: featureNames[index] + ' Feature Toggled',
+                  properties: { enabled: this.checked, feature: featureNames[index] }
+                }, '*');
               } catch (e) {}
             });
           }
@@ -760,13 +749,12 @@ const adminSidebar = `
         radio.addEventListener('change', function() {
           if (this.checked) {
             try {
-              if (window.parent !== window) {
-                window.parent.postMessage({
-                  type: 'ANALYTICS_EVENT',
-                  eventName: 'Goal Selected',
-                  properties: { goal: this.value }
-                }, '*');
-              }
+              console.log('[SidePanel] Sending analytics event: Goal Selected');
+              window.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Goal Selected',
+                properties: { goal: this.value }
+              }, '*');
             } catch (e) {}
           }
         });
@@ -780,13 +768,12 @@ const adminSidebar = `
       if (enhancedAnswersToggle) {
         enhancedAnswersToggle.addEventListener('change', function() {
           try {
-            if (window.parent !== window) {
-              window.parent.postMessage({
-                type: 'ANALYTICS_EVENT',
-                eventName: 'Enhanced Answers Toggled',
-                properties: { enabled: this.checked }
-              }, '*');
-            }
+            console.log('[SidePanel] Sending analytics event: Enhanced Answers Toggled');
+            window.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Enhanced Answers Toggled',
+              properties: { enabled: this.checked }
+            }, '*');
           } catch (e) {}
         });
       }
