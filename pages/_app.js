@@ -5,8 +5,8 @@ import * as amplitude from '@amplitude/analytics-browser';
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
-    // Initialize Amplitude with your API key
-    amplitude.init('YOUR-API-KEY-HERE', {
+    // Initialize Amplitude with your API key from environment variable
+    amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, {
       defaultTracking: true,
     });
 
