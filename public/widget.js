@@ -84,11 +84,26 @@
                 margin: 0;
             }
 
+            .gist-widget-container.large .gist-website-name,
+            .gist-widget-container.force-expanded .gist-website-name {
+                opacity: 1 !important;
+                visibility: visible !important;
+                max-width: 200px !important;
+                margin: 0 1px !important;
+            }
+
             .placeholder-span {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 max-width: 100%;
+                position: absolute;
+                left: 62px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: #666;
+                pointer-events: none;
+                transition: all 0.3s ease;
             }
 
             .gist-website-name {
@@ -421,6 +436,7 @@
         const widgetHTML = `
             <div class="gist-widget-container">
                 <img src="https://raw.githubusercontent.com/admingistai/GPADemo/main/public/sparkles.png" class="gist-search-icon" alt="sparkles icon" onerror="this.style.display='none'">
+                <span class="gist-website-name">${websiteName}</span>
                 <input type="text" class="gist-search-input" data-placeholder-parts="Ask ,${websiteName}, anything...">
                 <button class="gist-arrow-button">
                     <svg class="gist-arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -444,14 +460,6 @@
                 function updatePlaceholder(input, isExpanded = false) {
                     const parts = input.dataset.placeholderParts.split(',');
                     const placeholderSpan = document.createElement('span');
-                    placeholderSpan.style.position = 'absolute';
-                    placeholderSpan.style.left = '57px'; // Adjust based on icon width + padding
-                    placeholderSpan.style.top = '50%';
-                    placeholderSpan.style.transform = 'translateY(-50%)';
-                    placeholderSpan.style.color = '#666';
-                    placeholderSpan.style.pointerEvents = 'none';
-                    placeholderSpan.style.transition = 'all 0.3s ease';
-                    
                     placeholderSpan.innerHTML = isExpanded ? 
                         `${parts[0]}<strong>${parts[1]}</strong>${parts[2]}` :
                         'Ask anything...';
