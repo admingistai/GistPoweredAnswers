@@ -355,7 +355,12 @@ const adminSidebar = `
     <div class="collapsible-content open" id="content-content">
       <div style="margin-bottom: 18px;">
         <div class="section-label" style="margin-bottom: 8px;">My Content:</div>
-        <div class="my-content-upload-box" style="border: 1.5px dashed #bdbdbd; border-radius: 10px; padding: 18px 14px; background: #fafbfc; display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 100%; box-sizing: border-box;">
+        <div class="my-content-upload-box" style="border: 1.5px dashed #bdbdbd; border-radius: 10px; padding: 10px 8px; background: #fafbfc; display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 100%; box-sizing: border-box;">
+          <label class="source-toggle" style="margin-bottom: 10px; margin-top: 2px;">
+            <input type="checkbox" id="toggle-enhanced-answers" checked>
+            <div class="toggle-switch"></div>
+            <span>Enhanced Answers from 600+ licensed publications</span>
+          </label>
           <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
         </div>
       </div>
@@ -386,18 +391,21 @@ const adminSidebar = `
     </div>
     <div class="collapsible-content open" id="goals-content">
       <div class="slider-section" style="margin-bottom: 8px; padding: 0 2px;">
-        <span class="slider-label" style="font-size: 13px;">Set Goal</span>
-        <div style="display: flex; align-items: center; gap: 4px;">
-          <input type="range" min="0" max="100" value="50" class="goal-slider" style="flex: 1; height: 1px; margin-bottom: 0;" />
-        </div>
-        <div style="display: flex; justify-content: space-between; margin-top: 0; width: 100%;">
-          <span style="font-size: 10px; color: #666; text-align: left; flex: 1;">Engagement</span>
-          <span style="font-size: 10px; color: #666; text-align: center; flex: 1;">Growth</span>
-          <span style="font-size: 10px; color: #666; text-align: right; flex: 1;">Monetization</span>
+        <span class="slider-label" style="font-size: 14px;">Set Goal</span>
+        <div style="display: flex; align-items: center; gap: 12px; margin: 8px 0 0 0;">
+          <label style="display: flex; align-items: center; font-size: 13px; gap: 4px;">
+            <input type="radio" name="goal-radio" value="engagement" checked style="margin: 0 4px 0 0;" /> Engagement
+          </label>
+          <label style="display: flex; align-items: center; font-size: 13px; gap: 4px;">
+            <input type="radio" name="goal-radio" value="growth" style="margin: 0 4px 0 0;" /> Growth
+          </label>
+          <label style="display: flex; align-items: center; font-size: 13px; gap: 4px;">
+            <input type="radio" name="goal-radio" value="monetization" style="margin: 0 4px 0 0;" /> Monetization
+          </label>
         </div>
       </div>
-      <div style="margin: 10px 0 10px 0; font-size: 15px; font-weight: 600; color: #222; letter-spacing: 0.01em; line-height: 1.5;">Additional Features</div>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 2px; margin-top: 4px; padding: 0 1px;">
+      <div style="margin: 10px 0 10px 0; font-size: 17px; font-weight: 600; color: #222; letter-spacing: 0.01em; line-height: 1.5;">Additional Features</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 6px; margin-top: 4px; padding: 0 1px; font-size: 15px;">
         <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
           <input type="checkbox" style="margin: 0;" />
           <span>Summarize</span>
