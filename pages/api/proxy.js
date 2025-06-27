@@ -771,24 +771,34 @@ const adminSidebar = `
       }
 
       // Earn Even More toggles analytics
-      const earnToggles = [
-        { id: 'toggle-network-answers', name: 'Opt-In Network Answers', eventName: 'Network Answers Opt-In Toggled' },
-        { id: 'toggle-distribution-fee', name: 'Distribution Fee', eventName: 'Distribution Fee Toggled' },
-        { id: 'toggle-earnings-booster', name: 'Earnings Booster', eventName: 'Earnings Booster Toggled' }
-      ];
-      earnToggles.forEach(({ id, name, eventName }) => {
-        const el = document.getElementById(id);
-        if (el) {
-          el.addEventListener('change', function() {
-            // Track with Amplitude directly in iframe
-            trackAmplitudeEvent(eventName, {
-              enabled: this.checked,
-              feature: 'earn_even_more',
-              panel: 'side_panel'
+      function attachEarnTogglesListeners() {
+        const earnToggles = [
+          { id: 'toggle-network-answers', name: 'Opt-In Network Answers', eventName: 'Network Answers Opt-In Toggled' },
+          { id: 'toggle-distribution-fee', name: 'Distribution Fee', eventName: 'Distribution Fee Toggled' },
+          { id: 'toggle-earnings-booster', name: 'Earnings Booster', eventName: 'Earnings Booster Toggled' }
+        ];
+        earnToggles.forEach(({ id, name, eventName }) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener('change', function() {
+              trackAmplitudeEvent(eventName, {
+                enabled: this.checked,
+                feature: 'earn_even_more',
+                panel: 'side_panel'
+              });
             });
-          });
+          }
+        });
+        console.log('[Iframe] Earn Even More toggle listeners attached. Amplitude available:', !!window.amplitude);
+      }
+      // Wait for Amplitude SDK before attaching listeners
+      (function waitForAmplitudeAndAttach() {
+        if (window.amplitude && window.amplitude.track) {
+          attachEarnTogglesListeners();
+        } else {
+          setTimeout(waitForAmplitudeAndAttach, 100);
         }
-      });
+      })();
     });
   </script>
 `;
