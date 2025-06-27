@@ -57,10 +57,6 @@ export default function Setup() {
             <button className="social-btn drupal" onClick={handleButtonClick('Drupal Sign Up Clicked')} type="button">Drupal</button>
             <button className="social-btn wix" onClick={handleButtonClick('Wix Sign Up Clicked')} type="button">Wix</button>
           </div>
-          {/* URL Input Pill Box Preview */}
-          <div className="setup-url-preview-section">
-            <URLInputForm onSubmit={handleUrlPreview} loading={urlLoading} error={urlError} />
-          </div>
         </div>
         {modalOpen && (
           <div className="coming-soon-modal-overlay">
