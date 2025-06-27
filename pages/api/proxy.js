@@ -199,6 +199,7 @@ const adminSidebar = `
     .collapsible-content, .collapsible-content.open {
       padding: 0 10px 10px 10px;
       margin-top: 4px !important;
+      display: none;
     }
     .collapsible-content.open {
       display: block;
