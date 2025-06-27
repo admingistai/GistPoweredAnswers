@@ -194,7 +194,7 @@ const adminSidebar = `
       transition: transform 0.2s;
     }
     .collapsible-header.open svg {
-      transform: rotate(90deg);
+      transform: rotate(0deg);
     }
     .collapsible-content, .collapsible-content.open {
       padding: 0 10px 10px 10px;
