@@ -689,10 +689,10 @@ const adminSidebar = `
         toggle.addEventListener('change', function() {
           const sourceName = this.parentElement.querySelector('span').textContent;
           try {
-            console.log('[SidePanel] Sending analytics event: Content Source Toggled');
+            console.log('[SidePanel] Sending analytics event:', sourceName + ' Toggled');
             window.postMessage({
               type: 'ANALYTICS_EVENT',
-              eventName: 'Content Source Toggled',
+              eventName: sourceName + ' Toggled',
               properties: { source: sourceName, enabled: this.checked }
             }, '*');
           } catch (e) {}
@@ -749,10 +749,10 @@ const adminSidebar = `
         radio.addEventListener('change', function() {
           if (this.checked) {
             try {
-              console.log('[SidePanel] Sending analytics event: Goal Selected');
+              console.log('[SidePanel] Sending analytics event:', this.value.charAt(0).toUpperCase() + this.value.slice(1) + ' Goal Selected');
               window.postMessage({
                 type: 'ANALYTICS_EVENT',
-                eventName: 'Goal Selected',
+                eventName: this.value.charAt(0).toUpperCase() + this.value.slice(1) + ' Goal Selected',
                 properties: { goal: this.value }
               }, '*');
             } catch (e) {}
