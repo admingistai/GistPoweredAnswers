@@ -396,7 +396,7 @@ const adminSidebar = `
           <span style="font-size: 10px; color: #666; text-align: right; flex: 1;">Monetization</span>
         </div>
       </div>
-      <div style="margin: 4px 0 4px 0; font-size: 13px; font-weight: 500; color: #222; letter-spacing: 0.01em; line-height: 1.1;">Additional Features</div>
+      <div style="margin: 10px 0 10px 0; font-size: 15px; font-weight: 600; color: #222; letter-spacing: 0.01em; line-height: 1.5;">Additional Features</div>
       <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 2px; margin-top: 4px; padding: 0 1px;">
         <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
           <input type="checkbox" style="margin: 0;" />
