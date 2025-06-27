@@ -513,8 +513,7 @@
                     if (event.data && event.data.type === 'GPA_PANEL_STATE') {
                         // Force panel to always be open
                         panelOpen = true;
-                        // Do not move widget or answer box, do not blur/gray out page
-                        // Do not close the answer box
+                        // Do not move widget or answer box, do not blur/gray out page, do not close the answer box
                         searchInput.setAttribute('placeholder', '');
                         updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                     }
@@ -569,27 +568,6 @@
                 function getPageContext() {
                     // Return only the current page URL as context
                     return window.location.href;
-                }
-
-                // Function to minimize widget
-                function minimizeWidget() {
-                    const widgetContainer = document.querySelector('.gist-widget-container');
-                    const answerContainer = document.querySelector('.gist-answer-container');
-                    const searchInput = document.querySelector('.gist-search-input');
-                    if (widgetSizeMode === 'large') return; // Never minimize in large mode
-                    if (widgetContainer) {
-                        widgetContainer.classList.remove('expanded');
-                        // Update placeholder if needed
-                        if (searchInput && !searchInput.value) {
-                            updatePlaceholder(searchInput, false);
-                        }
-                    }
-                    if (answerContainer) {
-                        answerContainer.classList.remove('visible');
-                        setTimeout(() => {
-                            answerContainer.remove();
-                        }, 300);
-                    }
                 }
 
                 // Function to show answer container
