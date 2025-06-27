@@ -5,11 +5,6 @@ import * as amplitude from '@amplitude/analytics-browser';
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
-    // Initialize Amplitude with your API key from environment variable
-    amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, {
-      defaultTracking: true,
-    });
-
     // Listen for analytics events from iframes (cloned webpages)
     const handleMessage = (event) => {
       if (event.data && event.data.type === 'ANALYTICS_EVENT') {

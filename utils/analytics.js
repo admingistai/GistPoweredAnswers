@@ -5,6 +5,10 @@
 
 import * as amplitude from '@amplitude/analytics-browser';
 
+amplitude.init(process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY, {
+  defaultTracking: true,
+});
+
 /**
  * Track an event with Amplitude
  * @param {string} eventName - The name of the event
