@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp, trackWordPressSignUp, trackDrupalSignUp, trackWixSignUp } from '../utils/analytics';
+import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp, trackWordPressSignUp, trackDrupalSignUp, trackWixSignUp, trackEvent } from '../utils/analytics';
 import { useRouter } from 'next/router';
 
 export default function Setup() {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
-  const openModal = (e) => {
+  // Helper to push amplitude event and open modal
+  const handleButtonClick = (eventName) => (e) => {
     e.preventDefault();
+    trackEvent(eventName);
     setModalOpen(true);
   };
   return (
@@ -16,21 +18,21 @@ export default function Setup() {
           <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
         </div>
         <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
-        <form className="signup-form" onSubmit={openModal}>
+        <form className="signup-form" onSubmit={handleButtonClick('Sign Up Button Clicked')}>
           <label htmlFor="fullname" className="signup-label">Full Name</label>
           <input type="text" id="fullname" className="signup-input reduced-gap" placeholder="Your Full Name" required />
           <label htmlFor="email" className="signup-label">Email</label>
           <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
-          <button type="submit" className="signup-btn" onClick={openModal}>Sign Up</button>
+          <button type="submit" className="signup-btn" onClick={handleButtonClick('Sign Up Button Clicked')}>Sign Up</button>
         </form>
         <div className="social-signup-divider">or sign up with</div>
         <div className="social-signup-btns">
-          <button className="social-btn google" onClick={openModal} type="button">Google</button>
-          <button className="social-btn apple" onClick={openModal} type="button">Apple</button>
-          <button className="social-btn github" onClick={openModal} type="button">GitHub</button>
-          <button className="social-btn wordpress" onClick={openModal} type="button">WordPress</button>
-          <button className="social-btn drupal" onClick={openModal} type="button">Drupal</button>
-          <button className="social-btn wix" onClick={openModal} type="button">Wix</button>
+          <button className="social-btn google" onClick={handleButtonClick('Google Sign Up Clicked')} type="button">Google</button>
+          <button className="social-btn apple" onClick={handleButtonClick('Apple Sign Up Clicked')} type="button">Apple</button>
+          <button className="social-btn github" onClick={handleButtonClick('GitHub Sign Up Clicked')} type="button">GitHub</button>
+          <button className="social-btn wordpress" onClick={handleButtonClick('WordPress Sign Up Clicked')} type="button">WordPress</button>
+          <button className="social-btn drupal" onClick={handleButtonClick('Drupal Sign Up Clicked')} type="button">Drupal</button>
+          <button className="social-btn wix" onClick={handleButtonClick('Wix Sign Up Clicked')} type="button">Wix</button>
         </div>
       </div>
       {modalOpen && (
