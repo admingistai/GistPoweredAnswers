@@ -5,8 +5,8 @@ import URLInputForm from '../components/URLInputForm';
 
 export default function Setup() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [previewLoading, setPreviewLoading] = useState(false);
-  const [previewError, setPreviewError] = useState(null);
+  const [urlLoading, setUrlLoading] = useState(false);
+  const [urlError, setUrlError] = useState(null);
   const router = useRouter();
   // Helper to push amplitude event and open modal
   const handleButtonClick = (eventName) => (e) => {
@@ -14,20 +14,27 @@ export default function Setup() {
     trackEvent(eventName);
     setModalOpen(true);
   };
-  // Handler for URL preview submit
-  const handlePreviewSubmit = async (url) => {
-    setPreviewLoading(true);
-    setPreviewError(null);
+
+  // Amplitude event for URL preview
+  const handleUrlPreview = async (url) => {
+    setUrlLoading(true);
+    setUrlError(null);
+    trackEvent('Setup Page URL Preview', { url });
     try {
-      trackEvent('Setup Page Preview Site Clicked', { url });
-      // Test if the URL is accessible (optional, can just open)
+      // Test if the URL is accessible
+      const testResponse = await fetch(`/api/proxy?url=${encodeURIComponent(url)}&test=true`);
+      const testResult = await testResponse.json();
+      if (!testResponse.ok) {
+        throw new Error(testResult.error || 'Unable to reach the specified website');
+      }
+      setUrlLoading(false);
       window.open(`/api/proxy?url=${encodeURIComponent(url)}`, '_blank');
     } catch (err) {
-      setPreviewError('Unable to preview site.');
-    } finally {
-      setPreviewLoading(false);
+      setUrlLoading(false);
+      setUrlError(err.message);
     }
   };
+
   return (
     <div className="setup-root centered">
       <div className="setup-shadow-container">
@@ -36,11 +43,6 @@ export default function Setup() {
             <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
           </div>
           <h2 className="signup-title" style={{textAlign: 'center'}}>To Get the Ask Anything Button, Sign Up Below:</h2>
-          {/* URL Input Pill Box */}
-          <div className="setup-url-preview-box">
-            <URLInputForm onSubmit={handlePreviewSubmit} loading={previewLoading} error={previewError} />
-            <div className="setup-url-preview-help">Preview your site with Ask Anything™</div>
-          </div>
           <form className="signup-form" onSubmit={handleButtonClick('Sign Up Button Clicked')}>
             <label htmlFor="email" className="signup-label">Email</label>
             <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
@@ -54,6 +56,10 @@ export default function Setup() {
             <button className="social-btn wordpress" onClick={handleButtonClick('WordPress Sign Up Clicked')} type="button">WordPress</button>
             <button className="social-btn drupal" onClick={handleButtonClick('Drupal Sign Up Clicked')} type="button">Drupal</button>
             <button className="social-btn wix" onClick={handleButtonClick('Wix Sign Up Clicked')} type="button">Wix</button>
+          </div>
+          {/* URL Input Pill Box Preview */}
+          <div className="setup-url-preview-section">
+            <URLInputForm onSubmit={handleUrlPreview} loading={urlLoading} error={urlError} />
           </div>
         </div>
         {modalOpen && (
@@ -71,60 +77,31 @@ export default function Setup() {
           align-items: center;
           justify-content: center;
           min-height: 100vh;
-          background: linear-gradient(120deg, #f7f8fa 0%, #fafdff 100%);
+          background: #f7f8fa;
         }
         .setup-shadow-container {
-          box-shadow: 0 8px 32px rgba(80,120,200,0.13), 0 2px 16px rgba(80,120,200,0.07);
-          border-radius: 22px;
-          background: rgba(255,255,255,0.99);
-          padding: 32px 0 24px 0;
-          max-width: 440px;
+          background: #fff;
+          border-radius: 18px;
+          box-shadow: 0 8px 32px rgba(60, 60, 90, 0.13), 0 1.5px 6px rgba(60, 60, 90, 0.07);
+          padding: 40px 32px 32px 32px;
+          max-width: 420px;
           width: 100%;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
         }
         .signup-form-container.centered {
-          max-width: 400px;
-          width: 100%;
-          margin: 0 auto;
-          padding: 0 18px 0 18px;
-          background: transparent;
-          border-radius: 18px;
           display: flex;
           flex-direction: column;
           align-items: center;
         }
-        .setup-url-preview-box {
-          width: 100%;
+        .signup-logo-container {
           margin-bottom: 18px;
         }
-        .setup-url-preview-help {
-          text-align: center;
-          color: #4B9FE1;
-          font-size: 0.98rem;
-          margin-top: -10px;
-          margin-bottom: 10px;
-          font-weight: 500;
-        }
-        .signup-logo-container {
-          width: 100%;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-top: 0;
-          margin-bottom: 12px;
-        }
         .signup-big-logo {
-          width: 92px;
-          height: 92px;
-          object-fit: contain;
-          filter: drop-shadow(0 4px 24px #4B9FE133);
+          width: 70px;
+          height: 70px;
         }
         .signup-title {
           font-size: 1.5rem;
-          font-weight: 700;
+          font-weight: 600;
           margin-bottom: 18px;
           color: #222;
         }
@@ -135,43 +112,35 @@ export default function Setup() {
           gap: 10px;
         }
         .signup-label {
-          font-size: 15px;
+          font-size: 1rem;
           font-weight: 500;
-          margin-bottom: 2px;
-          color: #444;
+          color: #333;
         }
         .signup-input {
-          width: 100%;
-          padding: 9px 12px;
+          padding: 10px 14px;
+          border-radius: 8px;
           border: 1px solid #e0e0e0;
-          border-radius: 7px;
-          font-size: 15px;
-          margin-bottom: 6px;
+          font-size: 1rem;
         }
         .signup-btn {
-          width: 100%;
-          padding: 11px 0;
-          background: linear-gradient(90deg, #FF8C42, #4B9FE1, #8860D0);
+          background: linear-gradient(90deg, #4B9FE1, #8860D0);
           color: #fff;
-          font-size: 16px;
           font-weight: 600;
           border: none;
-          border-radius: 7px;
-          margin-top: 8px;
-          margin-bottom: 8px;
+          border-radius: 8px;
+          padding: 10px 0;
+          font-size: 1rem;
+          margin-top: 6px;
           cursor: pointer;
-          box-shadow: 0 2px 8px rgba(75,159,225,0.08);
-          transition: background 0.2s, color 0.2s;
+          transition: background 0.2s;
         }
         .signup-btn:hover {
-          background: linear-gradient(90deg, #FF8C42, #4B9FE1, #8860D0);
-          color: #fff;
+          background: linear-gradient(90deg, #8860D0, #4B9FE1);
         }
         .social-signup-divider {
-          margin: 10px 0 8px 0;
+          margin: 18px 0 10px 0;
           color: #888;
-          font-size: 14px;
-          text-align: center;
+          font-size: 0.98rem;
         }
         .social-signup-btns {
           display: flex;
@@ -179,68 +148,77 @@ export default function Setup() {
           gap: 10px;
           width: 100%;
           justify-content: center;
+          margin-bottom: 18px;
         }
         .social-btn {
           flex: 1 1 40%;
           min-width: 120px;
-          padding: 9px 0;
-          border-radius: 7px;
-          border: 1px solid #e0e0e0;
-          background: #fafbfc;
-          color: #333;
-          font-size: 15px;
-          font-weight: 500;
+          padding: 10px 0;
+          border-radius: 8px;
+          font-size: 1rem;
+          font-weight: 600;
+          border: none;
           cursor: pointer;
-          transition: background 0.2s, color 0.2s, border 0.2s;
+          transition: background 0.2s, color 0.2s;
+          margin-bottom: 0;
         }
         .social-btn.google {
           background: #fff;
           color: #4285F4;
-          border: 1px solid #4285F4;
+          border: 1.5px solid #4285F4;
         }
         .social-btn.google:hover {
           background: #4285F4;
           color: #fff;
         }
         .social-btn.apple {
-          background: #000;
-          color: #fff;
-          border: 1px solid #000;
+          background: #fff;
+          color: #111;
+          border: 1.5px solid #111;
         }
         .social-btn.apple:hover {
-          background: #222;
+          background: #111;
+          color: #fff;
         }
         .social-btn.github {
-          background: #24292e;
-          color: #fff;
-          border: 1px solid #24292e;
+          background: #fff;
+          color: #24292e;
+          border: 1.5px solid #24292e;
         }
         .social-btn.github:hover {
-          background: #444d56;
+          background: #24292e;
+          color: #fff;
         }
         .social-btn.wordpress {
-          background: #21759b;
-          color: #fff;
-          border: 1px solid #21759b;
+          background: #fff;
+          color: #21759b;
+          border: 1.5px solid #21759b;
         }
         .social-btn.wordpress:hover {
-          background: #145785;
+          background: #21759b;
+          color: #fff;
         }
         .social-btn.drupal {
-          background: #0678be;
-          color: #fff;
-          border: 1px solid #0678be;
+          background: #fff;
+          color: #0678be;
+          border: 1.5px solid #0678be;
         }
         .social-btn.drupal:hover {
-          background: #055a8c;
+          background: #0678be;
+          color: #fff;
         }
         .social-btn.wix {
-          background: #fff200;
-          color: #222;
-          border: 1px solid #fff200;
+          background: #fff;
+          color: #ffbe00;
+          border: 1.5px solid #ffbe00;
         }
         .social-btn.wix:hover {
-          background: #ffe600;
+          background: #ffbe00;
+          color: #fff;
+        }
+        .setup-url-preview-section {
+          margin-top: 18px;
+          width: 100%;
         }
         .coming-soon-modal-overlay {
           position: fixed;
@@ -249,42 +227,35 @@ export default function Setup() {
           width: 100vw;
           height: 100vh;
           background: rgba(0,0,0,0.25);
+          z-index: 1000;
           display: flex;
           align-items: center;
           justify-content: center;
-          z-index: 10000;
         }
         .coming-soon-modal {
           background: #fff;
-          border-radius: 14px;
-          box-shadow: 0 4px 32px rgba(80,120,200,0.13);
-          padding: 36px 32px 28px 32px;
-          min-width: 280px;
-          min-height: 120px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
+          border-radius: 12px;
+          padding: 32px 32px 24px 32px;
+          box-shadow: 0 8px 32px rgba(60, 60, 90, 0.13), 0 1.5px 6px rgba(60, 60, 90, 0.07);
           position: relative;
-        }
-        .coming-soon-text {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: #222;
-          margin-top: 10px;
+          min-width: 320px;
+          max-width: 90vw;
         }
         .modal-close-btn {
           position: absolute;
-          top: 12px;
-          right: 12px;
+          top: 10px;
+          right: 10px;
           background: none;
           border: none;
           font-size: 1.5rem;
           color: #888;
           cursor: pointer;
-          transition: color 0.2s;
         }
-        .modal-close-btn:hover {
-          color: #222;
+        .coming-soon-text {
+          font-size: 1.2rem;
+          color: #333;
+          text-align: center;
+          margin-top: 12px;
         }
       `}</style>
     </div>
