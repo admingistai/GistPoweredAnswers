@@ -1,8 +1,13 @@
 import '@testing-library/jest-dom';
 
-// Mock window.location
-delete window.location;
-window.location = { href: 'http://localhost:3000' };
+// Suppress JSDOM warnings
+const originalError = console.error;
+console.error = (...args) => {
+  if (args[0]?.includes('Not implemented: navigation')) {
+    return;
+  }
+  originalError.apply(console, args);
+};
 
 // Mock fetch for tests
 global.fetch = jest.fn();
