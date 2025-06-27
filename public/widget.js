@@ -598,12 +598,8 @@
                     if (answerContainer) {
                         answerContainer.classList.remove('small', 'medium', 'large');
                         answerContainer.classList.add(widgetSizeMode);
-                        // Move answer box up if panel is open
-                        if (panelOpen) {
-                            answerContainer.style.bottom = (parseInt(answerContainer.style.bottom || 90) + panelOffset) + 'px';
-                        } else {
-                            answerContainer.style.bottom = '';
-                        }
+                        // Do not move answer box up, just set default bottom
+                        answerContainer.style.bottom = '';
                     }
 
                     // Show container with animation
