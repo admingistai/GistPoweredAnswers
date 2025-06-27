@@ -84,26 +84,11 @@
                 margin: 0;
             }
 
-            .gist-widget-container.large .gist-website-name,
-            .gist-widget-container.force-expanded .gist-website-name {
-                opacity: 1 !important;
-                visibility: visible !important;
-                max-width: 200px !important;
-                margin: 0 1px !important;
-            }
-
             .placeholder-span {
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 max-width: 100%;
-                position: absolute;
-                left: 62px;
-                top: 50%;
-                transform: translateY(-50%);
-                color: #666;
-                pointer-events: none;
-                transition: all 0.3s ease;
             }
 
             .gist-website-name {
@@ -436,7 +421,6 @@
         const widgetHTML = `
             <div class="gist-widget-container">
                 <img src="https://raw.githubusercontent.com/admingistai/GPADemo/main/public/sparkles.png" class="gist-search-icon" alt="sparkles icon" onerror="this.style.display='none'">
-                <span class="gist-website-name">${websiteName}</span>
                 <input type="text" class="gist-search-input" data-placeholder-parts="Ask ,${websiteName}, anything...">
                 <button class="gist-arrow-button">
                     <svg class="gist-arrow-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -456,22 +440,41 @@
             const searchInput = document.querySelector('.gist-search-input');
             
             if (searchInput) {
-                // Function to update placeholder with bold website name
+                // Update placeholder position and content for large/medium mode
                 function updatePlaceholder(input, isExpanded = false) {
                     const parts = input.dataset.placeholderParts.split(',');
                     const placeholderSpan = document.createElement('span');
-                    placeholderSpan.innerHTML = isExpanded ? 
-                        `${parts[0]}<strong>${parts[1]}</strong>${parts[2]}` :
-                        'Ask anything...';
-                    
+                    placeholderSpan.style.position = 'absolute';
+                    const widgetContainer = input.closest('.gist-widget-container');
+                    let showWebsiteName = false;
+                    if (widgetContainer) {
+                        if (widgetContainer.classList.contains('large')) {
+                            placeholderSpan.style.left = '65px';
+                            showWebsiteName = true;
+                        } else if (widgetContainer.classList.contains('medium') && (widgetContainer.classList.contains('expanded') || isExpanded)) {
+                            placeholderSpan.style.left = '57px';
+                            showWebsiteName = true;
+                        } else {
+                            placeholderSpan.style.left = '57px';
+                        }
+                    }
+                    placeholderSpan.style.top = '50%';
+                    placeholderSpan.style.transform = 'translateY(-50%)';
+                    placeholderSpan.style.color = '#666';
+                    placeholderSpan.style.pointerEvents = 'none';
+                    placeholderSpan.style.transition = 'all 0.3s ease';
+                    placeholderSpan.className = 'placeholder-span';
+                    if (showWebsiteName) {
+                        placeholderSpan.innerHTML = `Ask <strong>${parts[1]}</strong> anything...`;
+                    } else {
+                        placeholderSpan.innerHTML = 'Ask anything...';
+                    }
                     // Remove any existing placeholder span
                     const existingSpan = input.parentElement.querySelector('.placeholder-span');
                     if (existingSpan) {
                         existingSpan.remove();
                     }
-                    
                     // Only show if input is empty
-                    placeholderSpan.className = 'placeholder-span';
                     if (!input.value) {
                         input.parentElement.appendChild(placeholderSpan);
                     }
@@ -499,10 +502,29 @@
                         widgetContainer.classList.add('medium');
                         if (answerContainer) answerContainer.classList.add('medium');
                     }
+                    updateWebsiteNameVisibility();
+                    updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                 }
+                let panelOpen = false;
                 window.addEventListener('message', function(event) {
                     if (event.data && event.data.type === 'GIST_WIDGET_SIZE') {
                         applyWidgetSizeMode(event.data.size);
+                    }
+                    if (event.data && event.data.type === 'GPA_PANEL_STATE') {
+                        panelOpen = !!event.data.open;
+                        if (panelOpen) {
+                            searchInput.disabled = true;
+                            // Remove any existing placeholder span
+                            const existingSpan = searchInput.parentElement.querySelector('.placeholder-span');
+                            if (existingSpan) existingSpan.remove();
+                            // Close the answer box if open
+                            const answerContainer = document.querySelector('.gist-answer-container');
+                            if (answerContainer) answerContainer.remove();
+                        } else {
+                            searchInput.disabled = false;
+                            searchInput.setAttribute('placeholder', '');
+                            updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
+                        }
                     }
                 });
                 // --- End Widget Size Control ---
@@ -513,6 +535,7 @@
                     if (widgetSizeMode === 'small') return; // No expand on hover
                     if (widgetSizeMode === 'medium') widgetContainer.classList.add('expanded');
                     updatePlaceholder(searchInput, true);
+                    updateWebsiteNameVisibility && updateWebsiteNameVisibility();
                 });
                 widgetContainer.addEventListener('mouseleave', function() {
                     if (widgetSizeMode === 'small') return; // No minimize on leave
@@ -520,6 +543,7 @@
                     if (!widgetContainer.classList.contains('expanded')) {
                         updatePlaceholder(searchInput, false);
                     }
+                    updateWebsiteNameVisibility && updateWebsiteNameVisibility();
                 });
 
                 // Handle input changes and focus
@@ -850,6 +874,24 @@
             document.querySelector('.gist-widget-container').addEventListener('click', function(e) {
                 e.stopPropagation();
             });
+
+            // Always show website name in large mode
+            function updateWebsiteNameVisibility() {
+                const widgetContainer = document.querySelector('.gist-widget-container');
+                const websiteNameEl = document.querySelector('.gist-website-name');
+                if (!widgetContainer || !websiteNameEl) return;
+                if (widgetContainer.classList.contains('large')) {
+                    websiteNameEl.style.opacity = '1';
+                    websiteNameEl.style.visibility = 'visible';
+                    websiteNameEl.style.maxWidth = '200px';
+                    websiteNameEl.style.margin = '0 8px';
+                } else if (!widgetContainer.classList.contains('expanded') && !widgetContainer.classList.contains('hover')) {
+                    websiteNameEl.style.opacity = '';
+                    websiteNameEl.style.visibility = '';
+                    websiteNameEl.style.maxWidth = '';
+                    websiteNameEl.style.margin = '';
+                }
+            }
         } else {
             console.error('Widget: document.body not available');
         }

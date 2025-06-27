@@ -464,6 +464,8 @@ const adminSidebar = `
           const widget = document.querySelector('.gist-widget-container');
           if (widget) widget.classList.remove('gpa-widget-moveup');
         }
+        // Notify widget of panel state
+        window.postMessage({ type: 'GPA_PANEL_STATE', open: !minimized }, '*');
       }
 
       toggleBtn.addEventListener('click', function() {
