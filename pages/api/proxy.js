@@ -554,6 +554,16 @@ const adminSidebar = `
 
       toggleBtn.addEventListener('click', function() {
         setPanelState(!isMinimized);
+        // Track side panel toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Side Panel Toggled',
+              properties: { open: !isMinimized }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Widget size button group
@@ -564,6 +574,16 @@ const adminSidebar = `
           this.classList.add('selected');
           // Send widget size to widget.js
           window.postMessage({ type: 'GIST_WIDGET_SIZE', size: this.dataset.size }, '*');
+          // Track widget size change
+          try {
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Widget Size Changed',
+                properties: { size: this.dataset.size }
+              }, '*');
+            }
+          } catch (e) {}
         });
       });
 
@@ -573,6 +593,16 @@ const adminSidebar = `
         btn.addEventListener('click', function() {
           styleToggles.forEach(b => b.classList.remove('selected'));
           this.classList.add('selected');
+          // Track widget style change
+          try {
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Widget Style Changed',
+                properties: { style: this.dataset.style }
+              }, '*');
+            }
+          } catch (e) {}
         });
       });
 
@@ -584,6 +614,16 @@ const adminSidebar = `
         appearanceOpen = !appearanceOpen;
         appearanceHeader.classList.toggle('open', appearanceOpen);
         appearanceContent.classList.toggle('open', appearanceOpen);
+        // Track panel section toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Panel Section Toggled',
+              properties: { section: 'appearance', expanded: appearanceOpen }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Collapsible Content section
@@ -594,6 +634,16 @@ const adminSidebar = `
         contentOpen = !contentOpen;
         contentHeader.classList.toggle('open', contentOpen);
         contentContent.classList.toggle('open', contentOpen);
+        // Track panel section toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Panel Section Toggled',
+              properties: { section: 'content', expanded: contentOpen }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Collapsible Network Content section
@@ -616,10 +666,100 @@ const adminSidebar = `
         goalsOpen = !goalsOpen;
         goalsHeader.classList.toggle('open', goalsOpen);
         goalsContent.classList.toggle('open', goalsOpen);
+        // Track panel section toggle
+        try {
+          if (window.parent !== window) {
+            window.parent.postMessage({
+              type: 'ANALYTICS_EVENT',
+              eventName: 'Panel Section Toggled',
+              properties: { section: 'goals', expanded: goalsOpen }
+            }, '*');
+          }
+        } catch (e) {}
       });
 
       // Initialize state
       setPanelState(false);
+
+      // Track content source toggles
+      const sourceToggles = sidebar.querySelectorAll('.source-toggle input[type="checkbox"]');
+      sourceToggles.forEach(toggle => {
+        toggle.addEventListener('change', function() {
+          const sourceName = this.parentElement.querySelector('span').textContent;
+          try {
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Content Source Toggled',
+                properties: { source: sourceName, enabled: this.checked }
+              }, '*');
+            }
+          } catch (e) {}
+        });
+      });
+
+      // Track goal slider
+      const goalSlider = sidebar.querySelector('.goal-slider');
+      if (goalSlider) {
+        let sliderTimeout;
+        goalSlider.addEventListener('input', function() {
+          clearTimeout(sliderTimeout);
+          sliderTimeout = setTimeout(() => {
+            const value = parseInt(this.value);
+            let goal = 'engagement';
+            if (value > 66) goal = 'monetization';
+            else if (value > 33) goal = 'growth';
+            
+            try {
+              if (window.parent !== window) {
+                window.parent.postMessage({
+                  type: 'ANALYTICS_EVENT',
+                  eventName: 'Goal Slider Changed',
+                  properties: { value: value, goal: goal }
+                }, '*');
+              }
+            } catch (e) {}
+          }, 500);
+        });
+      }
+
+      // Track goal feature toggles
+      const goalToggles = sidebar.querySelectorAll('.goal-toggle input[type="checkbox"]');
+      goalToggles.forEach(toggle => {
+        toggle.addEventListener('change', function() {
+          const featureName = this.parentElement.querySelector('span').textContent;
+          try {
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Goal Feature Toggled',
+                properties: { feature: featureName, enabled: this.checked }
+              }, '*');
+            }
+          } catch (e) {}
+        });
+      });
+
+      // Track Next button click
+      const nextBtn = sidebar.querySelector('.next-btn');
+      if (nextBtn) {
+        nextBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          try {
+            if (window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Next Clicked',
+                properties: {}
+              }, '*');
+            }
+          } catch (e) {}
+          // Navigate after tracking
+          setTimeout(() => {
+            window.location.href = window.location.origin + '/setup';
+          }, 100);
+        });
+      }
     });
   </script>
 `;

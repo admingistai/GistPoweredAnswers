@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import URLInputForm from '../components/URLInputForm';
 import WebsiteDisplay from '../components/WebsiteDisplay';
 import ErrorDisplay from '../components/ErrorDisplay';
-import { trackTryItClicked, trackGetStartedClicked, trackSignInClicked } from '../utils/analytics';
+import { trackGetStartedClicked, trackPreviewCreated } from '../utils/analytics';
 
 export default function Home() {
   const router = useRouter();
@@ -188,9 +188,9 @@ export default function Home() {
 
   const handleTryItClick = (location) => {
     if (!targetUrl.trim()) return;
-
-    // Track Try It button clicked
-    trackTryItClicked(location, targetUrl);
+    
+    // Track Preview Created event
+    trackPreviewCreated(targetUrl, location);
     handleUrlSubmit(targetUrl);
   };
 

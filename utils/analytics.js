@@ -5,9 +5,10 @@
 
 import * as amplitude from '@amplitude/analytics-browser';
 
+// Initialize Amplitude with API key from environment variable
 const apiKey = process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY;
 if (apiKey) {
-  amplitude.init(apiKey, {
+  amplitude.init(apiKey, undefined, {
     defaultTracking: true,
   });
   console.log('[Amplitude] Initialized with API key:', apiKey.slice(0, 6) + '...' + apiKey.slice(-4));
@@ -32,7 +33,7 @@ export const trackEvent = (eventName, properties = {}) => {
 
     amplitude.track(eventName, eventProperties);
     
-    // Always log for debugging
+    // Log for debugging
     console.log('📊 Analytics Event:', eventName, eventProperties);
   } catch (error) {
     console.error('Analytics tracking error:', error);
@@ -40,21 +41,8 @@ export const trackEvent = (eventName, properties = {}) => {
 };
 
 /**
- * Track "Try It Clicked" event
- * @param {string} location - Where the button was clicked (hero, final-cta)
- * @param {string} url - The URL entered by the user
- */
-export const trackTryItClicked = (location, url) => {
-  trackEvent('Try It Clicked', {
-    location,
-    url,
-    button_type: 'try_it'
-  });
-};
-
-/**
- * Track "Get Started Clicked" event
- * @param {string} location - Where the button was clicked (hero, final-cta)
+ * Track "Get Started Clicked" event on home page
+ * @param {string} location - Where the button was clicked (hero, final-cta, header)
  */
 export const trackGetStartedClicked = (location) => {
   trackEvent('Get Started Clicked', {
@@ -64,16 +52,152 @@ export const trackGetStartedClicked = (location) => {
 };
 
 /**
- * Track "Sign In" event
+ * Track "Preview Created" event when user tries a URL
+ * @param {string} url - The URL entered by the user
+ * @param {string} location - Where the action was triggered from
  */
-export const trackSignInClicked = () => {
-  trackEvent('Sign In', {
-    button_type: 'sign_in'
+export const trackPreviewCreated = (url, location = 'home') => {
+  trackEvent('Preview Created', {
+    url,
+    location,
+    button_type: 'try_it'
   });
 };
 
 /**
- * Track "Next Clicked" event on cloned webpages
+ * Track "Sign Up Completed" event on setup page
+ * @param {string} email - User's email (optional)
+ */
+export const trackSignUpCompleted = (email) => {
+  trackEvent('Sign Up Completed', {
+    email: email || '',
+    auth_method: 'email',
+    page: 'setup'
+  });
+};
+
+/**
+ * Track "Google Sign Up" event on setup page
+ */
+export const trackGoogleSignUp = () => {
+  trackEvent('Google Sign Up', {
+    auth_method: 'google',
+    page: 'setup'
+  });
+};
+
+/**
+ * Track "Apple Sign Up" event on setup page
+ */
+export const trackAppleSignUp = () => {
+  trackEvent('Apple Sign Up', {
+    auth_method: 'apple',
+    page: 'setup'
+  });
+};
+
+/**
+ * Track "GitHub Sign Up" event on setup page
+ */
+export const trackGithubSignUp = () => {
+  trackEvent('GitHub Sign Up', {
+    auth_method: 'github',
+    page: 'setup'
+  });
+};
+
+/**
+ * Track "Widget Size Changed" event on cloned webpage side panel
+ * @param {string} size - The size selected (small, medium, large)
+ */
+export const trackWidgetSizeChanged = (size) => {
+  trackEvent('Widget Size Changed', {
+    size,
+    feature: 'appearance',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Widget Style Changed" event on cloned webpage side panel
+ * @param {string} style - The style selected (default, match)
+ */
+export const trackWidgetStyleChanged = (style) => {
+  trackEvent('Widget Style Changed', {
+    style,
+    feature: 'appearance',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Content Source Toggled" event on cloned webpage side panel
+ * @param {string} source - The content source toggled
+ * @param {boolean} enabled - Whether it was enabled or disabled
+ */
+export const trackContentSourceToggled = (source, enabled) => {
+  trackEvent('Content Source Toggled', {
+    source,
+    enabled,
+    feature: 'content',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Goal Slider Changed" event on cloned webpage side panel
+ * @param {number} value - The slider value (0-100)
+ * @param {string} goal - The goal type (engagement, growth, monetization)
+ */
+export const trackGoalSliderChanged = (value, goal) => {
+  trackEvent('Goal Slider Changed', {
+    value,
+    goal,
+    feature: 'goals',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Goal Feature Toggled" event on cloned webpage side panel
+ * @param {string} feature - The feature toggled
+ * @param {boolean} enabled - Whether it was enabled or disabled
+ */
+export const trackGoalFeatureToggled = (feature, enabled) => {
+  trackEvent('Goal Feature Toggled', {
+    feature,
+    enabled,
+    feature_type: 'goals',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Panel Section Toggled" event on cloned webpage side panel
+ * @param {string} section - The section toggled (appearance, content, goals)
+ * @param {boolean} expanded - Whether it was expanded or collapsed
+ */
+export const trackPanelSectionToggled = (section, expanded) => {
+  trackEvent('Panel Section Toggled', {
+    section,
+    expanded,
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Side Panel Toggled" event on cloned webpage
+ * @param {boolean} open - Whether the panel was opened or closed
+ */
+export const trackSidePanelToggled = (open) => {
+  trackEvent('Side Panel Toggled', {
+    open,
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Next Clicked" event on cloned webpage side panel
  */
 export const trackNextClicked = () => {
   trackEvent('Next Clicked', {
@@ -83,80 +207,10 @@ export const trackNextClicked = () => {
 };
 
 /**
- * Track "Generate Clicked" event on setup page
- * @param {object} formData - The form data submitted
- */
-export const trackGenerateClicked = (formData) => {
-  trackEvent('Generate Clicked', {
-    website_url: formData.websiteUrl,
-    user_name: formData.name,
-    user_email: formData.email,
-    tools_selected: formData.tools,
-    button_type: 'generate'
-  });
-};
-
-/**
- * Track CMS platform clicked events
- * @param {string} cmsName - The name of the CMS platform (WordPress, Shopify, etc.)
- */
-export const trackCMSClicked = (cmsName) => {
-  trackEvent(`${cmsName} Clicked`, {
-    cms_platform: cmsName.toLowerCase(),
-    button_type: 'cms_integration'
-  });
-};
-
-/**
- * Track "Sign Up Clicked" event on setup page
- */
-export const trackSignUpClicked = () => {
-  console.debug('[Amplitude] Event: Sign Up Clicked', { button_type: 'sign_up', context: 'setup_page' });
-  trackEvent('Sign Up Clicked', {
-    button_type: 'sign_up',
-    context: 'setup_page'
-  });
-};
-
-/**
- * Track "Google Sign Up Clicked" event on setup page
- */
-export const trackGoogleSignUpClicked = () => {
-  console.debug('[Amplitude] Event: Google Sign Up Clicked', { button_type: 'google_sign_up', context: 'setup_page' });
-  trackEvent('Google Sign Up Clicked', {
-    button_type: 'google_sign_up',
-    context: 'setup_page'
-  });
-};
-
-/**
- * Track "Apple Sign Up Clicked" event on setup page
- */
-export const trackAppleSignUpClicked = () => {
-  console.debug('[Amplitude] Event: Apple Sign Up Clicked', { button_type: 'apple_sign_up', context: 'setup_page' });
-  trackEvent('Apple Sign Up Clicked', {
-    button_type: 'apple_sign_up',
-    context: 'setup_page'
-  });
-};
-
-/**
- * Track "GitHub Sign Up Clicked" event on setup page
- */
-export const trackGithubSignUpClicked = () => {
-  console.debug('[Amplitude] Event: GitHub Sign Up Clicked', { button_type: 'github_sign_up', context: 'setup_page' });
-  trackEvent('GitHub Sign Up Clicked', {
-    button_type: 'github_sign_up',
-    context: 'setup_page'
-  });
-};
-
-/**
  * Initialize analytics tracking
  */
 export const initializeAnalytics = () => {
   if (typeof window !== 'undefined') {
-    // Analytics is already initialized in _app.js, but we can add additional setup here if needed
     console.log('Analytics utility loaded');
   }
 }; 

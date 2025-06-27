@@ -1,28 +1,12 @@
 import '../styles/globals.css';
 import Head from 'next/head';
 import { useEffect } from 'react';
-import * as amplitude from '@amplitude/analytics-browser';
+import { initializeAnalytics } from '../utils/analytics';
 
 export default function App({ Component, pageProps }) {
   useEffect(() => {
-    // Listen for analytics events from iframes (cloned webpages)
-    const handleMessage = (event) => {
-      if (event.data && event.data.type === 'ANALYTICS_EVENT') {
-        try {
-          amplitude.track(event.data.eventName, event.data.properties);
-          console.log('📊 Received Analytics Event from iframe:', event.data.eventName, event.data.properties);
-        } catch (error) {
-          console.error('Error tracking iframe analytics event:', error);
-        }
-      }
-    };
-
-    window.addEventListener('message', handleMessage);
-
-    // Cleanup event listener
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
+    // Initialize analytics on app load
+    initializeAnalytics();
   }, []);
 
   return (

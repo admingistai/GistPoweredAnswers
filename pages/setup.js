@@ -1,5 +1,5 @@
 import React from 'react';
-import { trackSignUpClicked, trackGoogleSignUpClicked, trackAppleSignUpClicked, trackGithubSignUpClicked } from '../utils/analytics';
+import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp } from '../utils/analytics';
 import { useRouter } from 'next/router';
 
 export default function Setup() {
@@ -12,7 +12,12 @@ export default function Setup() {
             <img src="/gist-logo.png" alt="Gist Logo" className="signup-big-logo" />
           </div>
           <h2 className="signup-title">Sign Up</h2>
-          <form className="signup-form" onSubmit={e => { e.preventDefault(); trackSignUpClicked(); router.push('/dashboard'); }}>
+          <form className="signup-form" onSubmit={e => { 
+            e.preventDefault(); 
+            const email = e.target.email.value;
+            trackSignUpCompleted(email); 
+            router.push('/dashboard'); 
+          }}>
             <label htmlFor="email" className="signup-label">Email</label>
             <input type="email" id="email" className="signup-input reduced-gap" placeholder="you@example.com" required />
             <label htmlFor="password" className="signup-label">Password</label>
@@ -21,9 +26,9 @@ export default function Setup() {
           </form>
           <div className="social-signup-divider">or sign up with</div>
           <div className="social-signup-btns">
-            <button className="social-btn google" onClick={trackGoogleSignUpClicked} type="button">Google</button>
-            <button className="social-btn apple" onClick={trackAppleSignUpClicked} type="button">Apple</button>
-            <button className="social-btn github" onClick={trackGithubSignUpClicked} type="button">GitHub</button>
+            <button className="social-btn google" onClick={trackGoogleSignUp} type="button">Google</button>
+            <button className="social-btn apple" onClick={trackAppleSignUp} type="button">Apple</button>
+            <button className="social-btn github" onClick={trackGithubSignUp} type="button">GitHub</button>
           </div>
         </div>
       </div>

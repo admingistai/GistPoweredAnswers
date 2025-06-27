@@ -1,4 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
+import { 
+  trackWidgetSizeChanged, 
+  trackWidgetStyleChanged, 
+  trackContentSourceToggled, 
+  trackGoalSliderChanged, 
+  trackGoalFeatureToggled, 
+  trackPanelSectionToggled,
+  trackSidePanelToggled,
+  trackNextClicked 
+} from '../utils/analytics';
 
 export default function WebsiteDisplay({ url, onBack }) {
   const [loading, setLoading] = useState(true);
@@ -14,6 +24,48 @@ export default function WebsiteDisplay({ url, onBack }) {
     setLoading(true);
     setError(null);
   }, [url]);
+
+  // Listen for analytics events from iframe
+  useEffect(() => {
+    const handleMessage = (event) => {
+      if (event.data && event.data.type === 'ANALYTICS_EVENT') {
+        const { eventName, properties } = event.data;
+        
+        // Route to appropriate tracking function
+        switch (eventName) {
+          case 'Widget Size Changed':
+            trackWidgetSizeChanged(properties.size);
+            break;
+          case 'Widget Style Changed':
+            trackWidgetStyleChanged(properties.style);
+            break;
+          case 'Content Source Toggled':
+            trackContentSourceToggled(properties.source, properties.enabled);
+            break;
+          case 'Goal Slider Changed':
+            trackGoalSliderChanged(properties.value, properties.goal);
+            break;
+          case 'Goal Feature Toggled':
+            trackGoalFeatureToggled(properties.feature, properties.enabled);
+            break;
+          case 'Panel Section Toggled':
+            trackPanelSectionToggled(properties.section, properties.expanded);
+            break;
+          case 'Side Panel Toggled':
+            trackSidePanelToggled(properties.open);
+            break;
+          case 'Next Clicked':
+            trackNextClicked();
+            break;
+          default:
+            console.log('Unknown analytics event:', eventName);
+        }
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+    return () => window.removeEventListener('message', handleMessage);
+  }, []);
 
   const handleIframeLoad = () => {
     setLoading(false);
