@@ -964,4 +964,20 @@
         styleSheet.textContent = extraSizeStyles;
         document.head.appendChild(styleSheet);
     }
+
+    // Inject Amplitude Browser SDK for analytics
+    (function(){
+        var amplitudeScript = document.createElement('script');
+        amplitudeScript.type = 'text/javascript';
+        amplitudeScript.async = true;
+        amplitudeScript.src = 'https://cdn.amplitude.com/libs/analytics-browser-2.11.10-min.js.gz';
+        amplitudeScript.onload = function() {
+            if (window.amplitude && window.amplitude.init) {
+                window.amplitude.init('YOUR_AMPLITUDE_API_KEY'); // TODO: Replace with your real API key
+                window.amplitude.track('Amplitude SDK Loaded', { source: 'widget.js' });
+            }
+        };
+        var firstScript = document.getElementsByTagName('script')[0];
+        firstScript.parentNode.insertBefore(amplitudeScript, firstScript);
+    })();
 })();
