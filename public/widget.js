@@ -506,16 +506,24 @@
                     updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                 }
                 let panelOpen = false;
+                let panelOffset = 60; // px to move up when panel is open (adjust as needed)
                 window.addEventListener('message', function(event) {
                     if (event.data && event.data.type === 'GIST_WIDGET_SIZE') {
                         applyWidgetSizeMode(event.data.size);
                     }
                     if (event.data && event.data.type === 'GPA_PANEL_STATE') {
                         panelOpen = !!event.data.open;
+                        // Move answer box up if panel is open, reset if closed
+                        const answerContainer = document.querySelector('.gist-answer-container');
+                        if (answerContainer) {
+                            if (panelOpen) {
+                                answerContainer.style.bottom = (parseInt(answerContainer.style.bottom || 90) + panelOffset) + 'px';
+                            } else {
+                                answerContainer.style.bottom = '';
+                            }
+                        }
                         if (panelOpen) {
-                            // Do NOT disable the search input or remove the placeholder span
                             // Only close the answer box if open
-                            const answerContainer = document.querySelector('.gist-answer-container');
                             if (answerContainer) answerContainer.remove();
                         } else {
                             searchInput.setAttribute('placeholder', '');
@@ -624,6 +632,12 @@
                     if (answerContainer) {
                         answerContainer.classList.remove('small', 'medium', 'large');
                         answerContainer.classList.add(widgetSizeMode);
+                        // Move answer box up if panel is open
+                        if (panelOpen) {
+                            answerContainer.style.bottom = (parseInt(answerContainer.style.bottom || 90) + panelOffset) + 'px';
+                        } else {
+                            answerContainer.style.bottom = '';
+                        }
                     }
 
                     // Show container with animation
