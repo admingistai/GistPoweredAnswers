@@ -407,7 +407,7 @@ export default function Home() {
                         ✓
                   </div>
                   <h3>Accurate, trusted answers</h3>
-                  <p>Built on licensed publishers & your own content- always cited, never scraped.</p>
+                  <p>Combines licensed content and your own- always cited, never scraped.</p>
                 </div>
                   
                 <div className="benefit-card">
@@ -423,7 +423,7 @@ export default function Home() {
                         ⚡
                   </div>
                   <h3>45-second install</h3>
-                      <p>Copy-paste one line of code. No complex integrations or setup required.</p>
+                      <p>No coding required. Copy-paste one line of code. No complex integrations or setup required.</p>
                   </div>
               </div>
             </div>
@@ -439,7 +439,7 @@ export default function Home() {
                         📦
                   </div>
                   <h3>Choose sources to include</h3>
-                  <p>Pick pages on your site- or add any whitelisted publisher with one click.</p>
+                  <p>Pick pages on your site - and enhance answers with verified content partners of your choosing</p>
                 </div>
 
                 <div className="customization-item">
@@ -447,7 +447,7 @@ export default function Home() {
                         🎨
                   </div>
                   <h3>Match the design of your brand</h3>
-                  <p>Customize colors, fonts, avatars, even the answer voice.</p>
+                  <p>Automatically match your site design with one click</p>
                 </div>
 
                 <div className="customization-item">
@@ -455,7 +455,7 @@ export default function Home() {
                         📈
                 </div>
                   <h3>Optimize any goal</h3>
-                  <p>Increase engagement, sales, growth, monetization, or whatever matters to you.</p>
+                  <p>Increase engagement, grow traffic, unlock new revenue, or whatever matters to you.</p>
                 </div>
               </div>
             </div>
