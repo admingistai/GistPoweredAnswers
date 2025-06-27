@@ -22,10 +22,8 @@ export const trackEvent = (eventName, properties = {}) => {
 
     amplitude.track(eventName, eventProperties);
     
-    // Log for development
-    if (process.env.NODE_ENV === 'development') {
-      console.log('📊 Analytics Event:', eventName, eventProperties);
-    }
+    // Always log for debugging
+    console.log('📊 Analytics Event:', eventName, eventProperties);
   } catch (error) {
     console.error('Analytics tracking error:', error);
   }
