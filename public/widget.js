@@ -973,7 +973,8 @@
         amplitudeScript.src = 'https://cdn.amplitude.com/libs/analytics-browser-2.11.10-min.js.gz';
         amplitudeScript.onload = function() {
             if (window.amplitude && window.amplitude.init) {
-                window.amplitude.init('YOUR_AMPLITUDE_API_KEY'); // TODO: Replace with your real API key
+                var apiKey = window.NEXT_PUBLIC_AMPLITUDE_API_KEY || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY) || 'YOUR_AMPLITUDE_API_KEY';
+                window.amplitude.init(apiKey);
                 window.amplitude.track('Amplitude SDK Loaded', { source: 'widget.js' });
             }
         };
