@@ -326,7 +326,7 @@ const adminSidebar = `
     <div class="admin-header">Configure Ask Anything Button:</div>
     <div class="divider"></div>
     <div class="collapsible-header" id="appearance-header">
-      Appearance
+      Adjust Appearance
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="collapsible-content open" id="appearance-content">
@@ -349,12 +349,11 @@ const adminSidebar = `
     </div>
     <div class="divider"></div>
     <div class="collapsible-header" id="content-header">
-      Content
+      Add Content
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="collapsible-content open" id="content-content">
       <div style="margin-bottom: 18px;">
-        <div class="section-label" style="margin-bottom: 8px;">My Content:</div>
         <div class="my-content-upload-box" style="border: 1.5px dashed #bdbdbd; border-radius: 10px; padding: 10px 8px; background: #fafbfc; display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 100%; box-sizing: border-box;">
           <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
           <label class="source-toggle" style="margin-top: 10px;">
@@ -364,29 +363,59 @@ const adminSidebar = `
           </label>
         </div>
       </div>
-      <!-- Earn Even More Section -->
-      <div style="margin-bottom: 18px;">
-        <div class="section-label" style="margin-bottom: 8px; color: #1d4ed8; font-weight: 600;">Earn Even More:</div>
-        <label class="source-toggle">
-          <input type="checkbox" id="toggle-network-answers" checked>
-          <div class="toggle-switch"></div>
-          <span>Opt-In My Content to Show Up In Network Answers</span>
+    </div>
+    <div class="divider" style="margin: 12px 0 8px 0;"></div>
+    <div class="collapsible-header" id="monetization-header">
+      Monetization Settings
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-content open" id="monetization-content">
+      <label class="source-toggle">
+        <input type="checkbox" id="toggle-network-answers" checked>
+        <div class="toggle-switch"></div>
+        <span>Opt-In My Content to Show Up In Network Answers</span>
+      </label>
+      <label class="source-toggle">
+        <input type="checkbox" id="toggle-distribution-fee" checked>
+        <div class="toggle-switch"></div>
+        <span>Earn 10% Distribution Fee for Any Answer that doesn't come from your content.</span>
+      </label>
+      <label class="source-toggle">
+        <input type="checkbox" id="toggle-earnings-booster">
+        <div class="toggle-switch"></div>
+        <span>EXPERIMENTAL: Turn on Earnings Booster</span>
+      </label>
+    </div>
+    <div class="divider" style="margin: 12px 0 8px 0;"></div>
+    <div class="collapsible-header" id="features-header">
+      Additional Features
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-content open" id="features-content">
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 6px; margin-top: 4px; padding: 0 1px; font-size: 15px;">
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" /> Summarize
         </label>
-        <label class="source-toggle">
-          <input type="checkbox" id="toggle-distribution-fee" checked>
-          <div class="toggle-switch"></div>
-          <span>Earn 10% Distribution Fee for Any Answer that doesn't come from your content.</span>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" /> Listen
         </label>
-        <label class="source-toggle">
-          <input type="checkbox" id="toggle-earnings-booster">
-          <div class="toggle-switch"></div>
-          <span>EXPERIMENTAL: Turn on Earnings Booster</span>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" /> Remix
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" /> Avatar
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" /> Related
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" /> Share
         </label>
       </div>
     </div>
     <div class="divider" style="margin: 12px 0 8px 0;"></div>
     <div class="collapsible-header" id="goals-header">
-      Goals
+      Set Goals
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
     <div class="collapsible-content open" id="goals-content">
@@ -403,33 +432,6 @@ const adminSidebar = `
             <input type="radio" name="goal-radio" value="monetization" style="margin: 0 3px 0 0;" /> Monetization
           </label>
         </div>
-      </div>
-      <div style="margin: 10px 0 10px 0; font-size: 17px; font-weight: 600; color: #222; letter-spacing: 0.01em; line-height: 1.5;">Additional Features</div>
-      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 6px; margin-top: 4px; padding: 0 1px; font-size: 15px;">
-        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
-          <input type="checkbox" style="margin: 0;" />
-          <span>Summarize</span>
-        </label>
-        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
-          <input type="checkbox" style="margin: 0;" />
-          <span>Listen</span>
-        </label>
-        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
-          <input type="checkbox" style="margin: 0;" />
-          <span>Remix</span>
-        </label>
-        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
-          <input type="checkbox" style="margin: 0;" />
-          <span>Avatar</span>
-        </label>
-        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
-          <input type="checkbox" style="margin: 0;" />
-          <span>Related</span>
-        </label>
-        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
-          <input type="checkbox" style="margin: 0;" />
-          <span>Share</span>
-        </label>
       </div>
     </div>
     <a href="#" class="next-btn" onclick="event.preventDefault(); window.location.href = window.location.origin + '/setup';">Next -&gt;</a>
