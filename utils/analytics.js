@@ -107,6 +107,36 @@ export const trackGithubSignUp = () => {
 };
 
 /**
+ * Track "WordPress Sign Up" event on setup page
+ */
+export const trackWordPressSignUp = () => {
+  trackEvent('WordPress Sign Up', {
+    auth_method: 'wordpress',
+    page: 'setup'
+  });
+};
+
+/**
+ * Track "Drupal Sign Up" event on setup page
+ */
+export const trackDrupalSignUp = () => {
+  trackEvent('Drupal Sign Up', {
+    auth_method: 'drupal',
+    page: 'setup'
+  });
+};
+
+/**
+ * Track "Wix Sign Up" event on setup page
+ */
+export const trackWixSignUp = () => {
+  trackEvent('Wix Sign Up', {
+    auth_method: 'wix',
+    page: 'setup'
+  });
+};
+
+/**
  * Track "Widget Size Changed" event on cloned webpage side panel
  * @param {string} size - The size selected (small, medium, large)
  */
@@ -203,6 +233,42 @@ export const trackNextClicked = () => {
   trackEvent('Next Clicked', {
     button_type: 'next',
     context: 'cloned_webpage_panel'
+  });
+};
+
+/**
+ * Track "Network Answers Opt-In Toggled" event
+ * @param {boolean} enabled - Whether the toggle is enabled or disabled
+ */
+export const trackNetworkAnswersOptInToggled = (enabled) => {
+  trackEvent('Network Answers Opt-In Toggled', {
+    enabled,
+    feature: 'earn_even_more',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Distribution Fee Toggled" event
+ * @param {boolean} enabled - Whether the toggle is enabled or disabled
+ */
+export const trackDistributionFeeToggled = (enabled) => {
+  trackEvent('Distribution Fee Toggled', {
+    enabled,
+    feature: 'earn_even_more',
+    panel: 'side_panel'
+  });
+};
+
+/**
+ * Track "Earnings Booster Toggled" event
+ * @param {boolean} enabled - Whether the toggle is enabled or disabled
+ */
+export const trackEarningsBoosterToggled = (enabled) => {
+  trackEvent('Earnings Booster Toggled', {
+    enabled,
+    feature: 'earn_even_more',
+    panel: 'side_panel'
   });
 };
 

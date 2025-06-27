@@ -1,5 +1,5 @@
 import React from 'react';
-import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp } from '../utils/analytics';
+import { trackSignUpCompleted, trackGoogleSignUp, trackAppleSignUp, trackGithubSignUp, trackWordPressSignUp, trackDrupalSignUp, trackWixSignUp } from '../utils/analytics';
 import { useRouter } from 'next/router';
 
 export default function Setup() {
@@ -29,9 +29,9 @@ export default function Setup() {
           <button className="social-btn google" onClick={trackGoogleSignUp} type="button">Google</button>
           <button className="social-btn apple" onClick={trackAppleSignUp} type="button">Apple</button>
           <button className="social-btn github" onClick={trackGithubSignUp} type="button">GitHub</button>
-          <button className="social-btn wordpress" type="button">WordPress</button>
-          <button className="social-btn drupal" type="button">Drupal</button>
-          <button className="social-btn wix" type="button">Wix</button>
+          <button className="social-btn wordpress" onClick={trackWordPressSignUp} type="button">WordPress</button>
+          <button className="social-btn drupal" onClick={trackDrupalSignUp} type="button">Drupal</button>
+          <button className="social-btn wix" onClick={trackWixSignUp} type="button">Wix</button>
         </div>
       </div>
       <style jsx>{`
