@@ -7,7 +7,10 @@ import {
   trackGoalFeatureToggled, 
   trackPanelSectionToggled,
   trackSidePanelToggled,
-  trackNextClicked 
+  trackNextClicked,
+  trackNetworkAnswersOptInToggled,
+  trackDistributionFeeToggled,
+  trackEarningsBoosterToggled
 } from '../utils/analytics';
 
 export default function WebsiteDisplay({ url, onBack }) {
@@ -56,6 +59,22 @@ export default function WebsiteDisplay({ url, onBack }) {
             break;
           case 'Next Clicked':
             trackNextClicked();
+            break;
+          case 'Earn Even More Toggle':
+            // Route to specific function based on toggle name
+            switch (properties.toggle) {
+              case 'Opt-In Network Answers':
+                trackNetworkAnswersOptInToggled(properties.enabled);
+                break;
+              case 'Distribution Fee':
+                trackDistributionFeeToggled(properties.enabled);
+                break;
+              case 'Earnings Booster':
+                trackEarningsBoosterToggled(properties.enabled);
+                break;
+              default:
+                console.log('Unknown earn even more toggle:', properties.toggle);
+            }
             break;
           default:
             console.log('Unknown analytics event:', eventName);
