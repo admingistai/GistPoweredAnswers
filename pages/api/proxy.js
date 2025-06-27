@@ -353,58 +353,24 @@ const adminSidebar = `
           <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
         </div>
       </div>
-      <div style="margin-bottom: 8px; margin-top: 18px;">
-        <div class="collapsible-header" id="network-header" style="margin-bottom: 0; margin-top: 0; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-left: 0; padding-right: 0;">
-          Augment with Gist Answers
-          <svg id="network-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
-        </div>
-        <div class="collapsible-content open" id="network-content" style="padding-top: 0;">
-          <label class="source-toggle">
-            <input type="checkbox" id="mycontent-archive">
-            <div class="toggle-switch"></div>
-            <span>Archive</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="mycontent-active">
-            <div class="toggle-switch"></div>
-            <span>Active</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-news">
-            <div class="toggle-switch"></div>
-            <span>News</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-business">
-            <div class="toggle-switch"></div>
-            <span>Business</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-lifestyle">
-            <div class="toggle-switch"></div>
-            <span>Lifestyle</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-sports">
-            <div class="toggle-switch"></div>
-            <span>Sports</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-books">
-            <div class="toggle-switch"></div>
-            <span>Books</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-academic">
-            <div class="toggle-switch"></div>
-            <span>Academic</span>
-          </label>
-          <label class="source-toggle">
-            <input type="checkbox" id="source-reference">
-            <div class="toggle-switch"></div>
-            <span>Reference</span>
-          </label>
-        </div>
+      <!-- Earn Even More Section -->
+      <div style="margin-bottom: 18px;">
+        <div class="section-label" style="margin-bottom: 8px; color: #1d4ed8; font-weight: 600;">Earn Even More:</div>
+        <label class="source-toggle">
+          <input type="checkbox" id="toggle-network-answers" checked>
+          <div class="toggle-switch"></div>
+          <span>Opt-In My Content to Show Up In Network Answers</span>
+        </label>
+        <label class="source-toggle">
+          <input type="checkbox" id="toggle-distribution-fee" checked>
+          <div class="toggle-switch"></div>
+          <span>Earn 10% Distribution Fee for Any Answer that doesn't come from your content.</span>
+        </label>
+        <label class="source-toggle">
+          <input type="checkbox" id="toggle-earnings-booster">
+          <div class="toggle-switch"></div>
+          <span>EXPERIMENTAL: Turn on Earnings Booster</span>
+        </label>
       </div>
     </div>
     <div class="divider" style="margin: 12px 0 8px 0;"></div>
@@ -645,18 +611,6 @@ const adminSidebar = `
         } catch (e) {}
       });
 
-      // Collapsible Network Content section
-      const networkHeader = document.getElementById('network-header');
-      const networkContent = document.getElementById('network-content');
-      const networkChevron = document.getElementById('network-chevron');
-      let networkOpen = true;
-      networkHeader.addEventListener('click', function() {
-        networkOpen = !networkOpen;
-        networkHeader.classList.toggle('open', networkOpen);
-        networkContent.classList.toggle('open', networkOpen);
-        networkChevron.style.transform = networkOpen ? 'rotate(90deg)' : 'rotate(0deg)';
-      });
-
       // Collapsible Goals section
       const goalsHeader = document.getElementById('goals-header');
       const goalsContent = document.getElementById('goals-content');
@@ -759,6 +713,30 @@ const adminSidebar = `
           }, 100);
         });
       }
+
+      // Earn Even More toggles analytics
+      const earnToggles = [
+        { id: 'toggle-network-answers', name: 'Opt-In Network Answers' },
+        { id: 'toggle-distribution-fee', name: 'Distribution Fee' },
+        { id: 'toggle-earnings-booster', name: 'Earnings Booster' }
+      ];
+      earnToggles.forEach(({ id, name }) => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.addEventListener('change', function() {
+            if (window.parent && window.parent !== window) {
+              window.parent.postMessage({
+                type: 'ANALYTICS_EVENT',
+                eventName: 'Earn Even More Toggle',
+                properties: {
+                  toggle: name,
+                  enabled: this.checked
+                }
+              }, '*');
+            }
+          });
+        }
+      });
     });
   </script>
 `;
