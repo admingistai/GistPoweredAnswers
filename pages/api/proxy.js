@@ -74,8 +74,8 @@ const adminSidebar = `
     .admin-header {
       font-size: 20px;
       font-weight: 600;
-      margin: 0 0 14px 0;
-      padding: 24px 12px 0 12px;
+      margin: 0 0 6px 0;
+      padding: 12px 12px 0 12px;
       color: #222;
       letter-spacing: 0.01em;
       line-height: 1.1;
