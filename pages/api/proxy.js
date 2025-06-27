@@ -420,7 +420,6 @@ const adminSidebar = `
     </div>
     <div class="collapsible-content open" id="goals-content">
       <div class="slider-section" style="margin-bottom: 8px; padding: 0 2px;">
-        <span class="slider-label" style="font-size: 14px;">Set Goal</span>
         <div style="display: flex; align-items: center; gap: 8px; margin: 8px 0 0 -8px;">
           <label style="display: flex; align-items: center; font-size: 13px; gap: 2px;">
             <input type="radio" name="goal-radio" value="engagement" checked style="margin: 0 3px 0 0;" /> Engagement
