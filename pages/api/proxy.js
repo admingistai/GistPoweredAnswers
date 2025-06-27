@@ -1039,24 +1039,25 @@ export default async function handler(req, res) {
       // Inject widget.js script into the HTML
       const protocol = req.headers['x-forwarded-proto'] || (req.headers['x-forwarded-for'] ? 'https' : 'http');
       const host = req.headers.host || 'localhost:3000';
+      const amplitudeKeyScript = `<script>window.NEXT_PUBLIC_AMPLITUDE_API_KEY = "${process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY || ''}";</script>`;
       const widgetScript = `<script src="${protocol}://${host}/widget.js"></script>`;
       
       // More robust injection logic
       if (html.includes('</head>')) {
         // Inject before closing head tag
-        html = html.replace('</head>', `${widgetScript}</head>`);
+        html = html.replace('</head>', `${amplitudeKeyScript}${widgetScript}</head>`);
         console.log('Widget injected before </head>');
       } else if (html.includes('</body>')) {
         // Fallback: inject before closing body tag
-        html = html.replace('</body>', `${widgetScript}</body>`);
+        html = html.replace('</body>', `${amplitudeKeyScript}${widgetScript}</body>`);
         console.log('Widget injected before </body>');
       } else if (html.includes('<body')) {
         // Another fallback: inject after opening body tag
-        html = html.replace(/(<body[^>]*>)/, `$1${widgetScript}`);
+        html = html.replace(/(<body[^>]*>)/, `$1${amplitudeKeyScript}${widgetScript}`);
         console.log('Widget injected after <body>');
       } else {
         // Last resort: append to the end
-        html += widgetScript;
+        html += amplitudeKeyScript + widgetScript;
         console.log('Widget appended to end of HTML');
       }
       
