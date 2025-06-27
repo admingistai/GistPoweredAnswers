@@ -353,7 +353,6 @@ const adminSidebar = `
         </div>
       </div>
       <div style="margin-bottom: 8px; margin-top: 18px;">
-        <div class="section-label" style="margin-bottom: 8px;">Network Content:</div>
         <div class="collapsible-header" id="network-header" style="margin-bottom: 0; margin-top: 0; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-left: 0; padding-right: 0;">
           Augment with Gist Answers
           <svg id="network-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
