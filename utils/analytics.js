@@ -100,6 +100,46 @@ export const trackCMSClicked = (cmsName) => {
 };
 
 /**
+ * Track "Sign Up Clicked" event on setup page
+ */
+export const trackSignUpClicked = () => {
+  trackEvent('Sign Up Clicked', {
+    button_type: 'sign_up',
+    context: 'setup_page'
+  });
+};
+
+/**
+ * Track "Google Sign Up Clicked" event on setup page
+ */
+export const trackGoogleSignUpClicked = () => {
+  trackEvent('Google Sign Up Clicked', {
+    button_type: 'google_sign_up',
+    context: 'setup_page'
+  });
+};
+
+/**
+ * Track "Apple Sign Up Clicked" event on setup page
+ */
+export const trackAppleSignUpClicked = () => {
+  trackEvent('Apple Sign Up Clicked', {
+    button_type: 'apple_sign_up',
+    context: 'setup_page'
+  });
+};
+
+/**
+ * Track "GitHub Sign Up Clicked" event on setup page
+ */
+export const trackGithubSignUpClicked = () => {
+  trackEvent('GitHub Sign Up Clicked', {
+    button_type: 'github_sign_up',
+    context: 'setup_page'
+  });
+};
+
+/**
  * Initialize analytics tracking
  */
 export const initializeAnalytics = () => {

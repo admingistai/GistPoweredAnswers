@@ -177,6 +177,9 @@ const adminSidebar = `
       margin-bottom: 8px !important;
       margin-top: 8px;
       user-select: none;
+      min-height: 48px;
+      height: 48px;
+      box-sizing: border-box;
     }
     .collapsible-header svg {
       width: 22px;
@@ -312,63 +315,144 @@ const adminSidebar = `
   </script>
 
   <div id="admin-sidebar">
-    <div class="admin-header">Configure your Ask Anything button.</div>
+    <div class="admin-header">Configure Ask Anything Button:</div>
     <div class="divider"></div>
-    <div class="slider-section">
-      <span class="slider-label">Widget Size</span>
-      <div class="size-btn-group">
-        <button class="size-btn" data-size="small">Small</button>
-        <button class="size-btn selected" data-size="medium">Medium</button>
-        <button class="size-btn" data-size="large">Large</button>
+    <div class="collapsible-header" id="appearance-header">
+      Appearance
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-content open" id="appearance-content">
+      <div class="slider-section">
+        <span class="slider-label">Widget Size</span>
+        <div class="size-btn-group">
+          <button class="size-btn" data-size="small">Small</button>
+          <button class="size-btn selected" data-size="medium">Medium</button>
+          <button class="size-btn" data-size="large">Large</button>
+        </div>
+      </div>
+      <div style="height: 12px;"></div>
+      <div class="style-section">
+        <span class="section-label">Style</span>
+        <div class="style-toggle-group">
+          <button class="style-toggle selected" data-style="default">Default</button>
+          <button class="style-toggle" data-style="match">Match My Site</button>
+        </div>
       </div>
     </div>
     <div class="divider"></div>
-    <div class="style-section">
-      <span class="section-label">Style</span>
-      <div class="style-toggle-group">
-        <button class="style-toggle selected" data-style="default">Ask Anything (Default)</button>
-        <button class="style-toggle" data-style="match">Match My Site</button>
+    <div class="collapsible-header" id="content-header">
+      Content
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </div>
+    <div class="collapsible-content open" id="content-content">
+      <div style="margin-bottom: 18px;">
+        <div class="section-label" style="margin-bottom: 8px;">My Content:</div>
+        <div class="my-content-upload-box" style="border: 1.5px dashed #bdbdbd; border-radius: 10px; padding: 18px 14px; background: #fafbfc; display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 100%; box-sizing: border-box;">
+          <div style="font-size: 15px; color: #444; margin-bottom: 6px;">Upload files or paste URLs to your content</div>
+          <input type="file" multiple style="margin-bottom: 8px; max-width: 100%; width: 100%; box-sizing: border-box;" />
+          <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
+        </div>
+      </div>
+      <div style="margin-bottom: 8px; margin-top: 18px;">
+        <div class="section-label" style="margin-bottom: 8px;">Network Content:</div>
+        <div class="collapsible-header" id="network-header" style="margin-bottom: 0; margin-top: 0; font-size: 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; padding-left: 0; padding-right: 0;">
+          Augment with Gist Answers
+          <svg id="network-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.2s;"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </div>
+        <div class="collapsible-content open" id="network-content" style="padding-top: 0;">
+          <label class="source-toggle">
+            <input type="checkbox" id="mycontent-archive">
+            <div class="toggle-switch"></div>
+            <span>Archive</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="mycontent-active">
+            <div class="toggle-switch"></div>
+            <span>Active</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-news">
+            <div class="toggle-switch"></div>
+            <span>News</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-business">
+            <div class="toggle-switch"></div>
+            <span>Business</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-lifestyle">
+            <div class="toggle-switch"></div>
+            <span>Lifestyle</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-sports">
+            <div class="toggle-switch"></div>
+            <span>Sports</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-books">
+            <div class="toggle-switch"></div>
+            <span>Books</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-academic">
+            <div class="toggle-switch"></div>
+            <span>Academic</span>
+          </label>
+          <label class="source-toggle">
+            <input type="checkbox" id="source-reference">
+            <div class="toggle-switch"></div>
+            <span>Reference</span>
+          </label>
+        </div>
       </div>
     </div>
-    <div class="divider"></div>
-    <div class="collapsible-header" id="my-content-header">
-      My Content
+    <div class="divider" style="margin: 12px 0 8px 0;"></div>
+    <div class="collapsible-header" id="goals-header">
+      Goals
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
     </div>
-    <div class="collapsible-content open" id="my-content-content">
-      <label class="source-toggle">
-        <input type="checkbox" id="mycontent-archive">
-        <div class="toggle-switch"></div>
-        <span>Archive</span>
-      </label>
-      <label class="source-toggle">
-        <input type="checkbox" id="mycontent-active">
-        <div class="toggle-switch"></div>
-        <span>Active</span>
-      </label>
-    </div>
-    <div class="collapsible-header" id="network-partners-header">
-      Network Partners
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-    </div>
-    <div class="collapsible-content open" id="network-partners-content">
-      ${[
-        { id: 'news', label: 'News' },
-        { id: 'business', label: 'Business' },
-        { id: 'lifestyle', label: 'Lifestyle' },
-        { id: 'sports', label: 'Sports' },
-        { id: 'books', label: 'Books' },
-        { id: 'academic', label: 'Academic' },
-        { id: 'reference', label: 'Reference' }
-      ].map(source => `
-        <label class="source-toggle">
-          <input type="checkbox" id="source-${source.id}">
-          <div class="toggle-switch"></div>
-          <span>${source.label}</span>
+    <div class="collapsible-content open" id="goals-content">
+      <div class="slider-section" style="margin-bottom: 12px; padding: 0 4px;">
+        <span class="slider-label" style="font-size: 15px;">Set Goal</span>
+        <div style="display: flex; align-items: center; gap: 6px;">
+          <input type="range" min="0" max="100" value="50" class="goal-slider" style="flex: 1; height: 2px; margin-bottom: 0;" />
+        </div>
+        <div style="display: flex; justify-content: space-between; margin-top: 2px; width: 100%;">
+          <span style="font-size: 12px; color: #666; text-align: left; flex: 1;">Engagement</span>
+          <span style="font-size: 12px; color: #666; text-align: center; flex: 1;">Growth</span>
+          <span style="font-size: 12px; color: #666; text-align: right; flex: 1;">Monetization</span>
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, auto); gap: 6px; margin-top: 10px; padding: 0 2px;">
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" />
+          <span>Summarize</span>
         </label>
-      `).join('')}
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" />
+          <span>Listen</span>
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" />
+          <span>Remix</span>
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" />
+          <span>Avatar</span>
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" />
+          <span>Related</span>
+        </label>
+        <label class="goal-toggle" style="display: flex; align-items: center; gap: 4px; cursor: pointer; font-size: 13px;">
+          <input type="checkbox" style="margin: 0;" />
+          <span>Share</span>
+        </label>
+      </div>
     </div>
-    <a href="https://getaskanything.com/setup" target="_blank" class="next-btn" onclick="trackNextClicked()">Next -&gt;</a>
+    <a href="#" class="next-btn" onclick="event.preventDefault(); window.location.href = window.location.origin + '/setup';">Next -&gt;</a>
   </div>
   <button id="sidebar-toggle-btn-fixed" class="sidebar-toggle-btn-fixed" title="Show/Hide Admin Panel">
     <svg id="sidebar-toggle-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
@@ -492,24 +576,46 @@ const adminSidebar = `
         });
       });
 
-      // Collapsible My Content section
-      const myContentHeader = document.getElementById('my-content-header');
-      const myContentContent = document.getElementById('my-content-content');
-      let myContentOpen = true;
-      myContentHeader.addEventListener('click', function() {
-        myContentOpen = !myContentOpen;
-        myContentHeader.classList.toggle('open', myContentOpen);
-        myContentContent.classList.toggle('open', myContentOpen);
+      // Collapsible Appearance section
+      const appearanceHeader = document.getElementById('appearance-header');
+      const appearanceContent = document.getElementById('appearance-content');
+      let appearanceOpen = true;
+      appearanceHeader.addEventListener('click', function() {
+        appearanceOpen = !appearanceOpen;
+        appearanceHeader.classList.toggle('open', appearanceOpen);
+        appearanceContent.classList.toggle('open', appearanceOpen);
       });
 
-      // Collapsible Network Partners section
-      const networkPartnersHeader = document.getElementById('network-partners-header');
-      const networkPartnersContent = document.getElementById('network-partners-content');
-      let networkPartnersOpen = true;
-      networkPartnersHeader.addEventListener('click', function() {
-        networkPartnersOpen = !networkPartnersOpen;
-        networkPartnersHeader.classList.toggle('open', networkPartnersOpen);
-        networkPartnersContent.classList.toggle('open', networkPartnersOpen);
+      // Collapsible Content section
+      const contentHeader = document.getElementById('content-header');
+      const contentContent = document.getElementById('content-content');
+      let contentOpen = true;
+      contentHeader.addEventListener('click', function() {
+        contentOpen = !contentOpen;
+        contentHeader.classList.toggle('open', contentOpen);
+        contentContent.classList.toggle('open', contentOpen);
+      });
+
+      // Collapsible Network Content section
+      const networkHeader = document.getElementById('network-header');
+      const networkContent = document.getElementById('network-content');
+      const networkChevron = document.getElementById('network-chevron');
+      let networkOpen = true;
+      networkHeader.addEventListener('click', function() {
+        networkOpen = !networkOpen;
+        networkHeader.classList.toggle('open', networkOpen);
+        networkContent.classList.toggle('open', networkOpen);
+        networkChevron.style.transform = networkOpen ? 'rotate(90deg)' : 'rotate(0deg)';
+      });
+
+      // Collapsible Goals section
+      const goalsHeader = document.getElementById('goals-header');
+      const goalsContent = document.getElementById('goals-content');
+      let goalsOpen = true;
+      goalsHeader.addEventListener('click', function() {
+        goalsOpen = !goalsOpen;
+        goalsHeader.classList.toggle('open', goalsOpen);
+        goalsContent.classList.toggle('open', goalsOpen);
       });
 
       // Initialize state
@@ -609,10 +715,10 @@ const askAnythingBanner = `
       <a href="https://getaskanything.com" target="_blank" class="aa-title-link">
         <div class="aa-title">
           <span class="aa-ask">Ask</span><br>
-          <span class="aa-anything">Anything</span>
+          <span class="aa-anything">Anything<sup style="font-size:0.75em;">™</sup></span>
         </div>
       </a>
-      <div class="aa-preview">Preview</div>
+      <div class="aa-preview">Try Your Demo Ask Anything Button Below:</div>
     </div>
   </div>
 `;

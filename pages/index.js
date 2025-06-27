@@ -14,7 +14,6 @@ export default function Home() {
   const [showWebsite, setShowWebsite] = useState(false);
   const [showLoadingPage, setShowLoadingPage] = useState(false);
   const [showFeaturePage, setShowFeaturePage] = useState(false);
-  const [showLoginPage, setShowLoginPage] = useState(false);
   const [loadingMessage, setLoadingMessage] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
   const [selectedFeatures, setSelectedFeatures] = useState({
@@ -195,13 +194,6 @@ export default function Home() {
     handleUrlSubmit(targetUrl);
   };
 
-  const handleSignInClick = () => {
-    // Track Sign In button clicked
-    trackSignInClicked();
-    // Here you would implement the sign in logic or modal
-    console.log('Sign In clicked');
-  };
-
   return (
     <>
       <Head>
@@ -329,13 +321,18 @@ export default function Home() {
             <div className="header-left">
               <img src="/Gist_Mark_000000.png" alt="Gist" className="gist-logo" onClick={() => window.open('https://about.gist.ai', '_blank')} />
               <h1 className="logo">Ask<br />Anything™</h1>
-                </div>
+            </div>
             <div className="header-right">
               <span className="tagline">100% ethical, uses fully licensed sources</span>
               <div className="auth-buttons">
-                <button className="waitlist-header-btn" onClick={() => { handleSignInClick(); setShowLoginPage(true); }}>Sign In</button>
+                <button
+                  className="final-get-started-btn"
+                  onClick={handleFinalGetStartedClick}
+                >
+                  Get Started
+                </button>
               </div>
-              </div>
+            </div>
           </header>
 
           {/* Hero Section */}
@@ -393,19 +390,6 @@ export default function Home() {
                       Try It
                     </button>
                   </div>
-                  <span className="hero-cta-text">
-                    or{' '}
-                    <a 
-                      href="/setup"
-                      className="get-started-link"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleGetStartedClick();
-                      }}
-                    >
-                      Get Started
-                    </a>
-                  </span>
                 </div>
               </div>
                 </div>
@@ -518,74 +502,6 @@ export default function Home() {
               <button onClick={() => window.open('https://about.gist.ai/privacy', '_blank')}>Privacy Policy</button>
             </div>
           </footer>
-        </div>
-      )}
-
-      {/* Login Page Modal */}
-      {showLoginPage && (
-        <div className="login-modal-overlay" onClick={() => setShowLoginPage(false)}>
-          <div className="login-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="login-close-btn" onClick={() => setShowLoginPage(false)}>×</button>
-            
-            <div className="login-header">
-              <h2 className="login-title">Welcome to <em>Ask Anything™</em></h2>
-              <p className="login-subtitle">Sign in to unlock premium features</p>
-            </div>
-            
-            <form className="login-form" onSubmit={(e) => e.preventDefault()}>
-              <div className="login-field">
-                <label htmlFor="email">Email</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  placeholder="Enter your email"
-                  required
-                />
-              </div>
-              
-              <div className="login-field">
-                <label htmlFor="password">Password</label>
-                <input 
-                  type="password" 
-                  id="password" 
-                  placeholder="Enter your password"
-                  required
-                />
-              </div>
-              
-              <div className="login-options">
-                <label className="remember-me">
-                  <input type="checkbox" />
-                  <span>Remember me</span>
-                </label>
-                <a href="#" className="forgot-password">Forgot password?</a>
-              </div>
-              
-              <button type="submit" className="login-submit-btn">
-                Sign In
-              </button>
-              
-              <div className="login-divider">
-                <span>or</span>
-              </div>
-              
-              <div className="social-login">
-                <button type="button" className="social-btn google-btn">
-                      <span className="social-icon">G</span>
-                  Continue with Google
-                </button>
-                
-                <button type="button" className="social-btn apple-btn">
-                      <span className="social-icon">🍎</span>
-                  Continue with Apple
-                </button>
-              </div>
-              
-              <div className="login-footer">
-                <p>Don't have an account? <a href="#" className="signup-link">Sign up</a></p>
-              </div>
-            </form>
-          </div>
         </div>
       )}
         </>
