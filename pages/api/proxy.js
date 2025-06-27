@@ -356,12 +356,12 @@ const adminSidebar = `
       <div style="margin-bottom: 18px;">
         <div class="section-label" style="margin-bottom: 8px;">My Content:</div>
         <div class="my-content-upload-box" style="border: 1.5px dashed #bdbdbd; border-radius: 10px; padding: 10px 8px; background: #fafbfc; display: flex; flex-direction: column; align-items: center; gap: 6px; max-width: 100%; box-sizing: border-box;">
-          <label class="source-toggle" style="margin-bottom: 10px; margin-top: 2px;">
+          <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
+          <label class="source-toggle" style="margin-top: 10px;">
             <input type="checkbox" id="toggle-enhanced-answers" checked>
             <div class="toggle-switch"></div>
             <span>Enhanced Answers from 600+ licensed publications</span>
           </label>
-          <input type="text" placeholder="Paste URLs (comma separated)" style="width: 100%; padding: 7px 10px; border: 1px solid #e0e0e0; border-radius: 6px; font-size: 14px; box-sizing: border-box;" />
         </div>
       </div>
       <!-- Earn Even More Section -->
