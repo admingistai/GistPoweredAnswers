@@ -974,11 +974,32 @@
         amplitudeScript.onload = function() {
             if (window.amplitude && window.amplitude.init) {
                 var apiKey = window.NEXT_PUBLIC_AMPLITUDE_API_KEY || (typeof process !== 'undefined' && process.env && process.env.NEXT_PUBLIC_AMPLITUDE_API_KEY) || 'YOUR_AMPLITUDE_API_KEY';
+                console.log('[Amplitude] Initializing SDK...', { hasApiKey: !!apiKey && apiKey !== 'YOUR_AMPLITUDE_API_KEY', source: 'widget.js' });
                 window.amplitude.init(apiKey);
+                console.log('[Amplitude] SDK initialized successfully');
                 window.amplitude.track('Amplitude SDK Loaded', { source: 'widget.js' });
+                console.log('[Amplitude] Initial event tracked: Amplitude SDK Loaded');
+            } else {
+                console.error('[Amplitude] SDK not available after script load');
             }
+        };
+        amplitudeScript.onerror = function() {
+            console.error('[Amplitude] Failed to load SDK script');
         };
         var firstScript = document.getElementsByTagName('script')[0];
         firstScript.parentNode.insertBefore(amplitudeScript, firstScript);
     })();
+
+    // Listen for analytics events from the side panel and forward to Amplitude
+    window.addEventListener('message', function(event) {
+        if (event.data && event.data.type === 'ANALYTICS_EVENT') {
+            console.log('[Analytics] Received event:', event.data.eventName, event.data.properties);
+            if (window.amplitude && window.amplitude.track) {
+                window.amplitude.track(event.data.eventName, event.data.properties);
+                console.log('[Analytics] Event sent to Amplitude:', event.data.eventName);
+            } else {
+                console.warn('[Analytics] Amplitude not available, event not sent:', event.data.eventName);
+            }
+        }
+    });
 })();
