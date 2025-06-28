@@ -419,7 +419,7 @@
 
         // Create widget HTML using GitHub raw URL for sparkles.png
         const widgetHTML = `
-            <div class="gist-widget-container">
+            <div class="gist-widget-container" style="bottom: 20px; left: 50%; transform: translateX(-50%);">
                 <img src="https://raw.githubusercontent.com/admingistai/GPADemo/main/public/sparkles.png" class="gist-search-icon" alt="sparkles icon" onerror="this.style.display='none'">
                 <input type="text" class="gist-search-input" data-placeholder-parts="Ask ,${websiteName}, anything...">
                 <button class="gist-arrow-button">
