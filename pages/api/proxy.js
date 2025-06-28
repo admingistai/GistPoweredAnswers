@@ -490,7 +490,7 @@ const adminSidebar = `
       pointer-events: auto;
     }
     .gpa-widget-moveup {
-      bottom: 120px !important;
+      bottom: 20px !important;
       transition: bottom 0.3s cubic-bezier(0.4,0,0.2,1) !important;
     }
   </style>
