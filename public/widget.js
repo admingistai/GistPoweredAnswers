@@ -838,7 +838,10 @@
                 // Check if click is outside both containers
                 if (widgetContainer && !widgetContainer.contains(e.target) && 
                     (!answerContainer || !answerContainer.contains(e.target))) {
-                    minimizeWidget();
+                    // Only minimize the answer box, not the widget
+                    if (answerContainer) {
+                        answerContainer.classList.remove('visible');
+                    }
                 }
             });
 
