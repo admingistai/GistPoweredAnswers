@@ -74,7 +74,7 @@
             .gist-widget-container.expanded {
                 width: 475px;
                 padding: 12px 24px;
-                transform: translateX(-50%) translateY(-2px);
+                transform: translateX(-50%);
             }
 
             .gist-widget-container:not(:hover):not(.expanded) .gist-website-name {
