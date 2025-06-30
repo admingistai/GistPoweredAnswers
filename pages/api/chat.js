@@ -1,4 +1,4 @@
-import { openaiChatCompletion } from './utils/openaiChat';
+const { openaiChatCompletion } = require('./utils/openaiChat');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

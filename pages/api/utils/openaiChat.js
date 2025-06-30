@@ -1,5 +1,5 @@
 // OpenAI Chat Completion Utility
-import OpenAI from 'openai';
+const { OpenAI } = require('openai');
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -42,4 +42,4 @@ async function openaiChatCompletion({ messages, temperature = 0.7, maxTokens = 1
   }
 }
 
-export { openaiChatCompletion }; 
+module.exports = { openaiChatCompletion }; 
