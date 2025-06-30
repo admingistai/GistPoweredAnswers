@@ -65,8 +65,8 @@ gpa/
 ### 1. **Core Functionality**
 - ✅ Complete website replication with 1:1 fidelity
 - ✅ Automatic widget.js injection into all HTML pages
-- ⚠️ AI-powered chat functionality (temporarily disabled)
-- ✅ Real-time citations and source attributions
+- ✅ AI-powered chat functionality (OpenAI-based)
+- ✅ Real-time AI responses with usage tracking
 - ✅ Comprehensive URL rewriting (relative to absolute)
 - ✅ Support for all content types (HTML, CSS, JS, images, etc.)
 
@@ -102,7 +102,7 @@ gpa/
 
 - **Frontend**: Next.js 14.1.0, React 18.2.0
 - **Backend**: Node.js serverless functions
-- **AI Integration**: Prorata API with citations and attributions
+- **AI Integration**: OpenAI API with usage tracking
 - **HTTP Client**: Axios
 - **HTML Parsing**: Cheerio
 - **Validation**: validator.js
@@ -122,7 +122,8 @@ gpa/
 2. **Configure Environment**
    ```bash
    cp .env.example .env.local
-   # No API key needed - AI functionality temporarily disabled
+   # Add your OpenAI API key to .env.local:
+   # OPENAI_API_KEY=your_openai_api_key_here
    ```
 
 3. **Run Development Server**
@@ -139,7 +140,7 @@ gpa/
 
 ### Environment Variables
 - `NODE_ENV` - Environment mode
-- ~~`GIST_API_KEY`~~ - AI functionality temporarily disabled
+- `OPENAI_API_KEY` - OpenAI API key for AI functionality
 - `RATE_LIMIT_REQUESTS` - Max requests per minute
 - `CHAT_RATE_LIMIT` - Max AI chat requests per minute
 - `MAX_REQUEST_SIZE` - Maximum request size

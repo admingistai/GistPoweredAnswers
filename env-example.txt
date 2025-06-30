@@ -1,0 +1,28 @@
+# Environment Variables Example
+# Copy this file to .env.local and fill in your actual values
+
+# OpenAI API Key for AI functionality
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Vercel Blob Storage (for waitlist and contact forms)
+BLOB_READ_WRITE_TOKEN=vercel_blob_token_here
+
+# ElevenLabs API Key for Text-to-Speech (optional)
+ELEVENLABS_API_KEY=your_elevenlabs_api_key_here
+
+# Amplitude Analytics (optional)
+NEXT_PUBLIC_AMPLITUDE_API_KEY=your_amplitude_api_key_here
+
+# Rate Limiting Configuration (optional)
+RATE_LIMIT_REQUESTS=100
+CHAT_RATE_LIMIT=20
+IMAGE_RATE_LIMIT=5
+
+# Maximum request size (optional)
+MAX_REQUEST_SIZE=52428800
+
+# Blocked domains (optional, comma-separated)
+BLOCKED_DOMAINS=
+
+# Environment
+NODE_ENV=development 

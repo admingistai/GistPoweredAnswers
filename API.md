@@ -60,7 +60,7 @@ curl "https://your-domain.vercel.app/api/proxy?url=https://example.com&test=true
 
 ### 2. Chat Endpoint
 
-**⚠️ TEMPORARILY DISABLED**: AI functionality has been temporarily removed and will be reimplemented.
+AI-powered chat functionality using OpenAI.
 
 **Endpoint:** `POST /api/chat`
 
@@ -80,18 +80,32 @@ curl "https://your-domain.vercel.app/api/proxy?url=https://example.com&test=true
 }
 ```
 
-**Current Response (Placeholder):**
+**Response:**
 
 ```json
 {
-  "success": true,
-  "answer": "This is a placeholder response. The AI functionality has been temporarily disabled while we implement a new chat system.",
-  "threadId": "mock_thread_1234567890",
-  "turnId": 1,
-  "citations": [],
-  "attributions": {},
-  "model": "placeholder",
-  "responseTime": 750
+  "answer": "Based on the provided context, this website appears to be...",
+  "response": "Based on the provided context, this website appears to be...",
+  "usage": {
+    "prompt_tokens": 125,
+    "completion_tokens": 89,
+    "total_tokens": 214
+  },
+  "debug": {
+    "logs": ["Creating OpenAI chat completion with 1 messages", "OpenAI response: 89 chars"]
+  }
+}
+```
+
+**Error Response:**
+
+```json
+{
+  "error": "Internal server error",
+  "details": "OpenAI API error: Invalid API key",
+  "debug": {
+    "logs": ["❌ OPENAI_API_KEY missing"]
+  }
 }
 ```
 

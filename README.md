@@ -1,6 +1,6 @@
-# Gist AI - Website Enhancement Platform
+# GistPoweredAnswers - Website Enhancement Platform
 
-A clean, modern, and user-friendly platform that transforms any website into an AI-powered experience. Built with Next.js and designed with modern UX principles.
+A clean, modern, and user-friendly platform that transforms any website into an AI-powered experience using OpenAI. Built with Next.js and designed with modern UX principles.
 
 ## 🎨 Design Philosophy
 
@@ -72,7 +72,7 @@ The platform is fully responsive with:
 1. **Clone the repository**
 ```bash
    git clone [repository-url]
-   cd gist-ai-platform
+   cd GistPoweredAnswers
 ```
 
 2. **Install dependencies**
@@ -80,7 +80,13 @@ The platform is fully responsive with:
 npm install
 ```
 
-3. **Run the development server**
+3. **Set up environment variables**
+```bash
+# Create a .env.local file with:
+OPENAI_API_KEY=your_openai_api_key_here
+```
+
+4. **Run the development server**
 ```bash
 npm run dev
 ```
@@ -187,6 +193,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## Environment Variables
 
 The following environment variables are required for the application to work:
+
+### OpenAI API
+To enable AI functionality, you need an OpenAI API key:
+
+1. Go to [OpenAI Platform](https://platform.openai.com/)
+2. Create an account or sign in
+3. Navigate to API Keys section
+4. Create a new API key
+5. Add it to your `.env.local` file:
+   ```
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
 
 ### Vercel Blob Storage
 To store setup configurations, you need to set up Vercel Blob storage:

@@ -1,5 +1,4 @@
-import { gistChatCompletion } from './utils/gistChat';
-import { getCitations, getAttributions } from './utils/gistCitations';
+import { openaiChatCompletion } from './utils/openaiChat';
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -22,7 +21,7 @@ export default async function handler(req, res) {
     userId = String(userId);
     log('User ID:', userId);
 
-    // Compose messages for Gist API
+    // Compose messages for OpenAI API
     let userPrompt = question;
     if (context && typeof context === 'string' && context.trim().length > 0) {
       userPrompt = `If the question is relating to the context of the website, use this URL: ${context} If not, just answer the question normally.\n\n${question}`;
@@ -32,32 +31,14 @@ export default async function handler(req, res) {
     ];
     log('Messages:', JSON.stringify(messages));
 
-    // Call Gist chat completion utility
-    const chatResult = await gistChatCompletion({ messages, userId });
-    log('Gist chat result:', JSON.stringify({ threadId: chatResult.threadId, turnId: chatResult.turnId }));
-
-    // Fetch citations and attributions
-    let citations = [];
-    let attributions = {};
-    try {
-      const citationsResult = await getCitations(chatResult.threadId, chatResult.turnId, userId);
-      citations = citationsResult.citations;
-      log('Citations:', Array.isArray(citations) ? citations.length : citations);
-    } catch (e) {
-      log('Citations fetch error:', e.message);
-    }
-    try {
-      const attributionsResult = await getAttributions(chatResult.threadId, chatResult.turnId, userId);
-      attributions = attributionsResult.attributions;
-      log('Attributions:', Object.keys(attributions));
-    } catch (e) {
-      log('Attributions fetch error:', e.message);
-    }
+    // Call OpenAI chat completion utility
+    const chatResult = await openaiChatCompletion({ messages });
+    log('OpenAI chat result successful');
 
     return res.status(200).json({
       answer: chatResult.answer,
-      citations,
-      attributions,
+      response: chatResult.answer, // For backward compatibility with frontend
+      usage: chatResult.usage,
       debug: { ...debug, chat: chatResult.debug }
     });
   } catch (error) {
