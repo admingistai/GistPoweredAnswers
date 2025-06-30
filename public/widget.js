@@ -672,26 +672,62 @@
                         // Clean the answer by removing any citation markers
                         const cleanedAnswer = answerText.replace(/\s*\[\d+\]\s*/g, '');
                         
-                        // Simple source attribution - just show it's from the current page since we don't have Gist citations anymore
-                        const sources = [{
-                            name: 'Current Page',
-                            percentage: 1,
-                            color: '#4B9FE1',
-                            description: 'AI-powered answer based on your question',
-                            logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>'
-                        }];
+                        // Generate fake sources for a realistic UI
+                        const mockSources = [
+                            {
+                                name: 'Current Page',
+                                percentage: 0.45,
+                                color: '#4B9FE1',
+                                description: 'Content extracted from the current webpage',
+                                logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M9 8h6m-6 4h6m-6 4h6"/></svg>',
+                                url: window.location.href
+                            },
+                            {
+                                name: 'Wikipedia',
+                                percentage: 0.25,
+                                color: '#000000',
+                                description: 'General knowledge and factual information',
+                                logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>',
+                                url: 'https://wikipedia.org'
+                            },
+                            {
+                                name: 'OpenAI Training',
+                                percentage: 0.3,
+                                color: '#10B981',
+                                description: 'AI model knowledge from training data',
+                                logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>',
+                                url: 'https://openai.com'
+                            }
+                        ];
                         
                         const attributionHTML = `
                             <div class="gist-attribution">
-                                <div class="gist-attribution-title">Powered by OpenAI</div>
+                                <div class="gist-attribution-title">Answer sources:</div>
                                 <div class="gist-attribution-bar">
-                                    <div class="gist-attribution-segment" style="width: 100%; background: ${sources[0].color};"></div>
+                                    ${mockSources.map(source => 
+                                        `<div class="gist-attribution-segment" style="width: ${(source.percentage * 100).toFixed(1)}%; background: ${source.color};"></div>`
+                                    ).join('')}
                                 </div>
                                 <div class="gist-attribution-legend">
-                                    <div class="gist-attribution-source">
-                                        <div class="gist-attribution-dot" style="background: ${sources[0].color};"></div>
-                                        ${sources[0].description}
-                                    </div>
+                                    ${mockSources.map(source => `
+                                        <div class="gist-attribution-source">
+                                            <div class="gist-attribution-dot" style="background: ${source.color};"></div>
+                                            ${source.name} (${(source.percentage * 100).toFixed(1)}%)
+                                        </div>
+                                    `).join('')}
+                                </div>
+                                <div class="gist-source-cards">
+                                    ${mockSources.map(source => `
+                                        <div class="gist-source-card gist-source-card-vertical" data-url="${source.url}">
+                                            <div class="gist-source-card-header">
+                                                <div class="gist-source-logo" style="background: ${source.color}">
+                                                    ${source.logo}
+                                                </div>
+                                                <div class="gist-source-name">${source.name}</div>
+                                            </div>
+                                            <div class="gist-source-description">${source.description}</div>
+                                        </div>
+                                    `).join('')}
                                 </div>
                             </div>
                         `;
@@ -704,6 +740,7 @@
                         requestAnimationFrame(() => {
                             const answerElement = answerContainer.querySelector('.gist-answer');
                             const attributionElement = answerContainer.querySelector('.gist-attribution');
+                            const sourceCardsElement = answerContainer.querySelector('.gist-source-cards');
                             if (answerElement) {
                                 answerElement.classList.add('visible');
                             }
@@ -711,6 +748,21 @@
                                 setTimeout(() => {
                                     attributionElement.classList.add('visible');
                                 }, 300);
+                            }
+                            if (sourceCardsElement) {
+                                setTimeout(() => {
+                                    sourceCardsElement.classList.add('visible');
+                                    const sourceCards = sourceCardsElement.querySelectorAll('.gist-source-card[data-url]');
+                                    sourceCards.forEach(card => {
+                                        card.style.cursor = 'pointer';
+                                        card.addEventListener('click', () => {
+                                            const url = card.getAttribute('data-url');
+                                            if (url) {
+                                                window.open(url, '_blank');
+                                            }
+                                        });
+                                    });
+                                }, 600);
                             }
                         });
                     } catch (error) {
@@ -728,8 +780,6 @@
                         });
                     }
                 }
-
-
 
                 // Function to handle search
                 function handleSearch() {
