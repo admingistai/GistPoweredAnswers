@@ -514,8 +514,8 @@
                         // Force panel to always be open
                         panelOpen = true;
                         // Do not move widget or answer box, do not blur/gray out page, do not close the answer box
-                        searchInput.setAttribute('placeholder', '');
-                        updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
+                            searchInput.setAttribute('placeholder', '');
+                            updatePlaceholder(searchInput, widgetContainer.classList.contains('large') || widgetContainer.classList.contains('expanded'));
                     }
                 });
                 // --- End Widget Size Control ---
@@ -645,6 +645,7 @@
                         }
                         const data = await response.json();
                         console.log('[Widget] API response:', data);
+                        
                         // Render answer as HTML from markdown
                         function renderMarkdown(md) {
                             // Basic markdown to HTML conversion (bold, italics, headings, lists)
@@ -664,64 +665,45 @@
                             }
                             return html;
                         }
-                        // Remove bracketed numbers like [1], [23] from the answer before rendering
-                        const cleanedAnswer = data.answer.replace(/\s*\[\d+\]\s*/g, '');
-                        // Attribution bar and sources
-                        const sources = [];
-                        const colors = ['#4B9FE1', '#8860D0', '#FF8C42', '#10B981', '#F59E0B', '#EF4444'];
-                        if (data.attributions && data.attributions.domain_credit_dist) {
-                            let colorIndex = 0;
-                            for (const [domain, percentage] of Object.entries(data.attributions.domain_credit_dist)) {
-                                if (percentage > 0) {
-                                    sources.push({
-                                        name: domain,
-                                        percentage: percentage, // Use raw percentage (0.42 for 42%)
-                                        color: colors[colorIndex % colors.length],
-                                        description: `Content from ${domain}`,
-                                        logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>'
-                                    });
-                                    colorIndex++;
-                                }
-                            }
-                        }
-                        if (sources.length === 0) {
-                            sources.push({
-                                name: 'Current Page',
-                                percentage: 1,
-                                color: '#4B9FE1',
-                                description: 'Content extracted from the current webpage you\'re viewing',
-                                logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M9 8h6m-6 4h6m-6 4h6"/></svg>'
-                            });
-                        }
+                        
+                        // Get the answer from either 'answer' or 'response' field (backward compatibility)
+                        const answerText = data.answer || data.response || 'No response received';
+                        
+                        // Clean the answer by removing any citation markers
+                        const cleanedAnswer = answerText.replace(/\s*\[\d+\]\s*/g, '');
+                        
+                        // Simple source attribution - just show it's from the current page since we don't have Gist citations anymore
+                        const sources = [{
+                            name: 'Current Page',
+                            percentage: 1,
+                            color: '#4B9FE1',
+                            description: 'AI-powered answer based on your question',
+                            logo: '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>'
+                        }];
+                        
                         const attributionHTML = `
                             <div class="gist-attribution">
-                                <div class="gist-attribution-title">Answer sources:</div>
+                                <div class="gist-attribution-title">Powered by OpenAI</div>
                                 <div class="gist-attribution-bar">
-                                    ${sources.map(source => 
-                                        `<div class="gist-attribution-segment" style="width: ${(source.percentage * 100).toFixed(1)}%; background: ${source.color};"></div>`
-                                    ).join('')}
+                                    <div class="gist-attribution-segment" style="width: 100%; background: ${sources[0].color};"></div>
                                 </div>
                                 <div class="gist-attribution-legend">
-                                    ${sources.map(source => `
-                                        <div class="gist-attribution-source">
-                                            <div class="gist-attribution-dot" style="background: ${source.color};"></div>
-                                            ${source.name} (${(source.percentage).toFixed(1)}%)
-                                        </div>
-                                    `).join('')}
-                                </div>
-                                <div class="gist-source-cards">
-                                    ${generateSourceCards(data.citations, sources)}
+                                    <div class="gist-attribution-source">
+                                        <div class="gist-attribution-dot" style="background: ${sources[0].color};"></div>
+                                        ${sources[0].description}
+                                    </div>
                                 </div>
                             </div>
                         `;
+                        
                         answerContainer.innerHTML = `
                             <div class="gist-answer">${renderMarkdown(cleanedAnswer)}</div>
                             ${attributionHTML}
                         `;
+                        
                         requestAnimationFrame(() => {
                             const answerElement = answerContainer.querySelector('.gist-answer');
                             const attributionElement = answerContainer.querySelector('.gist-attribution');
-                            const sourceCardsElement = answerContainer.querySelector('.gist-source-cards');
                             if (answerElement) {
                                 answerElement.classList.add('visible');
                             }
@@ -729,21 +711,6 @@
                                 setTimeout(() => {
                                     attributionElement.classList.add('visible');
                                 }, 300);
-                            }
-                            if (sourceCardsElement) {
-                                setTimeout(() => {
-                                    sourceCardsElement.classList.add('visible');
-                                    const sourceCards = sourceCardsElement.querySelectorAll('.gist-source-card[data-url]');
-                                    sourceCards.forEach(card => {
-                                        card.style.cursor = 'pointer';
-                                        card.addEventListener('click', () => {
-                                            const url = card.getAttribute('data-url');
-                                            if (url) {
-                                                window.open(url, '_blank');
-                                            }
-                                        });
-                                    });
-                                }, 600);
                             }
                         });
                     } catch (error) {
@@ -762,52 +729,7 @@
                     }
                 }
 
-                // Function to generate source cards from citations
-                function generateSourceCards(citations, sources) {
-                    if (!citations || !Array.isArray(citations) || citations.length === 0) {
-                        // Fallback to attribution-based cards
-                        return sources.map(source => {
-                            // Try to construct a valid URL from the domain name if not already a URL
-                            let url = '';
-                            if (source.name.startsWith('http')) {
-                                url = source.name;
-                            } else if (source.name.includes('.')) {
-                                url = 'https://' + source.name.replace(/^https?:\/\//, '');
-                            }
-                            return `
-                                <div class="gist-source-card gist-source-card-vertical" data-url="${url}">
-                                    <div class="gist-source-card-header">
-                                        <div class="gist-source-logo" style="background: ${source.color}">
-                                            ${source.logo}
-                                        </div>
-                                        <div class="gist-source-name">${source.name}</div>
-                                    </div>
-                                    <div class="gist-source-description">${source.description}</div>
-                                </div>
-                            `;
-                        }).join('');
-                    }
-                    return citations.slice(0, 6).map((citation, index) => {
-                        const sourceColor = sources.find(s => s.name === citation.domain)?.color || '#4B9FE1';
-                        const favicon = citation.favicon || citation.favicon24 || citation.favicon40;
-                        return `
-                            <div class="gist-source-card gist-source-card-vertical" data-url="${citation.url}">
-                                <div class="gist-source-card-header">
-                                    <div class="gist-source-logo" style="background: ${sourceColor}">
-                                        ${favicon ? 
-                                            `<img src="${favicon}" alt="${citation.source}" style="width: 16px; height: 16px; border-radius: 2px;">` : 
-                                            `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width: 16px; height: 16px;"><path d="M12 2L2 7l10 5 10-5-10-5z"/></svg>`
-                                        }
-                                    </div>
-                                    <div class="gist-source-name">${citation.source || citation.domain}</div>
-                                    ${citation.date ? `<div class="gist-source-date">${formatDate(citation.date)}</div>` : ''}
-                                </div>
-                                <div class="gist-source-title">${citation.title || 'Untitled'}</div>
-                                <div class="gist-source-description">${citation.first_words ? citation.first_words.substring(0, 120) + '...' : 'No description available'}</div>
-                            </div>
-                        `;
-                    }).join('');
-                }
+
 
                 // Function to handle search
                 function handleSearch() {
