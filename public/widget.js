@@ -566,8 +566,127 @@
 
                 // Function to gather page context
                 function getPageContext() {
-                    // Return only the current page URL as context
-                    return window.location.href;
+                    try {
+                        // Extract comprehensive page information
+                        const context = {
+                            url: window.location.href,
+                            title: document.title || '',
+                            content: '',
+                            headings: [],
+                            meta: {}
+                        };
+                        
+                        // Extract meta information
+                        const metaTags = document.querySelectorAll('meta');
+                        metaTags.forEach(meta => {
+                            const name = meta.getAttribute('name') || meta.getAttribute('property');
+                            const content = meta.getAttribute('content');
+                            if (name && content) {
+                                context.meta[name] = content;
+                            }
+                        });
+                        
+                        // Extract headings for structure
+                        const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+                        headings.forEach(heading => {
+                            if (heading.textContent && heading.textContent.trim()) {
+                                context.headings.push({
+                                    level: heading.tagName.toLowerCase(),
+                                    text: heading.textContent.trim()
+                                });
+                            }
+                        });
+                        
+                        // Extract main content - try multiple selectors for better content detection
+                        const contentSelectors = [
+                            'main',
+                            'article',
+                            '[role="main"]',
+                            '.main-content',
+                            '.content',
+                            '.post-content',
+                            '.entry-content',
+                            '.article-content',
+                            'body'
+                        ];
+                        
+                        let contentElement = null;
+                        for (const selector of contentSelectors) {
+                            contentElement = document.querySelector(selector);
+                            if (contentElement) break;
+                        }
+                        
+                        if (contentElement) {
+                            // Clone the element to avoid modifying the original
+                            const clone = contentElement.cloneNode(true);
+                            
+                            // Remove unwanted elements
+                            const unwantedSelectors = [
+                                'script', 'style', 'nav', 'header', 'footer', 'aside',
+                                '.widget', '.sidebar', '.advertisement', '.ads', '.social-share',
+                                '.comments', '.comment', '.navigation', '.breadcrumb',
+                                '#gist-widget-container', '.gist-widget-container'
+                            ];
+                            
+                            unwantedSelectors.forEach(selector => {
+                                const elements = clone.querySelectorAll(selector);
+                                elements.forEach(el => el.remove());
+                            });
+                            
+                            // Get clean text content
+                            context.content = clone.textContent || clone.innerText || '';
+                            
+                            // Clean up whitespace
+                            context.content = context.content
+                                .replace(/\s+/g, ' ')
+                                .replace(/\n\s*\n/g, '\n')
+                                .trim();
+                            
+                            // Limit content length to avoid API limits (keep most important content)
+                            if (context.content.length > 4000) {
+                                context.content = context.content.substring(0, 4000) + '...';
+                            }
+                        }
+                        
+                        // Format as structured text for the AI
+                        let formattedContext = `Page URL: ${context.url}\n`;
+                        if (context.title) {
+                            formattedContext += `Page Title: ${context.title}\n`;
+                        }
+                        
+                        // Add meta description if available
+                        if (context.meta.description) {
+                            formattedContext += `Description: ${context.meta.description}\n`;
+                        }
+                        
+                        // Add headings structure
+                        if (context.headings.length > 0) {
+                            formattedContext += `\nPage Structure:\n`;
+                            context.headings.slice(0, 10).forEach(heading => {
+                                formattedContext += `${heading.level.toUpperCase()}: ${heading.text}\n`;
+                            });
+                        }
+                        
+                        // Add main content
+                        if (context.content) {
+                            formattedContext += `\nPage Content:\n${context.content}`;
+                        }
+                        
+                        console.log('[Widget] Extracted page context:', {
+                            url: context.url,
+                            titleLength: context.title.length,
+                            contentLength: context.content.length,
+                            headingsCount: context.headings.length,
+                            totalContextLength: formattedContext.length
+                        });
+                        
+                        return formattedContext;
+                        
+                    } catch (error) {
+                        console.error('[Widget] Error extracting page context:', error);
+                        // Fallback to just URL if extraction fails
+                        return window.location.href;
+                    }
                 }
 
                 // Function to show answer container

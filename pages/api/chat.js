@@ -21,18 +21,34 @@ export default async function handler(req, res) {
     userId = String(userId);
     log('User ID:', userId);
 
-    // Compose messages for OpenAI API
-    let userPrompt = question;
+    // Compose messages for OpenAI API with enhanced context handling
+    let userPrompt = '';
+    
     if (context && typeof context === 'string' && context.trim().length > 0) {
-      userPrompt = `If the question is relating to the context of the website, use this URL: ${context} If not, just answer the question normally.\n\n${question}`;
+      // Enhanced context is available - use it to provide better responses
+      userPrompt = `You are an AI assistant that can answer questions about web pages. You have been provided with comprehensive information about the current webpage the user is viewing.
+
+Here is the webpage information:
+${context}
+
+User's question: ${question}
+
+Please provide a helpful and accurate answer based on the webpage content when relevant. If the question is not related to the webpage content, you can answer based on your general knowledge.`;
+    } else {
+      // Fallback to general question
+      userPrompt = question;
     }
+    
     const messages = [
       { role: 'user', content: userPrompt }
     ];
-    log('Messages:', JSON.stringify(messages));
+    log('Messages prepared, context length:', context ? context.length : 0);
 
-    // Call OpenAI chat completion utility
-    const chatResult = await openaiChatCompletion({ messages });
+    // Call OpenAI chat completion utility with enhanced context
+    const chatResult = await openaiChatCompletion({ 
+      messages, 
+      maxTokens: 1500 // Increase token limit for more comprehensive responses
+    });
     log('OpenAI chat result successful');
 
     return res.status(200).json({
