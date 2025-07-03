@@ -1,197 +1,112 @@
 import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import URLInputForm from '../components/URLInputForm';
-import WebsiteDisplay from '../components/WebsiteDisplay';
-import ErrorDisplay from '../components/ErrorDisplay';
-import { trackGetStartedClicked, trackPreviewCreated } from '../utils/analytics';
+import { trackGetStartedClicked } from '../utils/analytics';
 
 export default function Home() {
-  const router = useRouter();
   const [targetUrl, setTargetUrl] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [showWebsite, setShowWebsite] = useState(false);
-  const [showLoadingPage, setShowLoadingPage] = useState(false);
-  const [showFeaturePage, setShowFeaturePage] = useState(false);
-  const [loadingMessage, setLoadingMessage] = useState('');
   const [isLoaded, setIsLoaded] = useState(false);
-  const [selectedFeatures, setSelectedFeatures] = useState({
-    ask: true, // Always enabled, non-toggleable
-    goDeeper: false,
-    customVoices: false,
-    myDaily: false,
-    augmentedSharing: false,
-    customAgents: false
-  });
+  const [isCapturingScreenshot, setIsCapturingScreenshot] = useState(false);
+  const [screenshotResult, setScreenshotResult] = useState(null);
+  const router = useRouter();
 
-  // Trigger fade-in animations on component mount
+  // Device detection and redirect for mobile users
   useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-
-  const formatUrl = (inputUrl) => {
-    let formattedUrl = inputUrl.trim();
-    
-    // Remove any existing protocol
-    formattedUrl = formattedUrl.replace(/^https?:\/\//, '');
-    
-    // Add https:// prefix
-    formattedUrl = 'https://' + formattedUrl;
-    
-    return formattedUrl;
-  };
-
-  const handleUrlSubmit = async (url) => {
-    setLoading(true);
-      setError(null);
-    setShowLoadingPage(true);
-    
-    // Show random loading messages
-    const loadingMessages = [
-      'Analyzing your website...',
-      'Configuring Ask Anything™...',
-      'Setting up smart responses...',
-      'Optimizing for your content...',
-      'Preparing preview...',
-      'Almost ready...'
-    ];
-
-    // Show random loading messages
-    const messageInterval = setInterval(() => {
-      const randomMessage = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-      setLoadingMessage(randomMessage);
-    }, 800);
-
-    // Random delay between 2-4 seconds
-    const delay = Math.random() * 2000 + 2000;
+    const isMobile = () => {
+      if (typeof window === 'undefined') return false;
       
-      try {
-      // Test if the URL is accessible
-      const testResponse = await fetch(`/api/proxy?url=${encodeURIComponent(url)}&test=true`);
-        const testResult = await testResponse.json();
-
-        if (!testResponse.ok) {
-          throw new Error(testResult.error || 'Unable to reach the specified website');
-        }
-
-      // Website loaded successfully
-        
-      // Wait for the minimum delay before proceeding
-      await new Promise(resolve => setTimeout(resolve, delay));
-
-      // Clear the loading message interval
-      clearInterval(messageInterval);
-        
-      // Reset states
-        setShowLoadingPage(false);
-      setLoading(false);
-        setTargetUrl('');
-
-      // Open the proxied URL in a new tab
-      window.open(`/api/proxy?url=${encodeURIComponent(url)}`, '_blank');
-      } catch (err) {
-      clearInterval(messageInterval);
-        setShowLoadingPage(false);
-        setError(err.message);
-        setLoading(false);
-      }
-  };
-
-  const handleBack = () => {
-    setShowWebsite(false);
-    setTargetUrl('');
-  };
-
-  const handleFeatureContinue = async () => {
-    setShowFeaturePage(false);
-    setShowLoadingPage(true);
-    
-    // Format the URL automatically
-    const formattedUrl = formatUrl(targetUrl);
-    
-    const loadingMessages = [
-      'Generating button design...',
-      'Adding functionality...',
-      'Optimizing user experience...',
-      'Implementing <em>Ask Anything™</em>...',
-      'Configuring smart responses...',
-      'Setting up AI integration...',
-      'Customizing for your site...',
-      'Finalizing button placement...',
-      'Testing compatibility...',
-      'Preparing launch...'
-    ];
-
-    // Show random loading messages
-    const messageInterval = setInterval(() => {
-      const randomMessage = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-      setLoadingMessage(randomMessage);
-    }, 800);
-
-    // Random delay between 5-10 seconds
-    const delay = Math.random() * 5000 + 5000;
-    
-    setTimeout(async () => {
-      clearInterval(messageInterval);
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      const isMobileUserAgent = /android|blackberry|iemobile|ipad|iphone|ipod|opera mini|mobile/i.test(userAgent);
+      const isSmallScreen = window.innerWidth <= 768;
       
-      try {
-        const testResponse = await fetch(`/api/proxy?url=${encodeURIComponent(formattedUrl)}&test=true`);
-      const testResult = await testResponse.json();
+      return isMobileUserAgent || isSmallScreen;
+    };
 
-      if (!testResponse.ok) {
-        throw new Error(testResult.error || 'Unable to reach the specified website');
-      }
-
-        // Convert feature selection to widget configuration
-        const widgetConfig = {
-          ask: selectedFeatures.ask
-        };
-        
-        // Directly open the website with widget in a new tab
-        const configParam = encodeURIComponent(JSON.stringify(widgetConfig));
-        const websiteWithWidgetUrl = `/api/proxy?url=${encodeURIComponent(formattedUrl)}&config=${configParam}`;
-        window.open(websiteWithWidgetUrl, '_blank');
-        
-        // Reset the form for potential next use
-        setShowLoadingPage(false);
-        setTargetUrl('');
-    } catch (err) {
-        setShowLoadingPage(false);
-      setError(err.message);
-    } finally {
-      setLoading(false);
+    if (isMobile() && !router.query.desktop) {
+      router.replace('/mobile');
+      return;
     }
-    }, delay);
-  };
 
-  const handleRetry = () => {
-    setError(null);
-    setShowWebsite(false);
-    setShowLoadingPage(false);
-    setShowFeaturePage(false);
-    setTargetUrl('');
-    setLoading(false);
-  };
+    setIsLoaded(true);
+  }, [router]);
+
+
+
 
   const handleGetStartedClick = () => {
     // Track Get Started clicked from hero section
     trackGetStartedClicked('hero');
-    router.push('/setup');
+    // Button functionality to be implemented later
   };
 
   const handleFinalGetStartedClick = () => {
     // Track Get Started clicked from final CTA section
     trackGetStartedClicked('final-cta');
-    router.push('/setup');
+    // Button functionality to be implemented later
   };
 
-  const handleTryItClick = (location) => {
-    if (!targetUrl.trim()) return;
-    
-    // Track Preview Created event
-    trackPreviewCreated(targetUrl, location);
-    handleUrlSubmit(targetUrl);
+  const handleTryItClick = async () => {
+    if (!targetUrl.trim()) {
+      alert('Please enter a URL first');
+      return;
+    }
+
+    setIsCapturingScreenshot(true);
+    setScreenshotResult(null);
+
+    try {
+      const response = await fetch('/api/screenshot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          url: targetUrl,
+          options: {
+            viewport: { width: 1366, height: 768 },
+            fullPage: true,
+            quality: 90
+          }
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to capture screenshot');
+      }
+
+      setScreenshotResult(result);
+
+      // Create a new window/tab to display the screenshot with widget
+      const screenshotWindow = window.open('', '_blank');
+      screenshotWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Screenshot: ${result.url}</title>
+          <style>
+            body { margin: 0; padding: 0; background: #f0f0f0; }
+            .screenshot-container { text-align: center; padding: 20px; }
+            .screenshot-img { max-width: 100%; height: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+          </style>
+        </head>
+        <body>
+          <div class="screenshot-container">
+            <img src="${result.screenshotUrl}" alt="Screenshot of ${result.url}" class="screenshot-img" />
+          </div>
+          <script src="/widget.js"></script>
+        </body>
+        </html>
+      `);
+      screenshotWindow.document.close();
+
+    } catch (error) {
+      console.error('Screenshot capture failed:', error);
+      alert(`Failed to capture screenshot: ${error.message}`);
+    } finally {
+      setIsCapturingScreenshot(false);
+    }
   };
 
   return (
@@ -203,118 +118,9 @@ export default function Home() {
         <link rel="icon" type="image/png" sizes="192x192" href="/Gist_Mark_000000.png" />
         <link rel="apple-touch-icon" sizes="192x192" href="/Gist_Mark_000000.png" />
         <title>Ask Anything™ - AI-Powered Website Search</title>
-        <script src="/widget.js" async></script>
       </Head>
       
     <div className="app">
-      {showWebsite ? (
-        <WebsiteDisplay 
-          url={targetUrl} 
-          onBack={handleBack}
-        />
-      ) : (
-        <>
-      {/* Loading Page */}
-      {showLoadingPage && (
-        <div className="loading-page">
-          <div className="loading-content">
-            <div className="loading-spinner">
-                  <img src="/Gist_Mark_000000.png" alt="Gist Logo" className="spinning-logo" />
-              </div>
-                <h2 className="loading-title">Setting up <em>Ask Anything™</em> Preview</h2>
-                <p className="loading-message" dangerouslySetInnerHTML={{ __html: loadingMessage }}></p>
-            <div className="loading-progress">
-              <div className="progress-bar"></div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Feature Selection Page */}
-      {showFeaturePage && (
-        <div className="feature-page">
-          <header className="header">
-            <div className="header-left">
-              <img src="/Gist_Mark_000000.png" alt="Gist" className="gist-logo" onClick={() => window.open('https://about.gist.ai', '_blank')} />
-              <h1 className="logo">Ask<br />Anything™</h1>
-            </div>
-            <div className="header-right">
-              <span className="tagline">100% ethical, uses fully licensed sources</span>
-              <div className="auth-buttons">
-                <button className="waitlist-header-btn" onClick={() => router.push('/dashboard')}>Dashboard</button>
-              </div>
-            </div>
-          </header>
-
-          <main className="feature-content">
-            <h1 className="feature-title">
-              Configure Features
-            </h1>
-            <p className="feature-subtitle">
-              Select additional features for {targetUrl}. Ask Anything™ is always enabled.
-            </p>
-              
-            <div className="features-compact-grid">
-              <div className="feature-compact-card">
-                <div className="feature-compact-header">
-                  <input
-                    type="checkbox"
-                    id="theGist"
-                    checked={selectedFeatures.theGist}
-                    onChange={(e) => setSelectedFeatures(prev => ({...prev, theGist: e.target.checked}))}
-                  />
-                  <label htmlFor="theGist" className="feature-compact-name">Summarize</label>
-              </div>
-                <p className="feature-compact-description">One-sentence AI summary of any story</p>
-            </div>
-
-
-              
-
-                
-              <div className="feature-compact-card">
-                <div className="feature-compact-header">
-                  <input
-                    type="checkbox"
-                    id="goDeeper"
-                    checked={selectedFeatures.goDeeper}
-                    onChange={(e) => setSelectedFeatures(prev => ({...prev, goDeeper: e.target.checked}))}
-                  />
-                  <label htmlFor="goDeeper" className="feature-compact-name">Go Deeper</label>
-                </div>
-                <p className="feature-compact-description">Expandable sidebars with related articles and media</p>
-                </div>
-                
-
-                
-              <div className="feature-compact-card">
-                <div className="feature-compact-header">
-                  <input
-                    type="checkbox"
-                    id="customVoices"
-                    checked={selectedFeatures.customVoices}
-                    onChange={(e) => setSelectedFeatures(prev => ({...prev, customVoices: e.target.checked}))}
-                  />
-                  <label htmlFor="customVoices" className="feature-compact-name">Custom Voices</label>
-                </div>
-                <p className="feature-compact-description">Branded TTS and presenter options</p>
-                </div>
-                </div>
-                
-            <div className="feature-actions">
-              <button className="back-btn" onClick={() => setShowFeaturePage(false)}>
-                ← Back
-              </button>
-              <button className="continue-btn" onClick={handleFeatureContinue}>
-                Continue with Selected Features
-              </button>
-                </div>
-          </main>
-        </div>
-      )}
-
-      {/* Main Landing Page */}
-      {!showWebsite && !showLoadingPage && !showFeaturePage && (
         <div className="landing-page">
           {/* Header */}
           <header className="header">
@@ -383,11 +189,18 @@ export default function Home() {
                       onKeyPress={(e) => e.key === 'Enter' && targetUrl.trim() && handleTryItClick('hero')}
                     />
                     <button
-                      className="hero-try-btn"
+                      className={`hero-try-btn ${isCapturingScreenshot ? 'capturing' : ''}`}
                       onClick={() => handleTryItClick('hero')}
-                      disabled={!targetUrl.trim()}
+                      disabled={!targetUrl.trim() || isCapturingScreenshot}
                     >
-                      Try It
+                      {isCapturingScreenshot ? (
+                        <>
+                          Capturing
+                          <span className="button-spinner"></span>
+                        </>
+                      ) : (
+                        'Try It'
+                      )}
                     </button>
                   </div>
                 </div>
@@ -483,11 +296,18 @@ export default function Home() {
                         onKeyPress={(e) => e.key === 'Enter' && targetUrl.trim() && handleTryItClick('final_cta')}
                   />
                   <button
-                    className="final-try-btn"
+                    className={`final-try-btn ${isCapturingScreenshot ? 'capturing' : ''}`}
                         onClick={() => handleTryItClick('final_cta')}
-                    disabled={!targetUrl.trim()}
+                    disabled={!targetUrl.trim() || isCapturingScreenshot}
                   >
-                    Try It
+                    {isCapturingScreenshot ? (
+                      <>
+                        Capturing
+                        <span className="button-spinner"></span>
+                      </>
+                    ) : (
+                      'Try It'
+                    )}
                   </button>
                 </div>
               </div>
@@ -503,9 +323,6 @@ export default function Home() {
             </div>
           </footer>
         </div>
-      )}
-        </>
-      )}
 
       <style jsx>{`
         * {
@@ -977,7 +794,7 @@ export default function Home() {
           display: flex;
           background: transparent;
           border-radius: 50px;
-          overflow: visible;
+          overflow: hidden;
           transition: all 0.3s ease;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
           width: 400px;
@@ -1075,6 +892,8 @@ export default function Home() {
           margin: 0;
           position: relative;
           z-index: 2;
+          min-width: fit-content;
+          max-width: 140px;
         }
 
         .hero-try-btn:hover:not(:disabled) {
@@ -1088,6 +907,30 @@ export default function Home() {
           cursor: not-allowed;
           animation: none;
           background: #a0aec0;
+        }
+
+        .hero-try-btn.capturing {
+          padding: 0.875rem 1rem 0.875rem 1.5rem;
+          max-width: 180px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .button-spinner {
+          display: inline-block;
+          width: 14px;
+          height: 14px;
+          border: 2px solid rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          border-top-color: white;
+          animation: buttonSpin 1s linear infinite;
+          margin-left: 0.5rem;
+        }
+
+        @keyframes buttonSpin {
+          to {
+            transform: rotate(360deg);
+          }
         }
 
         .gist-icon {
@@ -1674,7 +1517,7 @@ export default function Home() {
           display: flex;
           background: transparent;
           border-radius: 50px;
-          overflow: visible;
+          overflow: hidden;
           transition: all 0.3s ease;
           box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
           width: 400px;
@@ -1748,6 +1591,8 @@ export default function Home() {
           margin: 0;
           position: relative;
           z-index: 2;
+          min-width: fit-content;
+          max-width: 140px;
         }
 
         .final-try-btn:hover:not(:disabled) {
@@ -1761,6 +1606,13 @@ export default function Home() {
           cursor: not-allowed;
           animation: none;
           background: #a0aec0;
+        }
+
+        .final-try-btn.capturing {
+          padding: 0.875rem 1rem 0.875rem 1.5rem;
+          max-width: 180px;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
         /* Mobile Responsiveness */

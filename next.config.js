@@ -5,6 +5,16 @@ const nextConfig = {
   // Disable x-powered-by header
   poweredByHeader: false,
   
+  // Rewrites for static file serving
+  async rewrites() {
+    return [
+      {
+        source: '/screenshots/:path*',
+        destination: '/api/screenshots/:path*'
+      }
+    ];
+  },
+  
   // Security headers
   async headers() {
     return [
@@ -44,6 +54,24 @@ const nextConfig = {
           {
             key: 'Content-Type',
             value: 'application/javascript'
+          }
+        ]
+      },
+      // Screenshot files
+      {
+        source: '/screenshots/:path*',
+        headers: [
+          {
+            key: 'Access-Control-Allow-Origin',
+            value: '*'
+          },
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET'
+          },
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600'
           }
         ]
       },
