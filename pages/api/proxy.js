@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { URL } from 'url';
-import { validateUrl } from '../../utils/urlValidator';
+const URLValidator = require('../../lib/urlValidator');
 
 // Simple rate limiting (in-memory for serverless)
 const requestCounts = new Map();
@@ -908,12 +908,12 @@ export default async function handler(req, res) {
     }
 
     // Use our URL validator to normalize and validate the URL
-    const validation = validateUrl(targetUrl);
+    const validation = URLValidator.isValidURL(targetUrl);
     if (!validation.isValid) {
       return res.status(400).json({ error: validation.error });
     }
 
-    const normalizedUrl = validation.normalizedUrl;
+    const normalizedUrl = validation.url;
 
     // Security checks - block internal/private IPs
     const blockedHosts = ['localhost', '127.0.0.1', '0.0.0.0', '::1'];
