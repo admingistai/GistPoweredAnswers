@@ -1106,49 +1106,87 @@ export default function Home() {
 
         @media (max-width: 768px) {
           .hero-section {
-            padding: 2rem 1rem;
+            padding: 1.5rem 1rem;
           }
 
           .hero-container {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 1.5rem;
+            padding: 0 1rem;
+          }
+
+          .hero-video {
+            display: none;
+          }
+
+          .publisher-section {
+            display: none;
           }
 
           .hero-content {
             padding-left: 0;
             text-align: center;
+            min-height: auto;
           }
 
           .hero-title {
-            font-size: 2.5rem;
+            font-size: 1.75rem;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin-bottom: 1rem;
           }
 
           .hero-description {
-            font-size: 1.1rem;
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+          }
+
+          .hero-subheader {
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
           }
 
           .hero-cta {
-            align-items: center;
+            align-items: stretch;
             text-align: center;
-            gap: 1.5rem;
+            gap: 1rem;
+            width: 100%;
           }
-
-
 
           .hero-url-input-wrapper {
             width: 100%;
             flex-direction: column;
+            padding: 0;
+            gap: 0.75rem;
+            box-shadow: none;
+            background: none;
+          }
+
+          .hero-url-input-wrapper::before,
+          .hero-url-input-wrapper::after {
+            display: none;
           }
 
           .hero-url-input {
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          }
+
+          .hero-url-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
           }
 
           .hero-try-btn {
-            padding: 0.75rem 1.25rem;
-            font-size: 0.9rem;
-            border-radius: 47px;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 12px;
           }
         }
 
@@ -1766,25 +1804,56 @@ export default function Home() {
         /* Mobile Responsiveness */
         @media (max-width: 768px) {
           .section-title {
-            font-size: 2rem;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
           }
 
           .benefits-grid {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
           }
 
           .benefit-card {
             padding: 1.5rem;
           }
 
+          .benefit-icon {
+            font-size: 2rem;
+            width: 3rem;
+            height: 3rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .benefit-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+          }
+
+          .benefit-card p {
+            font-size: 0.9rem;
+          }
+
           .customization-grid {
             grid-template-columns: 1fr;
-            gap: 1.5rem;
+            gap: 1rem;
+          }
+
+          .customization-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .customization-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+          }
+
+          .customization-item p {
+            font-size: 0.9rem;
           }
 
           .cta-title {
-            font-size: 2rem;
+            font-size: 1.75rem;
           }
 
           .waitlist-btn {
@@ -1794,28 +1863,53 @@ export default function Home() {
 
           .final-cta-actions {
             flex-direction: column;
-            gap: 1.5rem;
+            gap: 1rem;
+            width: 100%;
+            max-width: 100%;
           }
 
           .final-get-started-btn {
-            padding: 0.875rem 1.75rem;
-            font-size: 1rem;
+            display: none;
+          }
+
+          .final-cta-text {
+            display: none;
           }
 
           .final-url-input-wrapper {
             width: 100%;
             flex-direction: column;
+            padding: 0;
+            gap: 0.75rem;
+            box-shadow: none;
+            background: none;
+          }
+
+          .final-url-input-wrapper::before,
+          .final-url-input-wrapper::after {
+            display: none;
           }
 
           .final-url-input {
-            padding: 0.75rem 1rem;
-            font-size: 0.95rem;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+          }
+
+          .final-url-input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
           }
 
           .final-try-btn {
-            padding: 0.75rem 1.25rem;
-            font-size: 0.9rem;
-            border-radius: 47px;
+            width: 100%;
+            padding: 1rem;
+            font-size: 1rem;
+            border-radius: 12px;
           }
 
           .container {
@@ -2112,30 +2206,41 @@ export default function Home() {
           .header {
             flex-direction: row;
             justify-content: space-between;
-            align-items: flex-start;
-            gap: 1rem;
-          padding: 1.5rem;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
           }
 
           .header-left {
             text-align: left !important;
           }
 
+          .gist-logo {
+            height: 1.75rem;
+          }
+
           .header-left .logo {
             text-align: left !important;
+            font-size: 1rem;
+            line-height: 1;
           }
 
           .header-right {
             flex-direction: column;
-            gap: 1rem;
+            gap: 0.25rem;
             align-items: flex-end;
             text-align: right;
           }
 
           .tagline {
+            font-size: 0.7rem;
             max-width: 120px;
             word-wrap: break-word;
-            line-height: 1.2;
+            line-height: 1.1;
+          }
+
+          .auth-buttons {
+            display: none;
           }
 
           .main-content {
@@ -2243,6 +2348,57 @@ export default function Home() {
         }
 
         @media (max-width: 480px) {
+          /* Header adjustments for very small screens */
+          .header {
+            padding: 0.5rem 0.75rem;
+          }
+
+          .gist-logo {
+            height: 1.5rem;
+          }
+
+          .header-left .logo {
+            font-size: 0.9rem;
+          }
+
+          .tagline {
+            display: none;
+          }
+
+          /* Hero section for very small screens */
+          .hero-section {
+            padding: 1rem 0.75rem;
+          }
+
+          .hero-container {
+            padding: 0;
+          }
+
+          .hero-title {
+            font-size: 1.5rem;
+            line-height: 1.2;
+          }
+
+          .hero-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+          }
+
+          .hero-subheader {
+            font-size: 0.875rem;
+          }
+
+          .hero-url-input {
+            padding: 0.875rem;
+            font-size: 0.9rem;
+          }
+
+          .hero-try-btn {
+            padding: 0.875rem;
+            font-size: 0.9rem;
+          }
+
+          /* Main content adjustments */
           .main-content {
             padding: 0.5rem 1rem;
           }
@@ -2259,6 +2415,55 @@ export default function Home() {
 
           .see-how-text {
             font-size: 0.85rem;
+          }
+
+          /* Section adjustments */
+          .why-choose-section,
+          .make-it-yours-section,
+          .final-cta-section {
+            padding: 2rem 0.75rem;
+          }
+
+          .section-title {
+            font-size: 1.5rem;
+          }
+
+          .benefit-card {
+            padding: 1.25rem;
+          }
+
+          .benefit-card h3 {
+            font-size: 1rem;
+          }
+
+          .benefit-card p {
+            font-size: 0.875rem;
+          }
+
+          .customization-item {
+            padding: 1.25rem;
+          }
+
+          .customization-item h3 {
+            font-size: 1rem;
+          }
+
+          .customization-item p {
+            font-size: 0.875rem;
+          }
+
+          .cta-title {
+            font-size: 1.25rem;
+          }
+
+          .final-url-input {
+            padding: 0.875rem;
+            font-size: 0.9rem;
+          }
+
+          .final-try-btn {
+            padding: 0.875rem;
+            font-size: 0.9rem;
           }
 
           .publishers-band {
