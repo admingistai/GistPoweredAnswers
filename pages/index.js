@@ -352,15 +352,6 @@ export default function Home() {
                   <source src="/GPA%20basic%20demo%20gif.mov" type="video/quicktime" />
                   Your browser does not support the video tag.
                 </video>
-                <div className="publisher-section">
-                  <p className="publisher-text">Trusted by 500+ publishers</p>
-                  <div className="publisher-logos">
-                    <img src="/publishers-logos-black.png" alt="Trusted Publishers" onError={(e) => {
-                      console.error('Image failed to load:', e.target.src);
-                      e.target.src = '/publishers-logos.png'; // Fallback to original
-                    }} />
-                  </div>
-                </div>
             </div>
               <div className="hero-content">
                 <h1 className="hero-title">
@@ -835,50 +826,6 @@ export default function Home() {
           border: none;
         }
 
-        .publisher-section {
-          margin-top: 1.5rem;
-          margin-bottom: 2rem;
-          text-align: center;
-          width: 100%;
-          position: relative;
-          z-index: 1000;
-        }
-
-        .publisher-text {
-          font-size: 0.9rem;
-          color: #666;
-          font-family: 'Inter', sans-serif;
-          font-weight: 500;
-          margin: 0 0 1rem 0;
-          text-align: center;
-        }
-
-        .publisher-logos {
-          text-align: center;
-          width: 100%;
-          min-height: 80px;
-          position: relative;
-          z-index: 1000;
-          background: transparent;
-          pointer-events: auto;
-        }
-
-        .publisher-logos img {
-          max-width: 100%;
-          width: auto;
-          height: auto;
-          max-height: 90px;
-          opacity: 0.8;
-          transition: opacity 0.3s ease;
-          display: block;
-          margin: 0 auto;
-          position: relative;
-          z-index: 1001;
-        }
-
-        .publisher-logos:hover img {
-          opacity: 1;
-        }
 
         .hero-content {
           padding-left: 2rem;
@@ -1119,9 +1066,6 @@ export default function Home() {
             display: none;
           }
 
-          .publisher-section {
-            display: none;
-          }
 
           .hero-content {
             padding-left: 0;
@@ -2282,28 +2226,6 @@ export default function Home() {
             border-radius: 37px;
         }
 
-          .publishers-logos,
-          .publishers-logos-bottom {
-            gap: 1rem;
-          }
-
-          .publisher-name {
-            font-size: 0.9rem;
-          }
-
-          .publishers-band {
-            padding: 1rem 2rem 5rem;
-            margin-bottom: 80px;
-            transform: translateY(-1rem);
-            animation: none;
-          }
-
-          .publishers-message {
-            font-size: 1.2rem;
-            max-width: 250px;
-            white-space: normal;
-            line-height: 1.3;
-          }
 
           /* Feature Page Mobile Styles */
           .feature-content {
@@ -2466,22 +2388,6 @@ export default function Home() {
             font-size: 0.9rem;
           }
 
-          .publishers-band {
-            padding: 2rem 1rem;
-            margin-bottom: 80px;
-            transform: translateY(0);
-            animation: none;
-          }
-
-          .publishers-logos,
-          .publishers-logos-bottom {
-            flex-direction: column;
-            gap: 0.5rem;
-          }
-
-          .publisher-name {
-            font-size: 0.8rem;
-          }
 
           /* Feature Page Small Mobile Styles */
           .feature-title {
